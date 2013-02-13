@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121219202134) do
+ActiveRecord::Schema.define(:version => 20121220190747) do
+
+  create_table "conditions", :force => true do |t|
+    t.decimal "value",  :precision => 12, :scale => 4
+    t.string  "unit"
+    t.string  "name"
+    t.integer "hit_id"
+  end
 
   create_table "deployments", :force => true do |t|
     t.datetime "start"
@@ -36,6 +43,17 @@ ActiveRecord::Schema.define(:version => 20121219202134) do
   end
 
   add_index "deployments", ["location"], :name => "index_deployments_on_location", :spatial => true
+
+  create_table "hits", :force => true do |t|
+    t.integer  "deployment_id"
+    t.string   "deployment_code"
+    t.integer  "tag_deployment_id"
+    t.string   "tag_code"
+    t.datetime "time"
+    t.decimal  "depth",                                                                                                     :precision => 8, :scale => 4
+    t.spatial  "location",          :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
+    t.datetime "created_at"
+  end
 
   create_table "otn_arrays", :force => true do |t|
     t.string "code"

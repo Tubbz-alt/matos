@@ -25,7 +25,6 @@ class Report < ActiveRecord::Base
   validates :method, :name, :fishtype, :didwith, :found, :phone, :address, :city, :state, :zipcode, :presence => true
   validates :email, :format => { :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i, :message => "Invalid Email Address" }
 
-
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
 
   METHODS = ['Caught - Commercial Fishing','Caught - Recreational Fishing','Caught - Tribal Fishing']

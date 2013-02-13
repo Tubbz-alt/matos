@@ -25,6 +25,7 @@ class TagDeployment < ActiveRecord::Base
   belongs_to :study
 
   has_one    :report
+  has_many   :deployments, :through => :hits
 
   validates :tag_id, :release_date, :presence => true
 

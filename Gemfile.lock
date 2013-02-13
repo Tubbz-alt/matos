@@ -285,6 +285,7 @@ DEPENDENCIES
   pickle
   rails (= 3.2.12)
   rgeo
+  rgeo-activerecord
   rgeo-geojson
   rspec-rails
   rubyzip

@@ -47,6 +47,7 @@ end
 
 gem 'rgeo'
 gem 'rgeo-geojson'
+gem 'rgeo-activerecord'
 gem 'activerecord-postgis-adapter'
 
 gem 'kaminari'

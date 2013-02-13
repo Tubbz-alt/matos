@@ -18,6 +18,7 @@ class Deployment < ActiveRecord::Base
   belongs_to :study
   belongs_to :otn_array
   has_one :retrieval, :dependent => :destroy
+  has_many :tag_deployments, :through => :hits
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
 
