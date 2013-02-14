@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121220190747) do
+ActiveRecord::Schema.define(:version => 20130213182123) do
 
   create_table "conditions", :force => true do |t|
     t.decimal "value",  :precision => 12, :scale => 4
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(:version => 20121220190747) do
     t.string   "zipcode",                :limit => 8
     t.string   "phone"
     t.boolean  "newsletter",                          :default => false
+    t.string   "authentication_token"
   end
 
   add_index "users", ["approved"], :name => "index_users_on_approved"
