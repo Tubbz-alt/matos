@@ -51,13 +51,13 @@ Matos::Application.configure do
   config.assets.precompile += %w( ie7.css ie6.css )
   config.assets.precompile += %w( printing.css )
 
-  config.action_mailer.default_url_options = { :host => 'data.glos.us/glatos' }
+  config.action_mailer.default_url_options = { :host => 'matos.asascience.com' }
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
-  config.action_mailer.default :from => "glatos@glos.us"
-  config.action_mailer.sendmail_settings = { :arguments => '-i -t -f glatos@glos.us' }
+  config.action_mailer.default :from => "matos@asascience.com"
+  config.action_mailer.sendmail_settings = { :arguments => '-i -t -f matos@asascience.com' }
 
   # Enable threaded mode
   # config.threadsafe!
@@ -69,8 +69,8 @@ Matos::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  # We run in the "glatos" subdirectory
-  config.action_controller.relative_url_root = "/glatos"
+  # Set if it is run in a relative folder
+  config.action_controller.relative_url_root = ""
 
   Paperclip.options[:command_path] = "/usr/bin/"
 
