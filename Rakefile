@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Glatos::Application.load_tasks
+Matos::Application.load_tasks

@@ -1,8 +1,8 @@
 var map;
 var proj900913 = new OpenLayers.Projection("EPSG:900913");
 var proj4326   = new OpenLayers.Projection("EPSG:4326");
-var glatosStudiesStore = new Ext.data.ArrayStore({fields : []});
-var glatosDeployments  = {
+var matosStudiesStore = new Ext.data.ArrayStore({fields : []});
+var matosDeployments  = {
    features    : []
   ,start       : new Date()
   ,ending      : new Date()
@@ -12,7 +12,7 @@ var glatosDeployments  = {
 var sm =  new OpenLayers.StyleMap({
   'default' : new OpenLayers.Style(OpenLayers.Util.applyDefaults({
      pointRadius     : 6
-    ,fillColor       : '#e8bb99'
+    ,fillColor       : '#e8bb99' 
     ,fillOpacity     : 0.7
     ,strokeWidth     : 1
     ,strokeColor     : '#b56529'
@@ -94,28 +94,28 @@ function init() {
     ,html   : '<table class="smallFont" width="100%"><tr><td>Place your curser over points on the map to view additional information about projects and receivers.  Use the tools below to filter receivers by project, operating schedule, acoustic frequency, and status.</td></tr></table>'
   });
 
-  var glatosStudiesSelModel = new Ext.grid.CheckboxSelectionModel({
+  var matosStudiesSelModel = new Ext.grid.CheckboxSelectionModel({
     header : ''
   });
-  var glatosStudiesGridPanel = new Ext.grid.GridPanel({
-     id               : 'glatosStudiesGridPanel'
+  var matosStudiesGridPanel = new Ext.grid.GridPanel({
+     id               : 'matosStudiesGridPanel'
     ,title            : 'Filter by project'
-    ,store            : glatosStudiesStore
+    ,store            : matosStudiesStore
     ,height           : 2 * 21.1 + 26 + 6 + 25
     ,border           : false
     ,autoExpandColumn : 'name'
     ,columns          : [
-       glatosStudiesSelModel
+       matosStudiesSelModel
       ,{id : 'name' ,dataIndex : 'name' ,renderer : renderProjectName}
       ,{id : 'count',dataIndex : 'count',renderer : renderCount,align : 'right',width : 70}
     ]
     ,hideHeaders      : true
     ,loadMask         : true
     ,deferRowRender   : false
-    ,selModel         : glatosStudiesSelModel
+    ,selModel         : matosStudiesSelModel
     ,listeners        : {
       rowclick : function(grid,rowIndex,e) {
-        syncGlatos();
+        syncmatos();
       }
     }
     ,tbar             : [
@@ -124,35 +124,35 @@ function init() {
          text    : 'Reset all filters'
         ,icon    : "<%= asset_path 'arrow_refresh.png' %>"
         ,handler : function() {
-          Ext.getCmp('glatosSeasonalGridPanel').getSelectionModel().suspendEvents();
-          Ext.getCmp('glatosTimesStart').suspendEvents();
-          Ext.getCmp('glatosTimesEnd').suspendEvents();
-          Ext.getCmp('glatosStudiesGridPanel').getSelectionModel().selectAll();
-          Ext.getCmp('glatosStudiesGridPanel').getSelectionModel().selectAll();
-          Ext.getCmp('glatosFrequenciesGridPanel').getSelectionModel().selectAll();
-          Ext.getCmp('glatosModelsGridPanel').getSelectionModel().selectAll();
-          Ext.getCmp('glatosSeasonalGridPanel').getSelectionModel().selectAll();
-          Ext.getCmp('glatosProjectStatusesGridPanel').getSelectionModel().selectRow(Ext.getCmp('glatosProjectStatusesGridPanel').getStore().findExact('name','Ongoing'));
-          Ext.getCmp('glatosTimesStart').setValue(glatosDeployments.start);
-          Ext.getCmp('glatosTimesEnd').setValue(glatosDeployments.ending);
-          if (Ext.getCmp('glatosYearsComboBox').getStore().getCount() > 0) {
-            Ext.getCmp('glatosYearsComboBox').setValue(Ext.getCmp('glatosYearsComboBox').getStore().getAt(0).get('year'));
+          Ext.getCmp('matosSeasonalGridPanel').getSelectionModel().suspendEvents();
+          Ext.getCmp('matosTimesStart').suspendEvents();
+          Ext.getCmp('matosTimesEnd').suspendEvents();
+          Ext.getCmp('matosStudiesGridPanel').getSelectionModel().selectAll();
+          Ext.getCmp('matosStudiesGridPanel').getSelectionModel().selectAll();
+          Ext.getCmp('matosFrequenciesGridPanel').getSelectionModel().selectAll();
+          Ext.getCmp('matosModelsGridPanel').getSelectionModel().selectAll();
+          Ext.getCmp('matosSeasonalGridPanel').getSelectionModel().selectAll();
+          Ext.getCmp('matosProjectStatusesGridPanel').getSelectionModel().selectRow(Ext.getCmp('matosProjectStatusesGridPanel').getStore().findExact('name','Ongoing'));
+          Ext.getCmp('matosTimesStart').setValue(matosDeployments.start);
+          Ext.getCmp('matosTimesEnd').setValue(matosDeployments.ending);
+          if (Ext.getCmp('matosYearsComboBox').getStore().getCount() > 0) {
+            Ext.getCmp('matosYearsComboBox').setValue(Ext.getCmp('matosYearsComboBox').getStore().getAt(0).get('year'));
           }
-          checkOneFilter('glatosProjectStatusesFieldSet',true,true);
-          Ext.getCmp('glatosSeasonalGridPanel').getSelectionModel().resumeEvents();
-          Ext.getCmp('glatosTimesStart').resumeEvents();
-          Ext.getCmp('glatosTimesEnd').resumeEvents();
-          syncGlatos();
+          checkOneFilter('matosProjectStatusesFieldSet',true,true);
+          Ext.getCmp('matosSeasonalGridPanel').getSelectionModel().resumeEvents();
+          Ext.getCmp('matosTimesStart').resumeEvents();
+          Ext.getCmp('matosTimesEnd').resumeEvents();
+          syncmatos();
         }
       }
     ]
   });
 
-  var glatosSeasonalSelModel = new Ext.grid.CheckboxSelectionModel({
+  var matosSeasonalSelModel = new Ext.grid.CheckboxSelectionModel({
      header : ''
   });
-  var glatosSeasonalGridPanel = new Ext.grid.GridPanel({
-     id               : 'glatosSeasonalGridPanel'
+  var matosSeasonalGridPanel = new Ext.grid.GridPanel({
+     id               : 'matosSeasonalGridPanel'
     ,title            : 'Filter by operating schedule'
     ,store            : new Ext.data.ArrayStore({
       fields : [
@@ -167,16 +167,16 @@ function init() {
     ,border           : false
     ,autoExpandColumn : 'name'
     ,columns          : [
-       glatosSeasonalSelModel
+       matosSeasonalSelModel
       ,{id : 'name',dataIndex : 'name'}
     ]
     ,hideHeaders      : true
     ,loadMask         : true
     ,deferRowRender   : false
-    ,selModel         : glatosSeasonalSelModel
+    ,selModel         : matosSeasonalSelModel
     ,listeners        : {
       rowclick : function(grid,rowIndex,e) {
-        syncGlatos();
+        syncmatos();
       }
       ,viewready : function(grid) {
         grid.suspendEvents();
@@ -186,61 +186,61 @@ function init() {
     }
   });
 
-  var glatosFrequenciesSelModel = new Ext.grid.CheckboxSelectionModel({
+  var matosFrequenciesSelModel = new Ext.grid.CheckboxSelectionModel({
     header : ''
   });
-  var glatosFrequenciesGridPanel = new Ext.grid.GridPanel({
-     id               : 'glatosFrequenciesGridPanel'
+  var matosFrequenciesGridPanel = new Ext.grid.GridPanel({
+     id               : 'matosFrequenciesGridPanel'
     ,title            : 'Filter by acoustic frequency'
     ,store            : new Ext.data.ArrayStore({fields : ['frequency']})
     ,height           : 2 * 21.1 + 26 + 6
     ,border           : false
     ,autoExpandColumn : 'frequency'
     ,columns          : [
-       glatosFrequenciesSelModel
+       matosFrequenciesSelModel
       ,{id : 'frequency',dataIndex : 'frequency'}
     ]
     ,hideHeaders      : true
     ,loadMask         : true
     ,deferRowRender   : false
-    ,selModel         : glatosFrequenciesSelModel
+    ,selModel         : matosFrequenciesSelModel
     ,listeners        : {
       rowclick : function(grid,rowIndex,e) {
-        syncGlatos();
+        syncmatos();
       }
     }
   });
 
-  var glatosModelsSelModel = new Ext.grid.CheckboxSelectionModel({
+  var matosModelsSelModel = new Ext.grid.CheckboxSelectionModel({
     header : ''
   });
-  var glatosModelsGridPanel = new Ext.grid.GridPanel({
-     id               : 'glatosModelsGridPanel'
+  var matosModelsGridPanel = new Ext.grid.GridPanel({
+     id               : 'matosModelsGridPanel'
     ,title            : 'Filter by model'
     ,store            : new Ext.data.ArrayStore({fields : ['model']})
     ,height           : 2 * 21.1 + 26 + 6
     ,border           : false
     ,autoExpandColumn : 'model'
     ,columns          : [
-       glatosModelsSelModel
+       matosModelsSelModel
       ,{id : 'model',dataIndex : 'model'}
     ]
     ,hideHeaders      : true
     ,loadMask         : true
     ,deferRowRender   : false
-    ,selModel         : glatosModelsSelModel
+    ,selModel         : matosModelsSelModel
     ,listeners        : {
       rowclick : function(grid,rowIndex,e) {
-        syncGlatos();
+        syncmatos();
       }
     }
   });
 
-  var glatosProjectStatusSelModel = new Ext.grid.CheckboxSelectionModel({
+  var matosProjectStatusSelModel = new Ext.grid.CheckboxSelectionModel({
     header : ''
   });
-  var glatosProjectStatusesGridPanel = new Ext.grid.GridPanel({
-     id               : 'glatosProjectStatusesGridPanel'
+  var matosProjectStatusesGridPanel = new Ext.grid.GridPanel({
+     id               : 'matosProjectStatusesGridPanel'
     ,store            : new Ext.data.ArrayStore({
       fields : [
         'name'
@@ -255,17 +255,17 @@ function init() {
     ,border           : false
     ,autoExpandColumn : 'name'
     ,columns          : [
-       glatosProjectStatusSelModel
+       matosProjectStatusSelModel
       ,{id : 'name',dataIndex : 'name'}
     ]
     ,hideHeaders      : true
     ,loadMask         : true
     ,deferRowRender   : false
-    ,selModel         : glatosProjectStatusSelModel
+    ,selModel         : matosProjectStatusSelModel
     ,listeners        : {
       rowclick : function(grid,rowIndex,e) {
-        checkOneFilter('glatosProjectStatusesFieldSet',true,false);
-        syncGlatos();
+        checkOneFilter('matosProjectStatusesFieldSet',true,false);
+        syncmatos();
       }
       ,viewready : function(grid) {
         grid.suspendEvents();
@@ -275,8 +275,8 @@ function init() {
     }
   });
 
-  var glatosTimesFormPanel = new Ext.Panel({
-     id          : 'glatosTimesFormPanel'
+  var matosTimesFormPanel = new Ext.Panel({
+     id          : 'matosTimesFormPanel'
     ,height      : 55
     ,border      : false
     ,items       : [
@@ -286,7 +286,7 @@ function init() {
         ,layout      : 'column'
         ,items       : [
           {border : false,columnWidth : 0.48,layout : 'form',items : new Ext.form.DateField({
-             id         : 'glatosTimesStart'
+             id         : 'matosTimesStart'
             ,disabled   : true
             ,showToday  : false
             ,allowBlank : false
@@ -294,7 +294,7 @@ function init() {
           })}
           ,{border : false,columnWidth : 0.05,layout : 'form',html : '-',bodyStyle : 'text-align:center'}
           ,{border : false,columnWidth : 0.47,layout : 'form',items : new Ext.form.DateField({
-             id         : 'glatosTimesEnd'
+             id         : 'matosTimesEnd'
             ,disabled   : true
             ,showToday  : false
             ,allowBlank : false
@@ -307,20 +307,20 @@ function init() {
         ,border      : false
         ,items       : [
            {border : false,columnWidth : 0.10,html : '&nbsp;'}
-          ,new Ext.Button({border : false,columnWidth : .30,text : 'OK',handler : function() {checkOneFilter('glatosTimesFieldSet',true,false);syncGlatos()}})
+          ,new Ext.Button({border : false,columnWidth : .30,text : 'OK',handler : function() {checkOneFilter('matosTimesFieldSet',true,false);syncmatos()}})
           ,{border : false,columnWidth : 0.20,html : '&nbsp;'}
           ,new Ext.Button({
              border      : false
             ,columnWidth : .30
             ,text        : 'Reset'
             ,handler     : function() {
-              Ext.getCmp('glatosTimesStart').suspendEvents();
-              Ext.getCmp('glatosTimesEnd').suspendEvents();
-              Ext.getCmp('glatosTimesStart').setValue(glatosDeployments.start);
-              Ext.getCmp('glatosTimesEnd').setValue(glatosDeployments.ending);
-              Ext.getCmp('glatosTimesStart').resumeEvents();
-              Ext.getCmp('glatosTimesEnd').resumeEvents();
-              syncGlatos();
+              Ext.getCmp('matosTimesStart').suspendEvents();
+              Ext.getCmp('matosTimesEnd').suspendEvents();
+              Ext.getCmp('matosTimesStart').setValue(matosDeployments.start);
+              Ext.getCmp('matosTimesEnd').setValue(matosDeployments.ending);
+              Ext.getCmp('matosTimesStart').resumeEvents();
+              Ext.getCmp('matosTimesEnd').resumeEvents();
+              syncmatos();
             }
           })
           ,{border : false,columnWidth : 0.10,html : '&nbsp;'}
@@ -329,8 +329,8 @@ function init() {
     ]
   });
 
-  var glatosYearsFormPanel = new Ext.FormPanel({
-     id              : 'glatosYearsFormPanel'
+  var matosYearsFormPanel = new Ext.FormPanel({
+     id              : 'matosYearsFormPanel'
     ,height          : 30
     ,layout          : 'fit'
     ,border          : false
@@ -338,7 +338,7 @@ function init() {
       store : new Ext.data.ArrayStore({
          fields : ['year']
       })
-      ,id             : 'glatosYearsComboBox'
+      ,id             : 'matosYearsComboBox'
       ,displayField   : 'year'
       ,disabled       : true
       ,valueField     : 'year'
@@ -348,8 +348,8 @@ function init() {
       ,editable       : false
       ,listeners      : {
         select : function(combo,rec) {
-          checkOneFilter('glatosYearsFieldSet',true,false);
-          syncGlatos();
+          checkOneFilter('matosYearsFieldSet',true,false);
+          syncmatos();
         }
       }
     })
@@ -366,27 +366,27 @@ function init() {
          region      : 'west'
         ,id          : 'controlPanel'
         ,width       : 275
-        ,title       : 'GLATOSWeb Explore Tool'
+        ,title       : 'matosWeb Explore Tool'
         ,collapsible : true
         ,autoScroll  : true
         ,items       : [
            introPanel
-          ,glatosStudiesGridPanel
-          ,glatosSeasonalGridPanel
-          ,glatosFrequenciesGridPanel
-          ,glatosModelsGridPanel
+          ,matosStudiesGridPanel
+          ,matosSeasonalGridPanel
+          ,matosFrequenciesGridPanel
+          ,matosModelsGridPanel
           ,new Ext.Panel({
              title       : 'Filter by status, date, or year'
             ,collapsible : true
             ,collapsed   : true
-            ,id          : 'glatosStatusTimePanel'
+            ,id          : 'matosStatusTimePanel'
             ,border      : false
             ,bodyStyle   : 'padding:5px 5px 0'
             ,items       : [
               new Ext.form.FieldSet({
                  title          : '&nbsp;Status&nbsp;'
-                ,id             : 'glatosProjectStatusesFieldSet'
-                ,items          : glatosProjectStatusesGridPanel
+                ,id             : 'matosProjectStatusesFieldSet'
+                ,items          : matosProjectStatusesGridPanel
                 ,checkboxToggle : true
                 ,autoHeight     : true
                 ,onCheckClick   : function() {
@@ -395,8 +395,8 @@ function init() {
               })
               ,new Ext.form.FieldSet({
                  title          : '&nbsp;Date&nbsp;'
-                ,id             : 'glatosTimesFieldSet'
-                ,items          : glatosTimesFormPanel
+                ,id             : 'matosTimesFieldSet'
+                ,items          : matosTimesFormPanel
                 ,checkboxToggle : true
                 ,onCheckClick   : function() {
                   checkOneFilter(this.id,this.checkbox.dom.checked,true);
@@ -405,8 +405,8 @@ function init() {
               })
               ,new Ext.form.FieldSet({
                  title          : '&nbsp;Year&nbsp;'
-                ,id             : 'glatosYearsFieldSet'
-                ,items          : glatosYearsFormPanel
+                ,id             : 'matosYearsFieldSet'
+                ,items          : matosYearsFormPanel
                 ,checkboxToggle : true
                 ,onCheckClick   : function() {
                   checkOneFilter(this.id,this.checkbox.dom.checked,true);
@@ -435,7 +435,7 @@ function init() {
               ,scale    : 'large'
               ,icon     : "<%= asset_path 'zoom_extend.png' %>"
               ,handler  : function() {
-                map.setCenter(new OpenLayers.LonLat(-9367578.6331264,5443194.7163551),6);
+                map.setCenter(new OpenLayers.LonLat(<%= I18n.t('map.defaults.longitude') %>,<%= I18n.t('map.defaults.latitude') %>).transform(proj4326, proj900913), <%= I18n.t('map.defaults.zoom') %>);
               }
             });
             new Ext.Button({
@@ -493,7 +493,7 @@ function initMap() {
       ,deploymentsLayer
     ]
   });
-  map.setCenter(new OpenLayers.LonLat(-9367578.6331264,5443194.7163551),6);
+  map.setCenter(new OpenLayers.LonLat(<%= I18n.t('map.defaults.longitude') %>,<%= I18n.t('map.defaults.latitude') %>).transform(proj4326, proj900913), <%= I18n.t('map.defaults.zoom') %>);
   map.events.register('moveend',this,function() {
     if (popupObs && !popupObs.isDestroyed) {
       popupObs.show();
@@ -509,7 +509,7 @@ function initMap() {
         if (mouseoverObs && mouseoverObs.isVisible()) {
           mouseoverObs.hide();
         }
-        var rec = glatosStudiesStore.getAt(glatosStudiesStore.find('id',e.feature.attributes.study_id));
+        var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',e.feature.attributes.study_id));
         mouseoverObs = new Ext.ToolTip({
            html         : '<font style="font-weight:bold">' + e.feature.attributes.code + '</font>&nbsp;-&nbsp;' + rec.get('name')
           ,anchor       : 'bottom'
@@ -534,7 +534,7 @@ function initMap() {
         if (popupObs && popupObs.isVisible()) {
           popupObs.hide();
         }
-        var rec = glatosStudiesStore.getAt(glatosStudiesStore.find('id',e.feature.attributes.study_id));
+        var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',e.feature.attributes.study_id));
         var status = 'ongoing';
         if (e.feature.attributes.proposed == true) {
           status = 'proposed';
@@ -584,7 +584,7 @@ function initMap() {
   map.addControl(popupCtl);
   popupCtl.activate();
 
-  glatosStudiesStore.fireEvent('beforeload');
+  matosStudiesStore.fireEvent('beforeload');
   OpenLayers.Request.issue({
      method  : 'GET'
     ,url     : "<%= ActionController::Base.relative_url_root %>/projects.json"
@@ -595,7 +595,7 @@ function initMap() {
       // for some reason I can't rely on the store to sort the recs by name, so do it before adding
       var studies = {};
       for (var i = 0; i < json.length; i++) {
-        studies[json[i].name] = new glatosStudiesStore.recordType({
+        studies[json[i].name] = new matosStudiesStore.recordType({
            'id'             : json[i].id
           ,'name'           : json[i].name
           ,'title'          : json[i].title
@@ -621,11 +621,11 @@ function initMap() {
       }
       sKeys.sort();
       for (var i = 0; i < sKeys.length; i++) {
-        glatosStudiesStore.add(studies[sKeys[i]]);
+        matosStudiesStore.add(studies[sKeys[i]]);
       }
-      glatosStudiesStore.fireEvent('load');
-      Ext.getCmp('glatosStudiesGridPanel').getSelectionModel().selectAll();
-      Ext.getCmp('glatosStudiesGridPanel').setHeight((glatosStudiesStore.getCount() <= maxOptionsPerFilter ? glatosStudiesStore.getCount() : maxOptionsPerFilter) * 21.1 + 26 + 6 + 25);
+      matosStudiesStore.fireEvent('load');
+      Ext.getCmp('matosStudiesGridPanel').getSelectionModel().selectAll();
+      Ext.getCmp('matosStudiesGridPanel').setHeight((matosStudiesStore.getCount() <= maxOptionsPerFilter ? matosStudiesStore.getCount() : maxOptionsPerFilter) * 21.1 + 26 + 6 + 25);
 
       OpenLayers.Request.issue({
          method   : 'GET'
@@ -640,19 +640,19 @@ function initMap() {
               var geojson = new OpenLayers.Format.GeoJSON();
               var f       = geojson.read(json[i].geojson)[0];
               f.geometry.transform(proj4326,map.getProjectionObject());
-              glatosDeployments.features.push(f);
+              matosDeployments.features.push(f);
 
               if (f.attributes.start) {
                 years[isoStringToDate(f.attributes.start).getUTCFullYear()] = 1;
-                if (isoStringToDate(f.attributes.start).getTime() < glatosDeployments.start.getTime()) {
-                  glatosDeployments.start = isoStringToDate(f.attributes.start);
+                if (isoStringToDate(f.attributes.start).getTime() < matosDeployments.start.getTime()) {
+                  matosDeployments.start = isoStringToDate(f.attributes.start);
                 }
               }
 
               if (f.attributes.recovered) {
                 years[isoStringToDate(f.attributes.recovered).getUTCFullYear()] = 1;
-                if (isoStringToDate(f.attributes.recovered).getTime() > glatosDeployments.ending.getTime()) {
-                  glatosDeployments.ending = isoStringToDate(f.attributes.recovered);
+                if (isoStringToDate(f.attributes.recovered).getTime() > matosDeployments.ending.getTime()) {
+                  matosDeployments.ending = isoStringToDate(f.attributes.recovered);
                 }
               }
 
@@ -666,61 +666,61 @@ function initMap() {
             }
           }
 
-          deploymentsLayer.addFeatures(glatosDeployments.features);
+          deploymentsLayer.addFeatures(matosDeployments.features);
 
           for (var i in frequencies) {
-            glatosDeployments.frequencies.push(i);
+            matosDeployments.frequencies.push(i);
           }
-          glatosDeployments.frequencies.sort();
-          var sto = Ext.getCmp('glatosFrequenciesGridPanel').getStore();
-          for (var i = 0; i < glatosDeployments.frequencies.length; i++) {
+          matosDeployments.frequencies.sort();
+          var sto = Ext.getCmp('matosFrequenciesGridPanel').getStore();
+          for (var i = 0; i < matosDeployments.frequencies.length; i++) {
             sto.add(new sto.recordType({
-              frequency : glatosDeployments.frequencies[i] + ' KHz'
+              frequency : matosDeployments.frequencies[i] + ' KHz'
             }));
           }
           sto.add(new sto.recordType({
             frequency : 'Unknown'
           }));
-          Ext.getCmp('glatosFrequenciesGridPanel').getSelectionModel().selectAll();
-          Ext.getCmp('glatosFrequenciesGridPanel').setHeight((sto.getCount() <= maxOptionsPerFilter ? sto.getCount() : maxOptionsPerFilter) * 21.1 + 26 + 6);
+          Ext.getCmp('matosFrequenciesGridPanel').getSelectionModel().selectAll();
+          Ext.getCmp('matosFrequenciesGridPanel').setHeight((sto.getCount() <= maxOptionsPerFilter ? sto.getCount() : maxOptionsPerFilter) * 21.1 + 26 + 6);
 
           for (var i in models) {
-            glatosDeployments.models.push(i);
+            matosDeployments.models.push(i);
           }
-          glatosDeployments.models.sort();
-          var sto = Ext.getCmp('glatosModelsGridPanel').getStore();
-          for (var i = 0; i < glatosDeployments.models.length; i++) {
+          matosDeployments.models.sort();
+          var sto = Ext.getCmp('matosModelsGridPanel').getStore();
+          for (var i = 0; i < matosDeployments.models.length; i++) {
             sto.add(new sto.recordType({
-              model : glatosDeployments.models[i]
+              model : matosDeployments.models[i]
             }));
           }
           sto.add(new sto.recordType({
             model : 'Unknown'
           }));
-          Ext.getCmp('glatosModelsGridPanel').getSelectionModel().selectAll();
-          Ext.getCmp('glatosModelsGridPanel').setHeight((sto.getCount() <= maxOptionsPerFilter ? sto.getCount() : maxOptionsPerFilter) * 21.1 + 26 + 6);
+          Ext.getCmp('matosModelsGridPanel').getSelectionModel().selectAll();
+          Ext.getCmp('matosModelsGridPanel').setHeight((sto.getCount() <= maxOptionsPerFilter ? sto.getCount() : maxOptionsPerFilter) * 21.1 + 26 + 6);
 
-          Ext.getCmp('glatosTimesStart').setValue(glatosDeployments.start);
-          Ext.getCmp('glatosTimesStart').setMinValue(glatosDeployments.start);
-          Ext.getCmp('glatosTimesStart').setMaxValue(glatosDeployments.ending);
-          Ext.getCmp('glatosTimesEnd').setValue(glatosDeployments.ending);
-          Ext.getCmp('glatosTimesEnd').setMinValue(glatosDeployments.start);
-          Ext.getCmp('glatosTimesEnd').setMaxValue(glatosDeployments.ending);
-          Ext.getCmp('glatosTimesStart').enable();
-          Ext.getCmp('glatosTimesEnd').enable();
+          Ext.getCmp('matosTimesStart').setValue(matosDeployments.start);
+          Ext.getCmp('matosTimesStart').setMinValue(matosDeployments.start);
+          Ext.getCmp('matosTimesStart').setMaxValue(matosDeployments.ending);
+          Ext.getCmp('matosTimesEnd').setValue(matosDeployments.ending);
+          Ext.getCmp('matosTimesEnd').setMinValue(matosDeployments.start);
+          Ext.getCmp('matosTimesEnd').setMaxValue(matosDeployments.ending);
+          Ext.getCmp('matosTimesStart').enable();
+          Ext.getCmp('matosTimesEnd').enable();
 
-          var sto = Ext.getCmp('glatosYearsComboBox').getStore();
+          var sto = Ext.getCmp('matosYearsComboBox').getStore();
           for (var y in years) {
            sto.add(new sto.recordType({year : y}));
           }
           sto.sort('year','DESC');
           if (sto.getCount() > 0) {
-            Ext.getCmp('glatosYearsComboBox').setValue(sto.getAt(0).get('year'));
+            Ext.getCmp('matosYearsComboBox').setValue(sto.getAt(0).get('year'));
           }
-          Ext.getCmp('glatosYearsComboBox').enable();
+          Ext.getCmp('matosYearsComboBox').enable();
           syncStudiesCounts();
           // fire a sync to make sure dots match init selections
-          syncGlatos();
+          syncmatos();
         }
       });
     }
@@ -755,7 +755,7 @@ function dateToString(d) {
   return mon[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 }
 
-function syncGlatos() {
+function syncmatos() {
   if (popupObs && popupObs.isVisible()) {
     popupObs.hide();
   }
@@ -764,39 +764,39 @@ function syncGlatos() {
   popupCtl.unselectAll();
 
   var studyFilter = {};
-  var sel = Ext.getCmp('glatosStudiesGridPanel').getSelectionModel().getSelections();
+  var sel = Ext.getCmp('matosStudiesGridPanel').getSelectionModel().getSelections();
   for (var i = 0; i < sel.length; i++) {
     studyFilter[sel[i].get('id')] = true;
   }
 
   var seasonalFilter = {};
-  sel = Ext.getCmp('glatosSeasonalGridPanel').getSelectionModel().getSelections();
+  sel = Ext.getCmp('matosSeasonalGridPanel').getSelectionModel().getSelections();
   for (var i = 0; i < sel.length; i++) {
     seasonalFilter[sel[i].get('name')] = true;
   }
 
   var frequencyFilter = {};
-  sel = Ext.getCmp('glatosFrequenciesGridPanel').getSelectionModel().getSelections();
+  sel = Ext.getCmp('matosFrequenciesGridPanel').getSelectionModel().getSelections();
   for (var i = 0; i < sel.length; i++) {
     frequencyFilter[sel[i].get('frequency').replace(' KHz','')] = true;
   }
 
   var modelFilter = {};
-  sel = Ext.getCmp('glatosModelsGridPanel').getSelectionModel().getSelections();
+  sel = Ext.getCmp('matosModelsGridPanel').getSelectionModel().getSelections();
   for (var i = 0; i < sel.length; i++) {
     modelFilter[sel[i].get('model')] = true;
   }
 
   var timeFilter = [];
-  if (Ext.getCmp('glatosTimesFieldSet').checkbox.dom.checked && Ext.getCmp('glatosTimesStart').getValue() != '' && Ext.getCmp('glatosTimesEnd').getValue() != '') {
-    timeFilter = [Ext.getCmp('glatosTimesStart').getValue().getTime(),Ext.getCmp('glatosTimesEnd').getValue().getTime()];
+  if (Ext.getCmp('matosTimesFieldSet').checkbox.dom.checked && Ext.getCmp('matosTimesStart').getValue() != '' && Ext.getCmp('matosTimesEnd').getValue() != '') {
+    timeFilter = [Ext.getCmp('matosTimesStart').getValue().getTime(),Ext.getCmp('matosTimesEnd').getValue().getTime()];
   }
-  else if (Ext.getCmp('glatosYearsFieldSet').checkbox.dom.checked) {
-    timeFilter = [new Date(Ext.getCmp('glatosYearsComboBox').getValue(),0,1,0,0,0,0).getTime(),new Date(Number(Ext.getCmp('glatosYearsComboBox').getValue()) + 1,0,1,0,0,0,0).getTime()];
+  else if (Ext.getCmp('matosYearsFieldSet').checkbox.dom.checked) {
+    timeFilter = [new Date(Ext.getCmp('matosYearsComboBox').getValue(),0,1,0,0,0,0).getTime(),new Date(Number(Ext.getCmp('matosYearsComboBox').getValue()) + 1,0,1,0,0,0,0).getTime()];
   }
 
   var statusFilter = {};
-  sel = Ext.getCmp('glatosProjectStatusesGridPanel').getSelectionModel().getSelections();
+  sel = Ext.getCmp('matosProjectStatusesGridPanel').getSelectionModel().getSelections();
   for (var i = 0; i < sel.length; i++) {
     if (sel[i].get('name') == 'Ongoing') {
       statusFilter['ongoing'] = true;
@@ -810,7 +810,7 @@ function syncGlatos() {
   }
 
   function statusOK() {
-    if (!Ext.getCmp('glatosProjectStatusesFieldSet').checkbox.dom.checked) {
+    if (!Ext.getCmp('matosProjectStatusesFieldSet').checkbox.dom.checked) {
       return true;
     }
     var ok = false;
@@ -827,21 +827,21 @@ function syncGlatos() {
   }
 
   var f = [];
-  for (var i = 0; i < glatosDeployments.features.length; i++) {
-    var start = isoStringToDate(glatosDeployments.features[i].attributes.start).getTime();
+  for (var i = 0; i < matosDeployments.features.length; i++) {
+    var start = isoStringToDate(matosDeployments.features[i].attributes.start).getTime();
     var recovered = dNow.getTime();
-    var proposed = glatosDeployments.features[i].attributes.proposed;
-    if (glatosDeployments.features[i].attributes.recovered) {
-      recovered = isoStringToDate(glatosDeployments.features[i].attributes.recovered).getTime();
+    var proposed = matosDeployments.features[i].attributes.proposed;
+    if (matosDeployments.features[i].attributes.recovered) {
+      recovered = isoStringToDate(matosDeployments.features[i].attributes.recovered).getTime();
     }
     if (
-      studyFilter[glatosDeployments.features[i].attributes.study_id]
+      studyFilter[matosDeployments.features[i].attributes.study_id]
       && (
-        (seasonalFilter['Year-round'] ? !glatosDeployments.features[i].attributes.seasonal : false)
-        || (seasonalFilter['Seasonal only'] ? glatosDeployments.features[i].attributes.seasonal : false)
+        (seasonalFilter['Year-round'] ? !matosDeployments.features[i].attributes.seasonal : false)
+        || (seasonalFilter['Seasonal only'] ? matosDeployments.features[i].attributes.seasonal : false)
       )
-      && (glatosDeployments.features[i].attributes.frequency ? frequencyFilter[glatosDeployments.features[i].attributes.frequency] : frequencyFilter['Unknown'])
-      && (glatosDeployments.features[i].attributes.model ? modelFilter[glatosDeployments.features[i].attributes.model] : modelFilter['Unknown'])
+      && (matosDeployments.features[i].attributes.frequency ? frequencyFilter[matosDeployments.features[i].attributes.frequency] : frequencyFilter['Unknown'])
+      && (matosDeployments.features[i].attributes.model ? modelFilter[matosDeployments.features[i].attributes.model] : modelFilter['Unknown'])
       && (timeFilter.length == 2 ? (
         (timeFilter[0] <= start && start <= timeFilter[1])
         || (timeFilter[0] <= recovered && recovered <= timeFilter[1])
@@ -861,7 +861,7 @@ function syncGlatos() {
 }
 
 function checkOneFilter(id,cked,sync) {
-  var a = ['glatosProjectStatusesFieldSet','glatosTimesFieldSet','glatosYearsFieldSet'];
+  var a = ['matosProjectStatusesFieldSet','matosTimesFieldSet','matosYearsFieldSet'];
   for (var i = 0; i < a.length; i++) {
     Ext.getCmp(a[i]).suspendEvents();
   }
@@ -877,18 +877,18 @@ function checkOneFilter(id,cked,sync) {
     Ext.getCmp(a[i]).resumeEvents();
   }
   if (sync) {
-    syncGlatos();
+    syncmatos();
   }
 }
 
 function syncStudiesCounts() {
-  glatosStudiesStore.each(function(rec) {
+  matosStudiesStore.each(function(rec) {
     rec.set('count',0);
     rec.commit();
   });
   for (var i = 0; i < deploymentsLayer.features.length; i++) {
     if (!deploymentsLayer.features[i].style) {
-      var rec = glatosStudiesStore.getAt(glatosStudiesStore.find('id',deploymentsLayer.features[i].attributes.study_id));
+      var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',deploymentsLayer.features[i].attributes.study_id));
       rec.set('count',rec.get('count') + 1);
       rec.commit();
     }

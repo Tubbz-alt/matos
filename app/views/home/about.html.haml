@@ -3,15 +3,21 @@
   #about_left
 
     %h2
-      What is GLATOS?
+      What is #{I18n.t 'project.name'}?
 
     %p
-      The Great Lakes Acoustic Telemetry Observation System (GLATOS) is a network of researchers conducting acoustic telemetry projects on fish movement in the Laurentian Great Lakes.  GLATOS provides these researchers with opportunities to develop partnerships and share fish detection data among projects.
+      The #{I18n.t 'project.title'} (#{I18n.t 'project.name'}) is a network of researchers conducting acoustic telemetry projects on fish movement in the #{I18n.t 'project.location'}.  #{I18n.t 'project.name'} provides these researchers with opportunities to develop partnerships and share fish detection data among projects.
 
+    %br
+    %br
+    %br
+
+    %p
+      #{I18n.t 'project.administration'}
 
   #about_right
     %div{:class => 'info'}
-      %h2 GLATOS Projects:
+      %h2 #{I18n.t 'project.name'} Projects:
       %ul{:class => 'project_list'}
 
         - @studies.each do |s|
@@ -19,30 +25,16 @@
             = link_to "#{s.name} (#{s.code})", project_path(s.id)
   .clear
 
-  %h2 GLATOS Mission Statement
-  %p
-    GLATOS aims to:
-
-  %ol{:class => 'mission'}
-    %li
-      1. Build a network of researchers conducting acoustic telemetry studies within the Great Lakes Basin.
-    %li
-      2. Foster the development of partnerships and cooperative project planning through GLATOSWeb.
-    %li
-      3. Extend the effective range of individual studies by providing a mechanism to share detection data among projects.
-
-  %p
-    GLATOS is administered by the Great Lakes Fishery Commission, in partnership with the Great Lakes Observation System, and the U.S. Geological Survey and supported by the Great Lakes Restoration Initiative.  The GLATOS mission is accomplished through two tools:  #{link_to 'GLATOSWeb', root_path}  and GLATOSLink.
-
+  
 
   %h2
     Questions?  Contact:
 
   %p
-    Charles Krueger
+    #{I18n.t 'project.contact.name'}
     %br
-    Great Lakes Fishery Commission
+    #{I18n.t 'project.contact.institution'}
     %br
-    Phone:  734-662-3209 ext. 27
+    Phone:  #{I18n.t 'project.contact.phone'}
     %br
-    Email:  ckrueger@glfc.org
+    Email:  #{I18n.t 'project.contact.email'}

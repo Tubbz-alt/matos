@@ -1,14 +1,14 @@
-set :application, "GLATOS"
+set :application, "MATOS"
 set :scm, :git
-set :repository,  "git@github.com:asascience-open/GLATOS.git"
-set :user, "glatos"
+set :repository,  "git@github.com:asascience-open/matos.git"
+set :user, "matos"
 set :use_sudo, false
 set :branch, "master"
 set :keep_releases, 5
 set :deploy_via, :remote_cache
 
 task :production do
-  set :deploy_to, "/var/www/applications/GLATOS"
+  set :deploy_to, "/var/www/applications/matos"
   set :rails_env, "production"
   set :domain, "data.glos.us"
   role :web,"glos.us"
@@ -16,7 +16,7 @@ task :production do
 end
 
 task :staging do
-  set :deploy_to, "/var/www/applications/GLATOS-Stage"
+  set :deploy_to, "/var/www/applications/matos-stage"
   set :rails_env, "staging"
   set :domain, "data.glos.us"
   role :web,"glos.us"

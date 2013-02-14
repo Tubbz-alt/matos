@@ -15,10 +15,10 @@ class User < ActiveRecord::Base
   REGISTERABLE_ROLES = ROLES - %w[guest admin]
   ROLE_MAP = {
     :guest => "Unregistered visitor to the site",
-    :general => "Registered user of the GLATOS website",
-    :researcher => "Researcher interested in GLATOS data",
-    :investigator => "Contributor to the GLATOS database",
-    :admin => "Administrator of the GLATOS website"
+    :general => "Registered user of the #{I18n.t 'project.name'} website",
+    :researcher => "Researcher interested in #{I18n.t 'project.name'} data",
+    :investigator => "Contributor to the #{I18n.t 'project.name'} database",
+    :admin => "Administrator of the #{I18n.t 'project.name'} website"
   }
 
   def DT_RowId

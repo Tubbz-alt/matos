@@ -1,7 +1,7 @@
 body {
   overflow : hidden;
-  background-color: #1E4680;
-  font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+  background-color: #fff;
+  font-family: "Myriad pro", "Helvetica Neue", Arial, Helvetica, Tahoma, sans-serif;
 }
 
 #loading-mask {
@@ -34,83 +34,83 @@ body {
   padding : 3px 5px 4px 5px;
 }
 
-#glatosStudiesGridPanel {
+#matosStudiesGridPanel {
   border-top: 1px solid #99BBE8;
 }
-#glatosStudiesGridPanel .x-grid3-row {
+#matosStudiesGridPanel .x-grid3-row {
   border-color   : #ffffff;
 }
-#glatosStudiesGridPanel .x-grid3-row-selected {
+#matosStudiesGridPanel .x-grid3-row-selected {
   background-color : transparent !important;
 }
-#glatosStudiesGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
+#matosStudiesGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
   background-image : url(image-path('blank.png'));
 }
-#glatosStudiesGridPanel .x-grid3-body .x-grid3-td-checker {
+#matosStudiesGridPanel .x-grid3-body .x-grid3-td-checker {
   background-image : url(image-path('blank.png'));
 }
 
-#glatosSeasonalGridPanel {
+#matosSeasonalGridPanel {
   border-top: 1px solid #99BBE8;
 }
-#glatosSeasonalGridPanel .x-grid3-row {
+#matosSeasonalGridPanel .x-grid3-row {
   border-color   : #ffffff;
 }
-#glatosSeasonalGridPanel .x-grid3-row-selected {
+#matosSeasonalGridPanel .x-grid3-row-selected {
   background-color : transparent !important;
 }
-#glatosSeasonalGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
+#matosSeasonalGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
   background-image : url(image-path('blank.png'));
 }
-#glatosSeasonalGridPanel .x-grid3-body .x-grid3-td-checker {
+#matosSeasonalGridPanel .x-grid3-body .x-grid3-td-checker {
   background-image : url(image-path('blank.png'));
 }
 
-#glatosFrequenciesGridPanel {
+#matosFrequenciesGridPanel {
   border-top: 1px solid #99BBE8;
 }
-#glatosFrequenciesGridPanel .x-grid3-row {
+#matosFrequenciesGridPanel .x-grid3-row {
   border-color   : #ffffff;
 }
-#glatosFrequenciesGridPanel .x-grid3-row-selected {
+#matosFrequenciesGridPanel .x-grid3-row-selected {
   background-color : transparent !important;
 }
-#glatosFrequenciesGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
+#matosFrequenciesGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
   background-image : url(image-path('blank.png'));
 }
-#glatosFrequenciesGridPanel .x-grid3-body .x-grid3-td-checker {
+#matosFrequenciesGridPanel .x-grid3-body .x-grid3-td-checker {
   background-image : url(image-path('blank.png'));
 }
 
-#glatosModelsGridPanel {
+#matosModelsGridPanel {
   border-top: 1px solid #99BBE8;
 }
-#glatosModelsGridPanel .x-grid3-row {
+#matosModelsGridPanel .x-grid3-row {
   border-color   : #ffffff;
 }
-#glatosModelsGridPanel .x-grid3-row-selected {
+#matosModelsGridPanel .x-grid3-row-selected {
   background-color : transparent !important;
 }
-#glatosModelsGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
+#matosModelsGridPanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
   background-image : url(image-path('blank.png'));
 }
-#glatosModelsGridPanel .x-grid3-body .x-grid3-td-checker {
+#matosModelsGridPanel .x-grid3-body .x-grid3-td-checker {
   background-image : url(image-path('blank.png'));
 }
 
-#glatosStatusTimePanel {
+#matosStatusTimePanel {
   border-top: 1px solid #99BBE8;
 }
-#glatosStatusTimePanel .x-grid3-row {
+#matosStatusTimePanel .x-grid3-row {
   border-color   : #ffffff;
 }
-#glatosStatusTimePanel .x-grid3-row-selected {
+#matosStatusTimePanel .x-grid3-row-selected {
   background-color : transparent !important;
 }
-#glatosStatusTimePanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
+#matosStatusTimePanel .x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer, .x-grid3-body .x-grid3-row-selected .x-grid3-td-checker, .x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
   background-image : url(image-path('blank.png'));
 }
-#glatosStatusTimePanel .x-grid3-body .x-grid3-td-checker {
+#matosStatusTimePanel .x-grid3-body .x-grid3-td-checker {
   background-image : url(image-path('blank.png'));
 }
 
@@ -139,7 +139,7 @@ body {
 }
 
 .header {
-  width: 960px;
+  
   background  : url(image-path('header.jpg')) no-repeat center;
   height: 50px;
   margin: 0 auto;
@@ -150,14 +150,25 @@ body {
   }
 }
 
-#navigation {
-  color: #fff;
-  font-size: 18px;
-  line-height: 30px;
-  background-color: #555;
-  text-align: right;
+#header {
   width: 960px;
   margin: 0 auto;
+  background  : url(image-path('banner.png')) no-repeat top center;
+  height: 171px;
+  .login {
+    @include push(14);
+    @include column(10, true);
+    line-height: 171px;
+  }
+}
+
+#navigation {
+  color: #fff;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: right;
+  width: 960px;
+  margin: -30px auto 0 auto;
   height: 30px;
 
   a {
@@ -167,8 +178,8 @@ body {
   }
 
   .left {
-    @include prepend(1);
-    @include column(9);
+    @include prepend(1.5);
+    @include column(8.5);
     @include append(2);
   }
 

@@ -1,167 +1,154 @@
 body {
-  background-color: #1e4680;
+  background-color: #fff;
 }
 
 #container {
   @include container;
   @include blueprint(true);
-  background  : url(image-path('bkgd.jpg')) no-repeat top center;
   font-family: "Myriad pro", "Helvetica Neue", Arial, Helvetica, Tahoma, sans-serif;
-  font-size: 16px;
+  font-size: 12px;
 }
 
-#background {
-  height: 100%;
-}
-
-#information {
-  @include push(4);
-  @include column(16, true);
-  background  : url(image-path('blue_bkgd.png')) no-repeat center;
-  height: 240px;
-  margin-bottom: 0px;
-  margin-top: 185px;
-
-  p {
-    @include push(1);
-    margin-top: 50px;
-    @include column(14, true);
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
-    line-height: 1.1em;
-  }
-}
-
-#links {
-  text-align: center;
-  @include push(8);
-  @include column(8, true);
-  margin-top: -45px;
-  margin-bottom: 10px;
-  a {
-    font-weight: bold;
-    color: #fff;
-    line-height: 1.6em;
-  }
-  a:visited {
-    font-weight: bold;
-    color: #fff;
-  }
-  a:hover {
-    font-weight: bold;
-    color: #001d3e;
-  }
-}
-
-#functions {
-
-  @include push(4.5);
-  margin-bottom: 15px;
-
-  a {
-    font-weight: bold;
-    color: #fff;
-  }
-  a:visited {
-    color: #fff;
-  }
-  a:hover {
-    color: #001d3e;
-  }
-
-  .box {
-    @include column(5);
-    height: 168px;
-    p {
-      margin-top: 24px;
-      line-height: 1.2em;
-      color: #001d3e;
-      text-align: center;
-      padding: 5px;
-      font-weight: 600;
-      span {
-        font-weight: 800;
-      }
-    }
-    div {
-      margin-top: 44px;
-      text-align: right;
-    }
-    .globelink {
-      padding-right: 10px;
-    }
-    .searchlink {
-      padding-right: 15px;
-    }
-    .foundlink {
-      padding-right: 3px;
-    }
-  }
-
-  .globe {
-    background: url(image-path('globe_box.png')) no-repeat bottom;
-  }
-
-  .search {
-    background: url(image-path('magnifyne_box.png')) no-repeat bottom;
-  }
-
-  .found {
-    background: url(image-path('fish_box.png')) no-repeat bottom;
-  }
-
-}
-
-#footer {
+#header {
   @include column(24,true);
-  margin-top: 0px;
-
-  #flashes {
-    width: 80%;
-    text-align: center;
-    margin: 0 auto;
-    line-height: 16px;
-  }
+  background  : url(image-path('banner.png')) no-repeat top center;
+  height: 171px;
+  border-bottom: 1px solid #fff;
 
   .login {
-    @include column(8);
-    @include append(2);
-    line-height: 36px;
-    text-align: center;
+    @include push(14);
+    @include column(10, true);
+    line-height: 171px;
 
     a {
-      color: #001d3e;
-      width: 100%;
-      height: 35px;
-      font-weight: bold;
+      color: #105777;
       text-decoration: none;
-      font-size: 12px;
-      margin-bottom: 8px;
-      background: url(image-path('blueback.png'));
-      display:  block;
-      border: 1px solid #001d3e;
-      border-top: 5px solid #001d3e;
+    }
+
+  }
+}
+
+#navigation {
+  color: #105777;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: right;
+  @include column(24, true);
+  height: 30px;
+  margin-top: -30px;
+
+  a {
+    color: #105777;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .left {
+    @include prepend(1.5);
+    @include column(8.5);
+    @include append(2);
+    ul {
+      margin: 0;
+      padding: 0;
     }
   }
 
-  .left_images {
-    @include column(8);
+  .pipe {
+    padding: 0 5px 0 8px;
+  }
+
+  .right {
+    @include prepend(2);
+    @include column(9, true);
+    ul {
+      float: right;
+    }
+  }
+}
+
+#contents {
+
+  @include column(24,true);
+  background  : url(image-path('index_bkgd.png')) no-repeat top center;
+  height: 528px;
+  position: relative;
+
+  #boxes {
+
+    margin-top: 15px;
+    height:42px;
+    margin-bottom: 16px;
+
+    .box {
+      @include column(8,true);
+      height: 42px;
+    }
+
+    .explore {
+      background  : url(image-path('explore_but.png')) no-repeat top center;
+    }
+
+    .search {
+      background  : url(image-path('search_but.png')) no-repeat top center;
+    }
+
+    .reward {
+      background  : url(image-path('reward_but.png')) no-repeat top center;
+    }
+
+  }
+
+  #flashes {
+    
+    @include push(4);
+    @include column(16,true);
+    @include append(4);
+    
+    font-size: 14px;
+
     text-align: center;
-    .top_img {
-      @include column(8);
-    }
+    line-height: 16px;
 
-    .bottom_img {
-      @include column(8);
-      text-align: center;
-      margin-top:5px;
-      .left_img {
-        @include column(4);
-      }
-      .right_img {
-        @include column(3.5,true);
-      }
+    margin-bottom: 0px;
+  }
+
+  #information {
+    @include push(1);
+    @include column(13, true);
+    @include append(10);
+    margin-top: 20px;
+
+    p {
+      color: #fff;
+      text-align: left;
+      line-height: 1.85em;
     }
   }
+
+  #links {
+    @include push(1);
+    @include column(23,true);
+
+    a {
+      font-size: 13px;
+      line-height: 2.5em;
+      font-weight: bold;
+      color: #fff;
+    }
+  }
+
+  #footer {
+    @include push(1);
+    @include column(23,true);
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+    p {
+      font-size: 11px;
+      @include column(24,true);
+      color: #fff;
+      line-height: 11px;
+    }
+  }
+
 }

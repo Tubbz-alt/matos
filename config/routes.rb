@@ -1,4 +1,4 @@
-Glatos::Application.routes.draw do
+Matos::Application.routes.draw do
 
   root :to => 'home#index'
   match '/about' => 'home#about', :as => :about, :via => :get

@@ -1,55 +1,38 @@
 #container
-  #background
+
+  #header
+
+  #navigation
+    .left
+      = render 'shared/top_left_navigation'
+    .right
+
+  #contents
+
+    #boxes
+      = link_to explore_path do
+        .box{:class => 'explore'}
+
+      = link_to search_path do
+        .box{:class => 'search'}
+
+      = link_to new_report_path do
+        .box{:class => 'reward'}
+
+    #flashes
+      - flash.each do |name, msg|
+        = content_tag :p, msg, :class => "flasher #{name}" if msg.is_a?(String)
 
     #information
-      %p
-        GLATOSWeb compiles acoustic telemetry project information and helps users learn more about ongoing acoustic telemetry projects in the Great Lakes.  Scientists have been implanting Great Lakes fish with transmitters and, like the GPS on a car, have been tracking fish movement through a network of receivers placed on the bottom of the lakes.  The purpose of GLATOS is to help scientists and the public learn more about Great Lakes acoustic telemetry projects and their contribution to research.
+      %p= t('home.information')
 
     #links
       #{link_to "What is Acoustic Telemetry?", acoustic_telemetry_path}
       %br
-      #{link_to "About GLATOS", about_path}
+      #{link_to "About #{t('project.name')}", about_path}
       %br
       #{link_to "Have Data?", have_data_path}
 
-    #functions
-      .box{:class => 'globe'}
-        .globelink
-          #{link_to "EXPLORE", explore_path}
-        %p
-          Explore a map of GLATOS projects.
-
-      .box{:class => 'search'}
-        .searchlink
-          #{link_to "SEARCH", search_path}
-        %p
-          Search the GLATOS database by keyword.
-
-      .box{:class => 'found'}
-        .foundlink
-          #{link_to "FOUND A TAG?", new_report_path}
-        %p
-          %span
-            Reward!
-          Click here for instructions on what to do next.
 
     #footer
-      .left_images
-        .top_img
-          = link_to image_tag(asset_path('glr.png')), "http://greatlakesrestoration.us/"
-        .bottom_img
-          .left_img
-            = link_to image_tag(asset_path('glfc_logo.png')), "http://glfc.org"
-          .right_img
-            = link_to image_tag(asset_path('glos_logo.png')), "http://glos.us"
-
-      .login
-
-        #flashes
-          - flash.each do |name, msg|
-            = content_tag :p, msg, :class => "flasher #{name}" if msg.is_a?(String)
-
-        - if current_user
-          = link_to('Logout', destroy_user_session_path, :method => :get)
-        - else
-          = link_to('Login or Register to Join the GLATOS Network', new_user_session_path, :class => 'login_home_button')
+      %p= t('project.copywrite')

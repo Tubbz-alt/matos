@@ -8,12 +8,12 @@
       %tbody
         %tr
           %td{:class => "label"}
-            GLATOS Project Name
+            #{t('project.name')} Project Name
           %td
             = link_to @report.tag_deployment.study.name, project_path(@report.tag_deployment.study.id)
         %tr
           %td{:class => "label"}
-            GLATOS Project Title
+            #{t('project.name')} Project Title
           %td
             = @report.tag_deployment.study.title
         %tr

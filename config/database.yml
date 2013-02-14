@@ -1,9 +1,9 @@
 development:
   adapter: postgis
   encoding: unicode
-  database: glatos_development
+  database: matos_development
   pool: 5
-  username: glatos
+  username: matos
   password:
   script_dir: /usr/share/pgsql/contrib/postgis
   schema_search_path: public,postgis
@@ -11,9 +11,9 @@ development:
 test: &test
   adapter: postgis
   encoding: unicode
-  database: glatos_test
+  database: matos_test
   pool: 5
-  username: glatos
+  username: matos
   password:
   script_dir: /usr/share/pgsql/contrib/postgis
   schema_search_path: public,postgis
@@ -21,24 +21,24 @@ test: &test
 staging:
   adapter: postgis
   encoding: unicode
-  database: glatos_staging
-  port: 5433
+  database: matos_staging
+  port: 5432
   pool: 5
-  username: glatos
+  username: matos
   password:
-  script_dir: /usr/local/pgsql/share/contrib/postgis
+  script_dir: /usr/pgsql-9.2/share/contrib/postgis-2.0
   schema_search_path: public,postgis
   template: template0
 
 production:
   adapter: postgis
   encoding: unicode
-  database: glatos_production
-  port: 5433
+  database: matos_production
+  port: 5432
   pool: 5
-  username: glatos
+  username: matos
   password:
-  script_dir: /usr/local/pgsql/share/contrib/postgis
+  script_dir: /usr/pgsql-9.2/share/contrib/postgis-2.0
   schema_search_path: public,postgis
   template: template0
 

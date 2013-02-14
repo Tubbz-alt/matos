@@ -4,12 +4,6 @@
     do not freeze
   and handle with care!
 
-%p{:class => 'report_text'}
-  Note:  Fish caught with a jaw tag should not be reported here, but should be reported to the
-  = link_to "Michigan DNR","http://www.michigandnr.com/taggedfish/"
-  or the
-  = link_to "Ohio DNR","http://ohiodnr.gov/Home/FishingSubhomePage/fisheriesmanagementplaceholder/taggedfish/tabid/21914/Default.aspx"
-
 %p{:class => 'report_text reward'}
   * Indicates a required field
 
@@ -32,8 +26,8 @@
 
         .clear
 
-        = f.input :email,       :as => :string,   :hint => "If you don’t have an email address please call the Hammond Bay Biological Station at 989-734-4768 to report the tag.",  :wrapper_html => {:class => "left-form-element"}
-        = f.input :newsletter,                    :label => "Subscribe to the GLATOS email list",  :wrapper_html => {:class => "right-form-element"}
+        = f.input :email,       :as => :string,   :hint => "If you don’t have an email address please call #{t('project.name')} Station at #{t('project.contact.phone')} to report the tag.",  :wrapper_html => {:class => "left-form-element"}
+        = f.input :newsletter,                    :label => "Subscribe to the #{t('project.name')} email list",  :wrapper_html => {:class => "right-form-element"}
 
 
 
@@ -41,7 +35,7 @@
       %p{:class => "report_text"}
         Your name and address are required so that we may process and mail your reward.  Information you provide will only be used for that purpose; it will not be shared.
       %p{:class => "report_text"}
-        If you prefer to report your tag by phone, call the Hammond Bay Biological Station, 989-734-4768.
+        If you prefer to report your tag by phone, call #{t('project.name')}, #{t('project.contact.phone')}.
 
   .clear
   .section
@@ -148,7 +142,7 @@
         %input{:type => :radio, :value => 'no', :id => 'picture_no', :name => 'pictures'}
           No
         #picture_explain
-          %span Please email the images to: glatosweb@glfc.org and paste this text into the body of the email:
+          %span Please email the images to: #{t('project.contact.email')} and paste this text into the body of the email:
           %textarea{:id => 'picture_paste', :style => 'display: block;', :readonly => "true"}
 
   .section
@@ -236,7 +230,7 @@
     });
 
     // Google Maps
-    var latlng = new google.maps.LatLng(45.287, -84.050);
+    var latlng = new google.maps.LatLng(#{t('map.defaults.latitude')}, #{t('map.defaults.longitude')});
     var myOptions = {
       zoom: 5,
       center: latlng,

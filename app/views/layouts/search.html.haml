@@ -1,6 +1,6 @@
 %html
   %head
-    %title= Glatos
+    %title= "#{t('project.name')} - Search"
     = stylesheet_link_tag    "search"
     = stylesheet_link_tag    "printing", :media => "print"
     /[if IE 6]
@@ -14,19 +14,23 @@
 
     #container
 
-      .header
+      #header
         = link_to "", root_path
-      .clear
+
       #navigation
         .left
-          = render 'shared/navigation'
+          = render 'shared/top_left_navigation'
         .right
-          = render 'shared/glatos_navigation'
+          = render 'shared/top_right_navigation'
 
-      #content
-        - flash.each do |name, msg|
-          = content_tag :p, msg, :class => "flasher #{name}" if msg.is_a?(String)
+      #contents
 
-        = yield
+        #content
+          - flash.each do |name, msg|
+            = content_tag :p, msg, :class => "flasher #{name}" if msg.is_a?(String)
 
-      .footer
+          = yield
+
+
+      #footer
+        %p= t('project.copywrite')

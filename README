@@ -1,4 +1,4 @@
-== GLATOS ==
+== MATOS ==
 
 Setting up the dev environment:
 
@@ -9,7 +9,7 @@ Install Postgres >= 9.0.5 (tested on 9.2)
 Install Postgis >= 2.0
 Install ImageMagick.  /usr/bin/convert need to exist or by symlinked.
 
-# GLATOS looks for postgis.sql in /usr/share/pgsql/contrib/postgis
+# MATOS looks for postgis.sql in /usr/share/pgsql/contrib/postgis
 # Symlink your PostGIS directory there. POSTGIS_DIR should be where postgis.sql is.
 $ mkdir -p /usr/share/pgsql/contrib/
 $ ln -s POSTGIS_DIR /usr/share/pgsql/contrib/postgis
@@ -17,46 +17,46 @@ $ ln -s POSTGIS_DIR /usr/share/pgsql/contrib/postgis
 # Link pg_config to the PATH
 $ ln -s PG_CONFIG_PATH /usr/bin/pg_config
 
-Edit pg_hba.conf to allow the "postgres" and "glatos" user to connect to Postgres (with password is fine)
+Edit pg_hba.conf to allow the "postgres" and "matos" user to connect to Postgres (with password is fine)
 
 local   all             postgres 				trust
-local   all             glatos          	 	trust
+local   all             matos          	 	trust
 
 Restart Postgres
 $ /etc/init.d/postgresql restart
 
 Postgres < 9.1
 $ createuser -U postgres
-Enter name of role to add: glatos
+Enter name of role to add: matos
 Shall the new role be a superuser? (y/n) y
 
 Postgres >= 9.1
-$ createuser -U postgres -P -s glatos
+$ createuser -U postgres -P -s matos
 
 # Can skip user creation in development
-# The application runs as the glatos user
-$ useradd glatos
-$ mkdir -p /mnt/glatos
-$ chown glatos:glatos /mnt/glatos/
-$ su glatos
-$ cd /mnt/glatos
+# The application runs as the matos user
+$ useradd matos
+$ mkdir -p /mnt/matos
+$ chown matos:matos /mnt/matos/
+$ su matos
+$ cd /mnt/matos
 
-$ git clone git://github.com/asascience-open/GLATOS.git
+$ git clone git://github.com/asascience-open/matos.git
 
-$ cd GLATOS
+$ cd matos
 $ gem update --system  # Get the most recent rubygems
 $ gem install bundler
-$ export LANG=en_US.utf8
+$ gem install pg -- --with-pg-config=/usr/pgsql-9.2/bin/pg_config # or whereever your pg_config file is
 $ bundle install
 $ RAILS_ENV=development bundle exec rake db:create
 
 # Install the trigram postgres contrib 
 # Install version specific to your postgres install
 Postgres < 9.1
-$ psql -U glatos -d glatos_development -f lib/pg_trgm.sql
+$ psql -U matos -d matos_development -f lib/pg_trgm.sql
 Postgres >= 9.1
-$ psql -U glatos -d glatos_development
-glatos_development=# CREATE EXTENSION pg_trgm;
+$ psql -U matos -d matos_development
+matos_development=# CREATE EXTENSION pg_trgm;
 
 # Set up DB
 $ RAILS_ENV=development bundle exec rake db:migrate
