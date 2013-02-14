@@ -50,13 +50,16 @@ $ gem install pg -- --with-pg-config=/usr/pgsql-9.2/bin/pg_config # or whereever
 $ bundle install
 $ RAILS_ENV=development bundle exec rake db:create
 
-# Install the trigram postgres contrib 
+# Install the extensions
 # Install version specific to your postgres install
 Postgres < 9.1
 $ psql -U matos -d matos_development -f lib/pg_trgm.sql
+$ follow PostGIS install instructions
 Postgres >= 9.1
 $ psql -U matos -d matos_development
 matos_development=# CREATE EXTENSION pg_trgm;
+matos_development=# CREATE EXTENSION postgis;
+
 
 # Set up DB
 $ RAILS_ENV=development bundle exec rake db:migrate

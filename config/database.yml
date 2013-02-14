@@ -5,7 +5,7 @@ development:
   pool: 5
   username: matos
   password:
-  script_dir: /usr/share/pgsql/contrib/postgis
+  postgis_extension: postgis,pg_trgm
   schema_search_path: public,postgis
 
 test: &test
@@ -15,7 +15,7 @@ test: &test
   pool: 5
   username: matos
   password:
-  script_dir: /usr/share/pgsql/contrib/postgis
+  postgis_extension: postgis,pg_trgm
   schema_search_path: public,postgis
 
 staging:
@@ -26,9 +26,8 @@ staging:
   pool: 5
   username: matos
   password:
-  script_dir: /usr/pgsql-9.2/share/contrib/postgis-2.0
+  postgis_extension: postgis,pg_trgm
   schema_search_path: public,postgis
-  template: template0
 
 production:
   adapter: postgis
@@ -38,9 +37,8 @@ production:
   pool: 5
   username: matos
   password:
-  script_dir: /usr/pgsql-9.2/share/contrib/postgis-2.0
+  postgis_extension: postgis,pg_trgm
   schema_search_path: public,postgis
-  template: template0
 
 cucumber:
   <<: *test
