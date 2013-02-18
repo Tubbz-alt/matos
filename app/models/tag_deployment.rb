@@ -25,11 +25,12 @@ class TagDeployment < ActiveRecord::Base
   belongs_to :study
 
   has_one    :report
+  has_many   :hits
   has_many   :deployments, :through => :hits
 
-  validates :tag_id, :release_date, :presence => true
+  validates :tag_id, :release_date, :study_id, :presence => true
 
-  validates_inclusion_of :common_name, :in => Fish::TYPES
+  #validates_inclusion_of :common_name, :in => Fish::TYPES
   #validates_inclusion_of :scientific_name, :in => Fish::SCITYPES
   #validates_inclusion_of :wild_or_hatchery, :in => Fish::WOH
   #validates_inclusion_of :sex, :in => Fish::SEX
@@ -53,11 +54,18 @@ class TagDeployment < ActiveRecord::Base
   end
 
   def external_codes
-    read_attribute(:external_codes).split(",") rescue nil
+    ec = read_attribute(:external_codes)
+    if ec.blank?
+      return nil
+    else
+      return ec.split(",") rescue nil
+    end
   end
 
   def external_codes=(codes)
-    if codes.is_a? String
+    if codes.blank?
+      write_attribute(:external_codes, nil)
+    elsif codes.is_a? String
       write_attribute(:external_codes, codes)
     elsif codes.is_a? Array
       write_attribute(:external_codes, codes.join(","))
@@ -69,7 +77,14 @@ class TagDeployment < ActiveRecord::Base
   end
 
   def ending
-    capture_date
+    report.nil? ? nil : report.found
+  end
+
+  def display_name
+    z = tag.to_label
+    z += " - #{starting.strftime('%Y-%m-%d')}"
+    z += "/#{ending.strftime('%Y-%m-%d')}" unless ending.nil?
+    z
   end
 
   private

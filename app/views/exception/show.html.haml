@@ -11,8 +11,7 @@
       .box{:class => 'reward'}
 
   #flashes
-    - flash.each do |name, msg|
-      = content_tag :p, msg, :class => "flasher #{name}" if msg.is_a?(String)
+    = content_tag :p, "#{details[:message]}", :class => "flasher error"
 
   #information
     %p= t('home.information')

@@ -27,6 +27,14 @@ class OtnArray < ActiveRecord::Base
     return otns, errors, count
   end
 
+  def to_label
+    title
+  end
+
+  def title
+    "#{self.code} - #{self.description}"
+  end
+
 end
 #
 # == Schema Information

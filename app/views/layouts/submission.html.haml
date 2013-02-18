@@ -15,7 +15,8 @@
     #container
 
       #header
-        = link_to "", root_path
+        = link_to root_path do 
+          = image_tag asset_path('logo.png')
 
       #navigation
         .left

@@ -2,16 +2,16 @@
   %ul
 
     %li
-      = link_to('Help', static_path("GLATOSWeb_Website_Manual.pdf"), :target => '_blank')
-      %span{:class => 'pipe'}
-        |
+      = link_to explore_path do
+        #explore_nav_button{:class => "nav_button" }
+          .preload
+
     %li
-      = link_to('Explore', explore_path)
-      %span{:class => 'pipe'}
-        |
+      = link_to search_path do
+        #search_nav_button{:class => "nav_button" }
+          .preload
+
     %li
-      = link_to('Search', search_path)
-      %span{:class => 'pipe'}
-        |
-    %li
-      = link_to('Report Tag', new_report_path)
+      = link_to new_report_path do
+        #reward_nav_button{:class => "nav_button" }
+          .preload

@@ -146,6 +146,14 @@ class Study < ActiveRecord::Base
     end
   end
 
+  def display_name
+    code
+  end
+
+  def to_label
+    "#{code} - #{name}"
+  end
+
 end
 #
 # == Schema Information

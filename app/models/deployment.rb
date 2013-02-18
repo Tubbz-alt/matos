@@ -18,7 +18,10 @@ class Deployment < ActiveRecord::Base
   belongs_to :study
   belongs_to :otn_array
   has_one :retrieval, :dependent => :destroy
+  has_many :hits
   has_many :tag_deployments, :through => :hits
+
+  validates_presence_of :study_id, :otn_array_id, :station
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
 
@@ -198,6 +201,15 @@ class Deployment < ActiveRecord::Base
     end
     return props, errors, count
   end
+
+  def display_name
+    "#{code}-#{consecutive}"
+  end
+
+  def to_label
+    "#{code}-#{consecutive}"
+  end
+
 end
 
 #

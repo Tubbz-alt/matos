@@ -14,6 +14,13 @@
     - if user_signed_in?
       %li
         = link_to('Edit account', edit_user_registration_path)
+        %span{:class => 'pipe'}
+          |
     - else
       %li
         = link_to("Request #{t('project.name')} Account", new_user_registration_path)
+        %span{:class => 'pipe'}
+          |
+
+    %li
+      = link_to('Help', static_path("GLATOSWeb_Website_Manual.pdf"), :target => '_blank')

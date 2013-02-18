@@ -59,4 +59,7 @@ gem 'haml-rails'
 gem 'formtastic'
 gem 'pg_search'
 
-gem "paperclip", "~> 2.0"
+gem "paperclip", "~> 3.0"
+
+gem 'activeadmin'
+gem "meta_search",    '>= 1.1.0.pre' # req for activeadmin when rails >= 3.1

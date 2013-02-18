@@ -45,5 +45,9 @@ module Matos
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Custom exception handling
+    config.exceptions_app = lambda { |env| ExceptionController.action(:show).call(env) }
+
   end
 end

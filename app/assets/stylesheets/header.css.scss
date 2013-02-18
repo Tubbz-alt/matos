@@ -1,0 +1,85 @@
+#header {
+  @include column(24,true);
+  background  : url(image-path('gradient.gif')) repeat-x top left;
+  height: 171px;
+  border-bottom: 1px solid #fff;
+  img {
+    @include prepend(1);
+    margin-top: 15px;
+  }
+}
+
+#navigation {
+  color: #105777;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: center;
+  @include column(24, true);
+  height: 30px;
+  margin: -30px auto 0 auto;
+
+  a {
+    color: #105777;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .left {
+    @include prepend(1);
+    @include column(8, true);
+    ul {
+      padding-left: 10px;
+    }
+  }
+
+  .pipe {
+    padding: 0 5px 0 8px;
+  }
+
+  .right {
+    @include column(14, true);
+    @include append(1);
+    ul {
+      float: right;
+    }
+  }
+}
+
+.nav_button {
+  margin-top: -20px;
+  width: 116px;
+  height: 42px;
+}
+
+#reward_nav_button {
+  background: url(image-path('reward_top_but.png')) no-repeat center left;
+  .preload {
+    background: url(image-path('reward_top_but_over.png')) no-repeat center left;
+    visibility: hidden;
+  }
+}
+#reward_nav_button:hover {
+  background: url(image-path('reward_top_but_over.png')) no-repeat center left;
+}
+
+#search_nav_button {
+  background: url(image-path('search_top_but.png')) no-repeat center left;
+  .preload {
+    background: url(image-path('search_top_but_over.png')) no-repeat center left;
+    visibility: hidden;
+  }
+}
+#search_nav_button:hover {
+  background: url(image-path('search_top_but_over.png')) no-repeat center left;
+}
+
+#explore_nav_button {
+  background: url(image-path('explore_top_but.png')) no-repeat center left;
+  .preload {
+    background: url(image-path('explore_top_but_over.png')) no-repeat center left;
+    visibility: hidden;
+  }  
+}
+#explore_nav_button:hover {
+  background: url(image-path('explore_top_but_over.png')) no-repeat center left;
+}

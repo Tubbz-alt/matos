@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
     :admin => "Administrator of the #{I18n.t 'project.name'} website"
   }
 
+  has_many :studies
+
   def DT_RowId
     self.id
   end

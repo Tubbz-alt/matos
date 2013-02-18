@@ -19,6 +19,8 @@ class Tag < ActiveRecord::Base
 
   validates_uniqueness_of   :code, :scope => :code_space, :case_sensitive => false
 
+  validates_presence_of     :code, :code_space
+
   self.inheritance_column = 'none'
 
   scope :find_match, lambda { |code| where("((code_space || '-' || code) ILIKE ?) OR (code ILIKE ?) OR (code_space ILIKE ?)", "%#{code}%","%#{code}%","%#{code}%").limit(1) }
@@ -166,6 +168,15 @@ class Tag < ActiveRecord::Base
   def self.boolean_or_nil(input)
     input.downcase == "yes" rescue nil
   end
+
+  def to_label
+    "#{code_space}-#{code}"
+  end
+
+  def display_name
+    "#{code_space}-#{code}"
+  end
+
 end
 #
 # == Schema Information

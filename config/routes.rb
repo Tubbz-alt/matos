@@ -1,5 +1,7 @@
 Matos::Application.routes.draw do
 
+  ActiveAdmin.routes(self)
+
   root :to => 'home#index'
   match '/about' => 'home#about', :as => :about, :via => :get
   match '/acoustic_telemetry' => 'home#acoustic_telemetry', :as => :acoustic_telemetry, :via => :get

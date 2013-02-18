@@ -8,12 +8,12 @@ class Ability
 
   def guest
     can :create, Report
-    can :read, Deployment
   end
 
   def general
     guest
     can :manage, User, :id => @user.id
+    can :read, Deployment
   end
 
   def researcher
@@ -30,6 +30,7 @@ class Ability
     can :manage, Deployment, :study => { :user_id => @user.id }
     can :create, Submission
     can :read,   Submission, :user_id => @user.id
+    can :read,   ActiveAdmin
   end
 
   def admin

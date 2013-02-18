@@ -7,17 +7,20 @@
 
   %body{:onload => "Ext.onReady(function(){init()})"}
 
-    #header
-      = link_to "", root_path
+    #c
 
-    #navigation
-      .left
-        = render 'shared/top_left_navigation'
-      .right
-        = render 'shared/top_right_navigation'
+      #header
+        = link_to root_path do 
+          = image_tag asset_path('logo.png')
 
-    = yield
+      #navigation
+        .left
+          = render 'shared/top_left_navigation'
+        .right
+          = render 'shared/top_right_navigation'
 
-    = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=false'
-    = javascript_include_tag '/javascripts/OpenLayers.js'
-    = javascript_include_tag :explore
+      = yield
+
+      = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=false'
+      = javascript_include_tag '/javascripts/OpenLayers.js'
+      = javascript_include_tag :explore
