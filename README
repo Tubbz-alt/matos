@@ -69,4 +69,5 @@ $ RAILS_ENV=development bundle exec rake db:seed
 $ rails server thin
 
 # Deployment to production
+$ cap production deploy:setup # one time
 $ cap production deploy
