@@ -17,7 +17,6 @@ gem 'jquery-rails'
 
 group :development do
   gem 'rvm-capistrano'
-  gem 'thin'
   gem 'capistrano'
   gem 'annotate', :git => 'http://github.com/ctran/annotate_models.git', :require => false
 end
@@ -27,9 +26,7 @@ group :test, :development do
 end
 
 group :production do
-  gem 'passenger'
-  gem 'libv8', '3.3.10.4'
-  gem 'therubyracer', '0.10.2'
+  gem 'thin'
 end
 
 group :test do
