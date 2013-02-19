@@ -14,11 +14,11 @@ class Study < ActiveRecord::Base
                               ]
                   }
 
-  has_attached_file :img_first, :styles => { :medium => "360", :thumb => "75" }
+  has_attached_file :img_first,  :styles => { :medium => "360", :thumb => "75" }
   has_attached_file :img_second, :styles => { :medium => "360", :thumb => "75" }
-  has_attached_file :img_third, :styles => { :medium => "360", :thumb => "75" }
+  has_attached_file :img_third,  :styles => { :medium => "360", :thumb => "75" }
   has_attached_file :img_fourth, :styles => { :medium => "360", :thumb => "75" }
-  has_attached_file :img_fifth, :styles => { :medium => "360", :thumb => "75" }
+  has_attached_file :img_fifth,  :styles => { :medium => "360", :thumb => "75" }
 
   # Ability to remove images
   attr_accessor :delete_img_first, :delete_img_second, :delete_img_third, :delete_img_fourth, :delete_img_fifth
