@@ -4,13 +4,9 @@ class Submission < ActiveRecord::Base
 
   before_destroy :destroy_extracted
 
-  has_attached_file :zipfile, {
-    :url => "#{ActionController::Base.relative_url_root}/system/:class/:attachment/:id/:style/:basename.:extension",
-    :path => "public/system/:class/:attachment/:id/:style/:basename.:extension"
-  }
-
   validates_presence_of :user
 
+  has_attached_file :zipfile
   validates_attachment_presence :zipfile
   validates_attachment_content_type :zipfile, :content_type => /^application\/(x-zip-compressed|zip)$/, :message => 'is not a ZIP file'
 
