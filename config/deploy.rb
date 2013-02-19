@@ -8,25 +8,25 @@ set :keep_releases, 5
 set :deploy_via, :remote_cache
 
 task :production do
-  set :deploy_to, "/var/www/applications/matos"
+  set :deploy_to, "/home/matos/production"
   set :rails_env, "production"
-  set :domain, "data.glos.us"
-  role :web,"glos.us"
-  role :db, "glos.us", :primary => true
+  set :domain, "matos.asascience.com"
+  role :web, "matos.asascience.com"
+  role :db, "matos.asascience.com", :primary => true
 end
 
 task :staging do
-  set :deploy_to, "/var/www/applications/matos-stage"
+  set :deploy_to, "/home/matos/staging"
   set :rails_env, "staging"
-  set :domain, "data.glos.us"
-  role :web,"glos.us"
-  role :db, "glos.us", :primary => true
+  set :domain, "matos.asascience.com"
+  role :web, "matos.asascience.com"
+  role :db, "matos.asascience.com", :primary => true
 end
 
 before "deploy:assets:precompile", "deploy:bundle_install"
 after  "deploy:update_code","deploy:migrate"
+after  "deploy:update_code","deploy:build_missing_paperclip_styles"
 after  "deploy:assets:symlink","deploy:symlink_db"
-after  "deploy:migrate","deploy:build_missing_paperclip_styles"
 after  "deploy:update", "deploy:cleanup"
 
 namespace :deploy do
@@ -36,11 +36,8 @@ namespace :deploy do
   task :bundle_update, :roles => :web do
     run "cd #{latest_release}; RAILS_ENV=#{rails_env} bundle update"
   end
-  task :symlink_db, :roles => :web do
-    run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
-  end
   task :restart, :roles => :web do
-    run "touch #{latest_release}/tmp/restart.txt"
+    run "cd #{latest_release}; RAILS_ENV=#{rails_env} bundle exec thin -e ${rails_env} -s 2 -d restart --socket /tmp/thin.#{rails_env}.sock"
   end
   desc "Run rake db:seed"
   task :seed, :roles => :db, :only => { :primary => true } do
