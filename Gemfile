@@ -16,6 +16,7 @@ end
 gem 'jquery-rails'
 
 group :development do
+  gem 'therubyracer'
   gem 'rvm-capistrano'
   gem 'capistrano'
   gem 'annotate', :git => 'http://github.com/ctran/annotate_models.git', :require => false
