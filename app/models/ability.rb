@@ -13,7 +13,33 @@ class Ability
   def general
     guest
     can :manage, User, :id => @user.id
-    can :read, Deployment
+    cannot :destroy, User
+
+    # Deployment
+    can :read, Deployment, Deployment.includes({ :study => :collaborators }) do |d|
+      d.study.collaborators.map(&:user_id).include?(@user.id)
+    end
+    can :manage, Deployment, Deployment.includes(:study) do |d|
+      d.study.user_id == @user.id
+    end
+    can :manage, Deployment, Deployment.includes({ :study => :collaborators }) do |d|
+      d.study.collaborators.select({ :role => 'manage' }).map(&:user_id).include?(@user.id)
+    end
+
+    # Tag
+    can :read, Tag, Tag.includes({ :study => :collaborators }) do |d|
+      d.study.collaborators.map(&:user_id).include?(@user.id)
+    end
+    can :manage, Tag, Tag.includes(:study) do |d|
+      d.study.user_id == @user.id
+    end
+    can :manage, Tag, Tag.includes({ :study => :collaborators }) do |d|
+      d.study.collaborators.select({ :role => 'manage' }).map(&:user_id).include?(@user.id)
+    end
+
+    can :manage, Study, :user_id => @user.id
+    cannot :destroy, Study
+
   end
 
   def researcher
@@ -23,11 +49,6 @@ class Ability
 
   def investigator
     researcher
-    can :create, Study # For data submission
-    can :create, User # For data submission
-    can :manage, Study, :user_id => @user.id
-    can :manage, Tag, :study => { :user_id => @user.id }
-    can :manage, Deployment, :study => { :user_id => @user.id }
     can :create, Submission
     can :read,   Submission, :user_id => @user.id
     can :read,   ActiveAdmin

@@ -34,6 +34,10 @@ class Study < ActiveRecord::Base
   validates   :user, :presence => true
   accepts_nested_attributes_for :user
 
+  has_many :collaborators
+  has_many :users, :through => :collaborators
+  accepts_nested_attributes_for :collaborators, :allow_destroy => true
+
   scope :active, where("title IS NOT NULL AND name IS NOT NULL AND start IS NOT NULL and ending IS NOT NULL")
 
   has_many    :deployments, :dependent => :destroy
