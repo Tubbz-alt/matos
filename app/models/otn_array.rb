@@ -36,14 +36,24 @@ class OtnArray < ActiveRecord::Base
   end
 
 end
+
+# ## Schema Information
 #
-# == Schema Information
+# Table name: `otn_arrays`
 #
-# Table name: otn_arrays
+# ### Columns
 #
-#  id          :integer         not null, primary key
-#  code        :string(255)     indexed
-#  description :text
-#  waterbody   :string(255)
-#  region      :string(255)
+# Name               | Type               | Attributes
+# ------------------ | ------------------ | ---------------------------
+# **`id`**           | `integer`          | `not null, primary key`
+# **`code`**         | `string(255)`      |
+# **`description`**  | `text`             |
+# **`waterbody`**    | `string(255)`      |
+# **`region`**       | `string(255)`      |
 #
+# ### Indexes
+#
+# * `index_otn_arrays_on_code`:
+#     * **`code`**
+#
+

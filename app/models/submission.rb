@@ -44,3 +44,23 @@ class Submission < ActiveRecord::Base
     return Dir[File.dirname(Rails.root + self.zipfile.path) + "/*.xlsm"]
   end
 end
+
+# ## Schema Information
+#
+# Table name: `submissions`
+#
+# ### Columns
+#
+# Name                        | Type               | Attributes
+# --------------------------- | ------------------ | ---------------------------
+# **`id`**                    | `integer`          | `not null, primary key`
+# **`user_id`**               | `integer`          |
+# **`zipfile_file_name`**     | `string(255)`      |
+# **`zipfile_content_type`**  | `string(255)`      |
+# **`zipfile_file_size`**     | `integer`          |
+# **`zipfile_updated_at`**    | `datetime`         |
+# **`status`**                | `string(255)`      |
+# **`created_at`**            | `datetime`         | `not null`
+# **`updated_at`**            | `datetime`         | `not null`
+#
+

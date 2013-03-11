@@ -11,3 +11,23 @@ class Hit < ActiveRecord::Base
   end
 
 end
+
+# ## Schema Information
+#
+# Table name: `hits`
+#
+# ### Columns
+#
+# Name                     | Type               | Attributes
+# ------------------------ | ------------------ | ---------------------------
+# **`id`**                 | `integer`          | `not null, primary key`
+# **`deployment_id`**      | `integer`          |
+# **`deployment_code`**    | `string(255)`      |
+# **`tag_deployment_id`**  | `integer`          |
+# **`tag_code`**           | `string(255)`      |
+# **`time`**               | `datetime`         |
+# **`depth`**              | `decimal(8, 4)`    |
+# **`location`**           | `spatial({:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true})`                                                                      |
+# **`created_at`**         | `datetime`         |
+#
+

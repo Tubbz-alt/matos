@@ -212,26 +212,38 @@ class Deployment < ActiveRecord::Base
 
 end
 
+# ## Schema Information
 #
-# == Schema Information
+# Table name: `deployments`
 #
-# Table name: deployments
+# ### Columns
 #
-#  id                :integer         not null, primary key
-#  start             :datetime
-#  study_id          :integer
-#  location          :spatial({:srid= indexed
-#  otn_array_id      :integer
-#  station           :integer
-#  model             :string(255)
-#  seasonal          :boolean
-#  frequency         :integer
-#  riser_length      :integer
-#  bottom_depth      :integer
-#  instrument_depth  :integer
-#  instrument_serial :string(255)
-#  rcv_modem_address :integer
-#  deployed_by       :string(255)
-#  vps               :boolean
-#  consecutive       :integer
+# Name                     | Type               | Attributes
+# ------------------------ | ------------------ | ---------------------------
+# **`id`**                 | `integer`          | `not null, primary key`
+# **`start`**              | `datetime`         |
+# **`study_id`**           | `integer`          |
+# **`location`**           | `spatial({:srid=>4326, :type=>"point", :geographic=>true})`                                          |
+# **`otn_array_id`**       | `integer`          |
+# **`station`**            | `integer`          |
+# **`model`**              | `string(255)`      |
+# **`seasonal`**           | `boolean`          |
+# **`frequency`**          | `integer`          |
+# **`riser_length`**       | `integer`          |
+# **`bottom_depth`**       | `integer`          |
+# **`instrument_depth`**   | `integer`          |
+# **`instrument_serial`**  | `string(255)`      |
+# **`rcv_modem_address`**  | `integer`          |
+# **`deployed_by`**        | `string(255)`      |
+# **`vps`**                | `boolean`          |
+# **`consecutive`**        | `integer`          |
+# **`proposed`**           | `boolean`          |
+# **`funded`**             | `boolean`          |
+# **`proposed_ending`**    | `datetime`         |
 #
+# ### Indexes
+#
+# * `index_deployments_on_location`:
+#     * **`location`**
+#
+

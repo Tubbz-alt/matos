@@ -93,48 +93,66 @@ class TagDeployment < ActiveRecord::Base
       self.tag.save!
     end
 end
+
+# ## Schema Information
 #
-# == Schema Information
+# Table name: `tag_deployments`
 #
-# Table name: tag_deployments
+# ### Columns
 #
-#  id                                        :integer         not null, primary key
-#  tag_id                                    :integer         indexed
-#  tagger                                    :string(255)
-#  common_name                               :string(255)
-#  scientific_name                           :string(255)
-#  capture_location                          :string(255)
-#  capture_geo                               :spatial({:srid= indexed
-#  capture_date                              :datetime
-#  capture_depth                             :decimal(6, 2)
-#  wild_or_hatchery                          :string(255)
-#  stock                                     :string(255)
-#  length                                    :decimal(6, 2)
-#  weight                                    :decimal(6, 2)
-#  age                                       :decimal(5, 2)
-#  sex                                       :string(255)
-#  dna_sample_taken                          :boolean
-#  treatment_type                            :string(255)
-#  temperature_change                        :decimal(4, 2)
-#  holding_temperature                       :decimal(4, 2)
-#  surgery_location                          :string(255)
-#  surgery_geo                               :spatial({:srid= indexed
-#  surgery_date                              :datetime
-#  sedative                                  :string(255)
-#  sedative_concentration                    :string(255)
-#  anaesthetic                               :string(255)
-#  buffer                                    :string(255)
-#  anaesthetic_concentration                 :string(255)
-#  buffer_concentration_in_anaesthetic       :string(255)
-#  anesthetic_concentration_in_recirculation :string(255)
-#  buffer_concentration_in_recirculation     :string(255)
-#  do                                        :integer
-#  description                               :text
-#  release_group                             :string(255)
-#  release_location                          :string(255)
-#  release_geo                               :spatial({:srid= indexed
-#  release_date                              :datetime
-#  external_codes                            :string(255)
-#  length_type                               :string(255)
-#  implant_type                              :string(255)
+# Name                                             | Type               | Attributes
+# ------------------------------------------------ | ------------------ | ---------------------------
+# **`id`**                                         | `integer`          | `not null, primary key`
+# **`tag_id`**                                     | `integer`          |
+# **`tagger`**                                     | `string(255)`      |
+# **`common_name`**                                | `string(255)`      |
+# **`scientific_name`**                            | `string(255)`      |
+# **`capture_location`**                           | `string(255)`      |
+# **`capture_geo`**                                | `spatial({:srid=>4326, :type=>"point", :geographic=>true})`                                          |
+# **`capture_date`**                               | `datetime`         |
+# **`capture_depth`**                              | `decimal(6, 2)`    |
+# **`wild_or_hatchery`**                           | `string(255)`      |
+# **`stock`**                                      | `string(255)`      |
+# **`length`**                                     | `decimal(6, 2)`    |
+# **`weight`**                                     | `decimal(6, 2)`    |
+# **`age`**                                        | `string(255)`      |
+# **`sex`**                                        | `string(255)`      |
+# **`dna_sample_taken`**                           | `boolean`          |
+# **`treatment_type`**                             | `string(255)`      |
+# **`temperature_change`**                         | `decimal(4, 2)`    |
+# **`holding_temperature`**                        | `decimal(4, 2)`    |
+# **`surgery_location`**                           | `string(255)`      |
+# **`surgery_geo`**                                | `spatial({:srid=>4326, :type=>"point", :geographic=>true})`                                          |
+# **`surgery_date`**                               | `datetime`         |
+# **`sedative`**                                   | `string(255)`      |
+# **`sedative_concentration`**                     | `string(255)`      |
+# **`anaesthetic`**                                | `string(255)`      |
+# **`buffer`**                                     | `string(255)`      |
+# **`anaesthetic_concentration`**                  | `string(255)`      |
+# **`buffer_concentration_in_anaesthetic`**        | `string(255)`      |
+# **`anesthetic_concentration_in_recirculation`**  | `string(255)`      |
+# **`buffer_concentration_in_recirculation`**      | `string(255)`      |
+# **`do`**                                         | `decimal(6, 1)`    |
+# **`description`**                                | `text`             |
+# **`release_group`**                              | `string(255)`      |
+# **`release_location`**                           | `string(255)`      |
+# **`release_geo`**                                | `spatial({:srid=>4326, :type=>"point", :geographic=>true})`                                          |
+# **`release_date`**                               | `datetime`         |
+# **`external_codes`**                             | `string(255)`      |
+# **`length_type`**                                | `string(255)`      |
+# **`implant_type`**                               | `string(255)`      |
+# **`reward`**                                     | `string(255)`      |
+# **`study_id`**                                   | `integer`          |
 #
+# ### Indexes
+#
+# * `index_tag_deployments_on_capture_geo`:
+#     * **`capture_geo`**
+# * `index_tag_deployments_on_release_geo`:
+#     * **`release_geo`**
+# * `index_tag_deployments_on_surgery_geo`:
+#     * **`surgery_geo`**
+# * `index_tag_deployments_on_tag_id`:
+#     * **`tag_id`**
+#
+
