@@ -44,6 +44,14 @@ class Study < ActiveRecord::Base
   has_many    :tag_deployments, :dependent => :destroy
   has_many    :tags, :through => :tag_deployments, :dependent => :destroy
 
+  PERMS = %w[public private]
+  PERMS_MAP = {
+    :public => "Data is available to the public",
+    :private => "Data is private to defined collaborators only"
+  }
+  validates   :permissions, :presence => true
+  validates   :permissions, :inclusion => { :in => PERMS, :message => "%{value} is not a valid permission" }
+
   def active
     Study.active.include?(self)
   end

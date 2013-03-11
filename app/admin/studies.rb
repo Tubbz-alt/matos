@@ -5,7 +5,8 @@ ActiveAdmin.register Study do
   filter :start
   filter :ending
   filter :species, :as => :check_boxes, :collection => proc { Study.all.map(&:species).select(&:present?).uniq }
-  filter :user_id
+  filter :user_id, :label => "Owner"
+  filter :permissions, :as => :select, :collection => Study::PERMS.map{|r|["#{r.humanize} - #{Study::PERMS_MAP[r.to_sym]}",r]}
 
   index do
     selectable_column
@@ -17,7 +18,8 @@ ActiveAdmin.register Study do
     column :start
     column :ending
     column :species
-    column :user
+    column "Owner", :user
+    column :permissions
 
     default_actions
   end
@@ -32,6 +34,7 @@ ActiveAdmin.register Study do
       f.input :ending
       f.input :species, :as => :select, :collection => Study.all.map(&:species).select(&:present?).uniq.append("Many").append("N/A")
       f.input :user, :label => "Owner"
+      f.input :permissions, :as => :select, :collection => Study::PERMS.map{|r|["#{r.humanize} - #{Study::PERMS_MAP[r.to_sym]}",r]}
       f.has_many :collaborators do |c|
         c.inputs "Collaborators" do
           c.input :user
@@ -60,29 +63,31 @@ ActiveAdmin.register Study do
       row :ending
       row :species
       row :user
-    end
+      row :permissions do |p|
+        s.permissions.humanize + " - " + Study::PERMS_MAP[s.permissions.to_sym]
+      end
+      row :collaborators do |c|
+        table_for s.collaborators do
+          column :user
+        end
+      end
 
-    panel "Collaborators" do
-      table_for s.collaborators do
-        column :user
-      end
-    end
-
-    panel "Images" do
-      div do
-        image_tag(s.img_first.url(:thumb)) unless s.img_first.blank?
-      end
-      div do
-        image_tag(s.img_second.url(:thumb)) unless s.img_second.blank?
-      end
-      div do
-        image_tag(s.img_third.url(:thumb)) unless s.img_third.blank?
-      end
-      div do
-        image_tag(s.img_fourth.url(:thumb)) unless s.img_fourth.blank?
-      end
-      div do
-        image_tag(s.img_fifth.url(:thumb)) unless s.img_fifth.blank?
+      row :images do |i|
+        div do
+          image_tag(s.img_first.url(:thumb)) unless s.img_first.blank?
+        end
+        div do
+          image_tag(s.img_second.url(:thumb)) unless s.img_second.blank?
+        end
+        div do
+          image_tag(s.img_third.url(:thumb)) unless s.img_third.blank?
+        end
+        div do
+          image_tag(s.img_fourth.url(:thumb)) unless s.img_fourth.blank?
+        end
+        div do
+          image_tag(s.img_fifth.url(:thumb)) unless s.img_fifth.blank?
+        end
       end
     end
       

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308170217) do
+ActiveRecord::Schema.define(:version => 20130308191449) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(:version => 20130308170217) do
     t.string   "url"
     t.string   "species"
     t.integer  "user_id"
-    t.string   "code",                    :limit => 20, :null => false
+    t.string   "code",                    :limit => 20,                        :null => false
     t.text     "title"
     t.text     "benefits"
     t.text     "organizations"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20130308170217) do
     t.string   "img_fifth_content_type"
     t.integer  "img_fifth_file_size"
     t.datetime "img_fifth_updated_at"
+    t.string   "permissions",                           :default => "private"
   end
 
   create_table "submissions", :force => true do |t|

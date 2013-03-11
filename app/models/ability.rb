@@ -17,29 +17,25 @@ class Ability
 
     # Deployment
     can :read, Deployment, Deployment.includes({ :study => :collaborators }) do |d|
-      d.study.collaborators.map(&:user_id).include?(@user.id)
-    end
-    can :manage, Deployment, Deployment.includes(:study) do |d|
-      d.study.user_id == @user.id
+      d.study.permissions == 'public' || d.study.collaborators.map(&:user).include?(@user)
     end
     can :manage, Deployment, Deployment.includes({ :study => :collaborators }) do |d|
-      d.study.collaborators.select({ :role => 'manage' }).map(&:user_id).include?(@user.id)
+      d.study.user_id == @user.id || d.study.collaborators.select({ :role => 'manage' }).map(&:user).include?(@user)
     end
 
     # Tag
-    can :read, Tag, Tag.includes({ :study => :collaborators }) do |d|
-      d.study.collaborators.map(&:user_id).include?(@user.id)
+    can :read, Tag, Tag.includes({ :study => :collaborators }) do |t|
+      t.study.permissions == 'public' || t.study.collaborators.map(&:user).include?(@user)
     end
-    can :manage, Tag, Tag.includes(:study) do |d|
-      d.study.user_id == @user.id
-    end
-    can :manage, Tag, Tag.includes({ :study => :collaborators }) do |d|
-      d.study.collaborators.select({ :role => 'manage' }).map(&:user_id).include?(@user.id)
+    can :manage, Tag, Tag.includes({ :study => :collaborators }) do |t|
+      t.study.user_id == @user.id || t.study.collaborators.select({ :role => 'manage' }).map(&:user).include?(@user)
     end
 
-    can :manage, Study, :user_id => @user.id
+    can :read, Study
+    can :manage, Study, Study.includes(:collaborators) do |s|
+      s.user_id == @user.id || s.collaborators.select({ :role => 'manage' }).map(&:user).include?(@user)
+    end
     cannot :destroy, Study
-
   end
 
   def researcher
