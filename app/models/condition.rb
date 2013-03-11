@@ -5,17 +5,16 @@ class Condition < ActiveRecord::Base
 end
 
 # ## Schema Information
+# Schema version: 20130311180440
 #
-# Table name: `conditions`
+# Table name: conditions
 #
-# ### Columns
-#
-# Name          | Type               | Attributes
-# ------------- | ------------------ | ---------------------------
-# **`id`**      | `integer`          | `not null, primary key`
-# **`value`**   | `decimal(12, 4)`   |
-# **`unit`**    | `string(255)`      |
-# **`name`**    | `string(255)`      |
-# **`hit_id`**  | `integer`          |
+# Field       | Type               | Attributes
+# ----------- | ------------------ | -------------------------
+# **id     ** | `integer         ` | `not null, primary key`
+# **value  ** | `decimal(12, 4)  ` | ``
+# **unit   ** | `string(255)     ` | ``
+# **name   ** | `string(255)     ` | ``
+# **hit_id ** | `integer         ` | ``
 #
 

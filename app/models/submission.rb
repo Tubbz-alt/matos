@@ -46,21 +46,20 @@ class Submission < ActiveRecord::Base
 end
 
 # ## Schema Information
+# Schema version: 20130311180440
 #
-# Table name: `submissions`
+# Table name: submissions
 #
-# ### Columns
-#
-# Name                        | Type               | Attributes
-# --------------------------- | ------------------ | ---------------------------
-# **`id`**                    | `integer`          | `not null, primary key`
-# **`user_id`**               | `integer`          |
-# **`zipfile_file_name`**     | `string(255)`      |
-# **`zipfile_content_type`**  | `string(255)`      |
-# **`zipfile_file_size`**     | `integer`          |
-# **`zipfile_updated_at`**    | `datetime`         |
-# **`status`**                | `string(255)`      |
-# **`created_at`**            | `datetime`         | `not null`
-# **`updated_at`**            | `datetime`         | `not null`
+# Field                     | Type               | Attributes
+# ------------------------- | ------------------ | -------------------------
+# **id                   ** | `integer         ` | `not null, primary key`
+# **user_id              ** | `integer         ` | ``
+# **zipfile_file_name    ** | `string(255)     ` | ``
+# **zipfile_content_type ** | `string(255)     ` | ``
+# **zipfile_file_size    ** | `integer         ` | ``
+# **zipfile_updated_at   ** | `datetime        ` | ``
+# **status               ** | `string(255)     ` | ``
+# **created_at           ** | `datetime        ` | `not null`
+# **updated_at           ** | `datetime        ` | `not null`
 #
 

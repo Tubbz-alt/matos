@@ -16,18 +16,17 @@ class Collaborator < ActiveRecord::Base
 end
 
 # ## Schema Information
+# Schema version: 20130311180440
 #
-# Table name: `collaborators`
+# Table name: collaborators
 #
-# ### Columns
-#
-# Name              | Type               | Attributes
-# ----------------- | ------------------ | ---------------------------
-# **`id`**          | `integer`          | `not null, primary key`
-# **`study_id`**    | `integer`          |
-# **`user_id`**     | `integer`          |
-# **`role`**        | `string(255)`      |
-# **`created_at`**  | `datetime`         | `not null`
-# **`updated_at`**  | `datetime`         | `not null`
+# Field           | Type               | Attributes
+# --------------- | ------------------ | -------------------------
+# **id         ** | `integer         ` | `not null, primary key`
+# **study_id   ** | `integer         ` | ``
+# **user_id    ** | `integer         ` | ``
+# **role       ** | `string(255)     ` | ``
+# **created_at ** | `datetime        ` | `not null`
+# **updated_at ** | `datetime        ` | `not null`
 #
 

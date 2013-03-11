@@ -59,47 +59,42 @@ class Report < ActiveRecord::Base
 end
 
 # ## Schema Information
+# Schema version: 20130311180440
 #
-# Table name: `reports`
+# Table name: reports
 #
-# ### Columns
+# Field                     | Type               | Attributes
+# ------------------------- | ------------------ | -------------------------
+# **id                   ** | `integer         ` | `not null, primary key`
+# **input_tag            ** | `string(255)     ` | `not null`
+# **description          ** | `text            ` | ``
+# **method               ** | `string(255)     ` | ``
+# **name                 ** | `string(255)     ` | ``
+# **phone                ** | `string(255)     ` | ``
+# **email                ** | `string(255)     ` | ``
+# **city                 ** | `string(255)     ` | ``
+# **state                ** | `string(255)     ` | ``
+# **reported             ** | `datetime        ` | ``
+# **found                ** | `datetime        ` | ``
+# **length               ** | `decimal(6, 2)   ` | ``
+# **fishtype             ** | `string(255)     ` | ``
+# **location             ** | `spatial({:srid=>` | ``
+# **tag_deployment_id    ** | `integer         ` | ``
+# **contacted            ** | `boolean         ` | ``
+# **resolved             ** | `boolean         ` | ``
+# **input_external_codes ** | `string(255)     ` | ``
+# **address              ** | `string(255)     ` | ``
+# **zipcode              ** | `string(8)       ` | ``
+# **newsletter           ** | `boolean         ` | `default(FALSE)`
+# **didwith              ** | `string(255)     ` | ``
+# **comments             ** | `text            ` | ``
+# **depth                ** | `decimal(6, 2)   ` | ``
 #
-# Name                        | Type               | Attributes
-# --------------------------- | ------------------ | ---------------------------
-# **`id`**                    | `integer`          | `not null, primary key`
-# **`input_tag`**             | `string(255)`      | `not null`
-# **`description`**           | `text`             |
-# **`method`**                | `string(255)`      |
-# **`name`**                  | `string(255)`      |
-# **`phone`**                 | `string(255)`      |
-# **`email`**                 | `string(255)`      |
-# **`city`**                  | `string(255)`      |
-# **`state`**                 | `string(255)`      |
-# **`reported`**              | `datetime`         |
-# **`found`**                 | `datetime`         |
-# **`length`**                | `decimal(6, 2)`    |
-# **`fishtype`**              | `string(255)`      |
-# **`location`**              | `spatial({:srid=>4326, :type=>"point", :geographic=>true})`                                          |
-# **`tag_deployment_id`**     | `integer`          |
-# **`contacted`**             | `boolean`          |
-# **`resolved`**              | `boolean`          |
-# **`input_external_codes`**  | `string(255)`      |
-# **`address`**               | `string(255)`      |
-# **`zipcode`**               | `string(8)`        |
-# **`newsletter`**            | `boolean`          | `default(FALSE)`
-# **`didwith`**               | `string(255)`      |
-# **`comments`**              | `text`             |
-# **`depth`**                 | `decimal(6, 2)`    |
+# Indexes
 #
-# ### Indexes
-#
-# * `index_reports_on_location`:
-#     * **`location`**
-# * `index_reports_on_tag`:
-#     * **`input_tag`**
-# * `index_reports_on_tag_deployment_id`:
-#     * **`tag_deployment_id`**
-# * `index_reports_on_tag_id`:
-#     * **`tag_deployment_id`**
+#  index_reports_on_location           (location)
+#  index_reports_on_tag                (input_tag)
+#  index_reports_on_tag_deployment_id  (tag_deployment_id)
+#  index_reports_on_tag_id             (tag_deployment_id)
 #
 

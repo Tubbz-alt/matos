@@ -77,25 +77,22 @@ class Retrieval < ActiveRecord::Base
 end
 
 # ## Schema Information
+# Schema version: 20130311180440
 #
-# Table name: `retrievals`
+# Table name: retrievals
 #
-# ### Columns
+# Field                | Type               | Attributes
+# -------------------- | ------------------ | -------------------------
+# **id              ** | `integer         ` | `not null, primary key`
+# **deployment_id   ** | `integer         ` | ``
+# **data_downloaded ** | `boolean         ` | ``
+# **ar_confirm      ** | `boolean         ` | ``
+# **recovered       ** | `datetime        ` | ``
+# **location        ** | `spatial({:srid=>` | ``
 #
-# Name                   | Type               | Attributes
-# ---------------------- | ------------------ | ---------------------------
-# **`id`**               | `integer`          | `not null, primary key`
-# **`deployment_id`**    | `integer`          |
-# **`data_downloaded`**  | `boolean`          |
-# **`ar_confirm`**       | `boolean`          |
-# **`recovered`**        | `datetime`         |
-# **`location`**         | `spatial({:srid=>4326, :type=>"point", :geographic=>true})`                                          |
+# Indexes
 #
-# ### Indexes
-#
-# * `index_retrievals_on_deployment_id`:
-#     * **`deployment_id`**
-# * `index_retrievals_on_location`:
-#     * **`location`**
+#  index_retrievals_on_deployment_id  (deployment_id)
+#  index_retrievals_on_location       (location)
 #
 

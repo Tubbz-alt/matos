@@ -51,51 +51,46 @@ class User < ActiveRecord::Base
 end
 
 # ## Schema Information
+# Schema version: 20130311180440
 #
-# Table name: `users`
+# Table name: users
 #
-# ### Columns
+# Field                       | Type               | Attributes
+# --------------------------- | ------------------ | -------------------------
+# **id                     ** | `integer         ` | `not null, primary key`
+# **email                  ** | `string(255)     ` | `default(""), not null`
+# **encrypted_password     ** | `string(255)     ` | `default(""), not null`
+# **reset_password_token   ** | `string(255)     ` | ``
+# **reset_password_sent_at ** | `datetime        ` | ``
+# **remember_created_at    ** | `datetime        ` | ``
+# **sign_in_count          ** | `integer         ` | `default(0)`
+# **current_sign_in_at     ** | `datetime        ` | ``
+# **last_sign_in_at        ** | `datetime        ` | ``
+# **current_sign_in_ip     ** | `string(255)     ` | ``
+# **last_sign_in_ip        ** | `string(255)     ` | ``
+# **confirmation_token     ** | `string(255)     ` | ``
+# **confirmed_at           ** | `datetime        ` | ``
+# **confirmation_sent_at   ** | `datetime        ` | ``
+# **created_at             ** | `datetime        ` | `not null`
+# **updated_at             ** | `datetime        ` | `not null`
+# **role                   ** | `string(255)     ` | ``
+# **approved               ** | `boolean         ` | `default(FALSE), not null`
+# **name                   ** | `string(255)     ` | ``
+# **organization           ** | `string(255)     ` | ``
+# **requested_role         ** | `string(255)     ` | ``
+# **address                ** | `string(255)     ` | ``
+# **city                   ** | `string(255)     ` | ``
+# **state                  ** | `string(255)     ` | ``
+# **zipcode                ** | `string(8)       ` | ``
+# **phone                  ** | `string(255)     ` | ``
+# **newsletter             ** | `boolean         ` | `default(FALSE)`
+# **authentication_token   ** | `string(255)     ` | ``
 #
-# Name                          | Type               | Attributes
-# ----------------------------- | ------------------ | ---------------------------
-# **`id`**                      | `integer`          | `not null, primary key`
-# **`email`**                   | `string(255)`      | `default(""), not null`
-# **`encrypted_password`**      | `string(255)`      | `default(""), not null`
-# **`reset_password_token`**    | `string(255)`      |
-# **`reset_password_sent_at`**  | `datetime`         |
-# **`remember_created_at`**     | `datetime`         |
-# **`sign_in_count`**           | `integer`          | `default(0)`
-# **`current_sign_in_at`**      | `datetime`         |
-# **`last_sign_in_at`**         | `datetime`         |
-# **`current_sign_in_ip`**      | `string(255)`      |
-# **`last_sign_in_ip`**         | `string(255)`      |
-# **`confirmation_token`**      | `string(255)`      |
-# **`confirmed_at`**            | `datetime`         |
-# **`confirmation_sent_at`**    | `datetime`         |
-# **`created_at`**              | `datetime`         | `not null`
-# **`updated_at`**              | `datetime`         | `not null`
-# **`role`**                    | `string(255)`      |
-# **`approved`**                | `boolean`          | `default(FALSE), not null`
-# **`name`**                    | `string(255)`      |
-# **`organization`**            | `string(255)`      |
-# **`requested_role`**          | `string(255)`      |
-# **`address`**                 | `string(255)`      |
-# **`city`**                    | `string(255)`      |
-# **`state`**                   | `string(255)`      |
-# **`zipcode`**                 | `string(8)`        |
-# **`phone`**                   | `string(255)`      |
-# **`newsletter`**              | `boolean`          | `default(FALSE)`
-# **`authentication_token`**    | `string(255)`      |
+# Indexes
 #
-# ### Indexes
-#
-# * `index_users_on_approved`:
-#     * **`approved`**
-# * `index_users_on_confirmation_token` (_unique_):
-#     * **`confirmation_token`**
-# * `index_users_on_email` (_unique_):
-#     * **`email`**
-# * `index_users_on_reset_password_token` (_unique_):
-#     * **`reset_password_token`**
+#  index_users_on_approved              (approved)
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 

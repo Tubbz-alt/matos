@@ -180,28 +180,26 @@ class Tag < ActiveRecord::Base
 end
 
 # ## Schema Information
+# Schema version: 20130311180440
 #
-# Table name: `tags`
+# Table name: tags
 #
-# ### Columns
+# Field                     | Type               | Attributes
+# ------------------------- | ------------------ | -------------------------
+# **id                   ** | `integer         ` | `not null, primary key`
+# **serial               ** | `string(255)     ` | ``
+# **code                 ** | `string(255)     ` | ``
+# **code_space           ** | `string(255)     ` | ``
+# **lifespan             ** | `string(255)     ` | ``
+# **endoflife            ** | `datetime        ` | ``
+# **model                ** | `string(255)     ` | ``
+# **manufacturer         ** | `string(255)     ` | ``
+# **type                 ** | `string(255)     ` | ``
+# **description          ** | `text            ` | ``
+# **active_deployment_id ** | `integer         ` | ``
 #
-# Name                        | Type               | Attributes
-# --------------------------- | ------------------ | ---------------------------
-# **`id`**                    | `integer`          | `not null, primary key`
-# **`serial`**                | `string(255)`      |
-# **`code`**                  | `string(255)`      |
-# **`code_space`**            | `string(255)`      |
-# **`lifespan`**              | `string(255)`      |
-# **`endoflife`**             | `datetime`         |
-# **`model`**                 | `string(255)`      |
-# **`manufacturer`**          | `string(255)`      |
-# **`type`**                  | `string(255)`      |
-# **`description`**           | `text`             |
-# **`active_deployment_id`**  | `integer`          |
+# Indexes
 #
-# ### Indexes
-#
-# * `index_tags_on_model`:
-#     * **`model`**
+#  index_tags_on_model  (model)
 #
 
