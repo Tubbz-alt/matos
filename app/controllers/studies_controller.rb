@@ -3,11 +3,8 @@ class StudiesController < ApplicationController
   def index
     @studies = Study.active.order(:id)
     respond_to do |format|
-      format.html
       format.json {
-        render :json => @studies.as_json({
-
-        })
+        render :json => @studies.as_json
       }
     end
   end
