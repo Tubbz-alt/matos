@@ -53,6 +53,25 @@ class TagDeployment < ActiveRecord::Base
     return nil
   end
 
+  def sensor_codes
+    ec = read_attribute(:sensor_codes)
+    if ec.blank?
+      return nil
+    else
+      return ec.split(",") rescue nil
+    end
+  end
+
+  def sensor_codes=(codes)
+    if codes.blank?
+      write_attribute(:sensor_codes, nil)
+    elsif codes.is_a? String
+      write_attribute(:sensor_codes, codes)
+    elsif codes.is_a? Array
+      write_attribute(:sensor_codes, codes.join(","))
+    end
+  end
+
   def external_codes
     ec = read_attribute(:external_codes)
     if ec.blank?

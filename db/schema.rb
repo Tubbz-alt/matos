@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308191449) do
+ActiveRecord::Schema.define(:version => 20130311180440) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(:version => 20130308191449) do
     t.string   "implant_type"
     t.string   "reward"
     t.integer  "study_id"
+    t.string   "sensor_codes"
   end
 
   add_index "tag_deployments", ["capture_geo"], :name => "index_tag_deployments_on_capture_geo", :spatial => true
