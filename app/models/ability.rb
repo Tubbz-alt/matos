@@ -47,10 +47,10 @@ class Ability
     researcher
     can :create, Submission
     can :read,   Submission, :user_id => @user.id
-    can :read,   ActiveAdmin
   end
 
   def admin
+    can :read,   ActiveAdmin
     can :manage, :all
   end
 
