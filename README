@@ -71,3 +71,6 @@ $ rails server thin
 # Deployment to production
 $ cap production deploy:setup # one time
 $ cap production deploy
+
+# Annotation
+$ annotate -p after -m -i -e tests,fixtures,factories -f markdown
