@@ -21,11 +21,14 @@ class Deployment < ActiveRecord::Base
   has_many :hits
   has_many :tag_deployments, :through => :hits
 
-  validates_presence_of :study_id, :otn_array_id, :station
+  validates_presence_of :study_id, :otn_array_id, :station, :location
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
 
   scope :active_study, joins(:study).where('studies.title IS NOT NULL AND studies.name IS NOT NULL AND studies.start IS NOT NULL and studies.ending IS NOT NULL')
+
+  scope :readable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id}") }
+  scope :managable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR ( collaborators.role = 'manage' AND users.id = #{u.id} )") }
 
   def DT_RowId
     self.id

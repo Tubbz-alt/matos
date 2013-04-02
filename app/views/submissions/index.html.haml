@@ -1,61 +1,27 @@
-%h1 Submissions
+%h2 Submissions
 
-%table{:id => :table}
+%p= link_to "Create a new submission", new_submission_path
 
-  :javascript
+%p
+    These are submissions that were entered into #{t('project.name')} for studies that you have permission to manage.
 
-    function makeActionButtons(oObj) {
-      var text = "";
-      text += "<a href='#' class='destroyer'>Delete</a> ";
-      text += "<a href='#{submissions_path}/" + oObj.aData.DT_RowId + "/analyze' class='analyzer'>Analyze</a> ";
-      return text;
-    }
+- unless @submissions.empty?
+    %table
+        %thead
+            %tr
+                %th Study
+                %th Uploaded By
+                %th Uploaded On
+                %th Data Type
+                %th Data File
+        %tbody
+            - @submissions.each do |s|
+                %tr
+                    %td= link_to s.study.name, study_path(s.study)
+                    %td= s.user.name
+                    %td= s.datafile_updated_at.in_time_zone
+                    %td= s.datatype
+                    %td= link_to "Download", s.datafile.url
+- else
+    %h2 No submissions have been entered
 
-    function makeLink(oObj) {
-      var text = "";
-      text += "<a href='" + oObj.aData.zipfile_url + "' class='linker'>View</a>";
-      return text;
-    }
-
-    var oTable;
-
-    $(document).ready(function() {
-
-      /* Init DataTables */
-      oTable = $('#table').dataTable( {
-        "bJQueryUI": true,
-        "bProcessing": true,
-        "bServerSide": true,
-        "bDeferRender": true,
-        "bFilter": false,
-        "sPaginationType": "full_numbers",
-        "sAjaxSource": "#{submissions_path({:format => :dataTable})}",
-        "aoColumns": [
-          { "sTitle": "Status", "sName": "status", "mDataProp": "status" },
-          { "sTitle": "Name", "sName": "user.name", "mDataProp": "user.name", "bSortable": false },
-          { "sTitle": "Email", "sName": "user.email", "mDataProp": "user.email", "bSortable": false },
-          { "sTitle": "Zipfile", "sName": "zipfile_url", "mDataProp": "zipfile_url", "bSortable": false, "fnRender": function (oObj){ return makeLink(oObj); }  },
-          { "sTitle": "Actions", "sName": "action", "mDataProp": null, "bSortable": false, "fnRender": function (oObj){ return makeActionButtons(oObj); } }
-        ],
-        "fnDrawCallback": function(oSettings, json) {
-
-          $(".destroyer").click(function(e) {
-            if(confirm("Are you sure you want to DELETE?")) {
-              e.preventDefault();
-              var aData = oTable.fnGetData($(this).parents('tr')[0]);
-              var id = aData.DT_RowId;
-              $.ajax({
-                type: "DELETE",
-                url: "#{submissions_path}/"+id+".js",
-                success: function(){
-                  oTable.fnDraw();
-                },
-                error: function(){
-                  alert('Failed to delete Submission');
-                }
-              });
-            }
-          });
-        }
-      });
-    });

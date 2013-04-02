@@ -16,21 +16,10 @@ Matos::Application.routes.draw do
 
   resources :deployments, :only => [:index, :destroy]
 
-  resources :submissions, :only => [:new, :create, :show, :index, :destroy] do
-    member do
-      get 'analyze'
-      get 'parse'
-      get 'deployments'
-      get 'proposed'
-      get 'retrievals'
-      get 'tags'
-      get 'locations'
-      get 'project'
-    end
-  end
+  resources :submissions, :only => [:new, :create, :show, :index, :destroy]
 
   # The projects controller is identical to the studies
-  resources :studies, :projects, :controller => :studies, :only => [:index, :show, :edit, :update] do
+  resources :studies, :projects, :controller => :studies, :only => [:index, :new, :create, :show, :edit, :update] do
     resources :deployments, :only => [:index, :destroy]
     resources :reports, :only => [:index, :destroy, :update]
   end

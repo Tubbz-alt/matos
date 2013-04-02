@@ -18,9 +18,24 @@
             = @submission.user.email
         %tr
           %td{:class => "label"}
-            Zipfile
+            Study
           %td
-            = link_to "Download", "#{request.protocol}#{request.host_with_port}#{@submission.zipfile.url}"
+            = link_to @submission.study.name, study_path(@submission.study)
+        %tr
+          %td{:class => "label"}
+            Datetype
+          %td
+            = @submission.datatype
+        %tr
+          %td{:class => "label"}
+            Clear Data?
+          %td
+            = @submission.cleardata.to_s.humanize
+        %tr
+          %td{:class => "label"}
+            Datefile
+          %td
+            = link_to "Download", @submission.datafile.url
         %tr
           %td{:class => "label"}
             Status
@@ -32,10 +47,5 @@
           %td
             = @submission.created_at.in_time_zone
     .clear
-
-  - if can? :manage, @submission
-    %br
-    = link_to "Analyze Submission", analyze_submission_path(@submission)
-
 
   %div{:style => "height: 400px;"}

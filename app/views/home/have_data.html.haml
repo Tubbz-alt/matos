@@ -11,19 +11,21 @@
       %strong
         Last updated: Tuesday, May 22nd, 2012
       %br
-      = link_to "Download", static_path("GLATOSWeb_Submission_Package.zip"), :target => '_blank'
+      = link_to "Create", new_study_path
+      a project to organize and protect your data
+      %br
+      = link_to "Download", static_path("Web_Submission_Package.zip"), :target => '_blank'
       your #{t('project.name')} Data Submittal Package
       %br
-      %br
       = link_to "Submit", new_submission_path
-      your completed #{t('project.name')} Data Submittal Package
+      a completed #{t('project.name')} Data Submittal Package
     - else
       The first step is to register as an Investigator
       = link_to "here.", new_user_registration_path
       Once your registration is approved, a link will appear on this page to download the #{t('project.name')} Data Submittal Package.
 
   %p
-    The #{t('project.name')} Data Submittal Package contains templates for the entry of project information, proposed receiver deployments, actual receiver locations, and transmitter/tag details. The package, a compressed .ZIP archive, also contains descriptions of necessary and recommended data and instructions for entering information into the templates and for submittal of the formatted information to #{t('project.name')}.
+    The #{t('project.name')} Data Submittal Package contains templates for the entry of receiver deployments, tag deployments, and reviever receptions. The package, a compressed .ZIP archive, also contains descriptions of necessary and recommended data and instructions for entering information into the templates and for submittal of the formatted information to #{t('project.name')}.
 
   %p
     Please direct questions about data submittal to

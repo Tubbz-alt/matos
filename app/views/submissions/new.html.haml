@@ -1,15 +1,8 @@
-%p
-  The uploaded file should have the extension
-  %strong
-    zip
-  and be the result of clicking on the
-  %strong
-    Create Submission Package
-  button in
-  %strong
-    GLATOSWeb_DataForms.xlsm.
-
 = semantic_form_for @submission, :html => { :multipart => true }, :url => submissions_path do |f|
-  = f.input :zipfile, :as => :file, :label => false
+  = f.input :study, :collection => Study.approved.select {|s| can? :manage, s}, :hint => "If your study does not appear here it may still need to be approved."
+  = f.input :datatype, :collection => Submission::DATATYPES.map(&:humanize), :include_blank => false, :label => "Type"
+  = f.input :cleardata, :as => :select, :include_blank => false, :hint => "Warning!  Setting this to \"Yes\" will erase all data of selected \"Type\" before adding the new data!"
+  = f.input :datafile, :as => :file, :label => "Data"
+
   = f.actions do
     = f.action :submit, :as => :button, :label => "Upload"

@@ -1,0 +1,15 @@
+%p
+  A new study was requested in #{t('project.name')}
+  %br
+  = @study.code
+  %br
+  = @study.name
+  %br
+  = @study.title
+  %br
+  Created by:
+  = @study.user.name 
+  = @study.user.email
+
+%p You can approve this study through the link below:
+%p= link_to 'Edit Study', edit_admin_study_url(@study.id)

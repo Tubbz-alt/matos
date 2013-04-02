@@ -24,6 +24,10 @@ class User < ActiveRecord::Base
 
   has_many :studies
 
+  def is_admin?
+    self.role == "admin"
+  end
+
   def DT_RowId
     self.id
   end

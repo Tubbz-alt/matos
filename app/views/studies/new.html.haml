@@ -1,0 +1,17 @@
+#study_new_page
+
+  %h2 Create a new study
+
+  %p A new study needs to be approved by a #{t 'project.name'} administrator before it will be available on the website.  After submitting, someone will be in contact with you.
+
+  %br
+  %br
+
+  = semantic_form_for @study, :url => studies_path do |f|
+    = f.inputs do
+      = f.input :name, :hint => "Enter a short (45-character max.) title here"
+      = f.input :title, :hint => "Enter full project title here"
+      = f.input :code, :hint => "Unique 5-character code for project, preferably to represent study location and species."
+
+    = f.actions do
+      = f.action :submit, :as => :button, :label => "Propose new study"

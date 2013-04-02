@@ -1,0 +1,8 @@
+%p
+  Your study, #{@study.name}, has been approved for inclusion in #{t('project.name')}!
+
+%p You can edit the study information here:
+%p= link_to 'Edit Study', edit_study_url(@study)
+
+%p And upload data for your study here:
+%p= link_to 'Upload Data', new_submission_url

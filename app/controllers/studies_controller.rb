@@ -9,6 +9,23 @@ class StudiesController < ApplicationController
     end
   end
 
+  def new
+    authorize! :create, Study
+    @study = Study.new
+  end
+
+  def create
+    authorize! :create, Study
+    @study = Study.new( params[:study] )
+    @study.user = current_user
+    @study.approved = false
+    if @study.save
+      redirect_to study_path(@study), :notice => "You will be contacted via email when your study has been approved"
+    else
+      render :action => :new
+    end
+  end
+
   def show
     @study = Study.includes(:user, :deployments, {:tag_deployments => :tag}).find(params[:id])
     respond_to do |format|

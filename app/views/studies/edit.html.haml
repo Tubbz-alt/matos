@@ -5,7 +5,10 @@
   - unless @study.active
     %h2 This project is INACTIVE
     The minimum amount of information required to show up on the website is: Name, Title, Start, and Ending
+    
     %br
+    %br
+
 
   = semantic_form_for(@study, :url => study_path(@study), :html => { :method => :put }) do |f|
     = f.inputs do
@@ -16,18 +19,11 @@
       = f.input :ending,:as => :date, :start_year => Time.now.year - 30, :end_year => Time.now.year + 10, :hint => "Enter expected study end date here"
       = f.input :url, :hint => "Enter an external URL where someone might go to get more information about the project"
       = f.input :species
-      = f.input :code, :hint => "Unique 5-character code for project, preferably to represent study location and species.  Before changing this, please beware of the consequences!"
       = f.input :objectives, :hint => "List project objectives here, separated by the special string '=;='.  Each objective will then appear as a separate item in the list of objectives on your project page. For example, Learn migratory patterns=;=Establish seasonal baseline"
       = f.input :benefits, :hint => "List expected management benefits here.  This is REQUIRED for GLFC and GLRI-funded projects. Use the special string '=;=' to separate objectives if you'd like them presented in list format. If none, leave blank."
       = f.input :organizations, :hint => "List supporting and cooperating organizations here. Separate organizations with the special string '=;=' to present in list format."
       = f.input :funding, :hint => "List funding sources here. Separate funding sources with the special string '=;=' to present in list format."
       = f.input :investigators, :hint => "List other investigators here (organizations in parentheses). Separate investigators with the special string '=;=' to have them presented in list format on the project page."
-
-      = f.semantic_fields_for :user do |u|
-        = u.inputs do
-          = u.input :name, :hint => "First and Last Name of Principal Investigator"
-          = u.input :email, :hint => "Email of the Principal Investigator.  Warning: This will change the login of the PI."
-          = u.input :organization, :hint => "Principal Investigator Affiliation"
 
       = f.input :img_first, :label => "First Image", :hint => "#{@study.img_first_file_name || 'None'}"
       - if @study.img_first.exists?

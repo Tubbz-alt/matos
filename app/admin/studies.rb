@@ -6,6 +6,7 @@ ActiveAdmin.register Study do
   filter :ending
   filter :species, :as => :check_boxes, :collection => proc { Study.all.map(&:species).select(&:present?).uniq }
   filter :user_id, :label => "Owner"
+  filter :approved
   filter :permissions, :as => :select, :collection => Study::PERMS.map{|r|["#{r.humanize} - #{Study::PERMS_MAP[r.to_sym]}",r]}
 
   index do
@@ -19,6 +20,7 @@ ActiveAdmin.register Study do
     column :ending
     column :species
     column "Owner", :user
+    column :approved
     column :permissions
 
     default_actions
@@ -34,6 +36,7 @@ ActiveAdmin.register Study do
       f.input :ending
       f.input :species, :as => :select, :collection => Study.all.map(&:species).select(&:present?).uniq.append("Many").append("N/A")
       f.input :user, :label => "Owner"
+      f.input :approved, :as => :select, :label => "Approved?"
       f.input :permissions, :as => :select, :collection => Study::PERMS.map{|r|["#{r.humanize} - #{Study::PERMS_MAP[r.to_sym]}",r]}
       f.has_many :collaborators do |c|
         c.inputs "Collaborators" do
@@ -63,6 +66,7 @@ ActiveAdmin.register Study do
       row :ending
       row :species
       row :user
+      row :approved
       row :permissions do |p|
         s.permissions.humanize + " - " + Study::PERMS_MAP[s.permissions.to_sym]
       end

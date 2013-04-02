@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130311180440) do
+ActiveRecord::Schema.define(:version => 20130402193032) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -165,17 +165,21 @@ ActiveRecord::Schema.define(:version => 20130311180440) do
     t.integer  "img_fifth_file_size"
     t.datetime "img_fifth_updated_at"
     t.string   "permissions",                           :default => "private"
+    t.boolean  "approved",                              :default => false
   end
 
   create_table "submissions", :force => true do |t|
     t.integer  "user_id"
-    t.string   "zipfile_file_name"
-    t.string   "zipfile_content_type"
-    t.integer  "zipfile_file_size"
-    t.datetime "zipfile_updated_at"
     t.string   "status"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.integer  "study_id"
+    t.string   "datatype"
+    t.string   "datafile_file_name"
+    t.string   "datafile_content_type"
+    t.integer  "datafile_file_size"
+    t.datetime "datafile_updated_at"
+    t.boolean  "cleardata",             :default => false
   end
 
   create_table "tag_deployments", :force => true do |t|

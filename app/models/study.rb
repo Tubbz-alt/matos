@@ -31,14 +31,16 @@ class Study < ActiveRecord::Base
   end
 
   belongs_to  :user
-  validates   :user, :presence => true
-  accepts_nested_attributes_for :user
+  validates   :user, :name, :title, :presence => true
+  validates_uniqueness_of   :code
+  validates_length_of       :code, :minimum => 5, :maximum => 5, :allow_blank => false
 
   has_many :collaborators
   has_many :users, :through => :collaborators
   accepts_nested_attributes_for :collaborators, :allow_destroy => true
 
   scope :active, where("title IS NOT NULL AND name IS NOT NULL AND start IS NOT NULL and ending IS NOT NULL")
+  scope :approved, where({ :approved => true })
 
   has_many    :deployments, :dependent => :destroy
   has_many    :tag_deployments, :dependent => :destroy

@@ -3,7 +3,4 @@
   %br
   = "You can access the submission here: #{submission_url(@submission)}"
 
-%p
-  = new_user_session_url
-  %br
-  = link_to 'Login now', new_user_session_url
+%p= link_to 'Login now', new_user_session_url

@@ -16,19 +16,15 @@ class Ability
     cannot :destroy, User
 
     # Deployment
-    can :read, Deployment, Deployment.includes({ :study => :collaborators }) do |d|
-      d.study.permissions == 'public' || d.study.collaborators.map(&:user).include?(@user)
-    end
-    can :manage, Deployment, Deployment.includes({ :study => :collaborators }) do |d|
-      d.study.user_id == @user.id || d.study.collaborators.select({ :role => 'manage' }).map(&:user).include?(@user)
-    end
+    can :read, Deployment, Deployment.readable(@user)
+    can :manage, Deployment, Deployment.managable(@user)
 
     # Tag
-    can :read, Tag, Tag.includes({ :study => :collaborators }) do |t|
-      t.study.permissions == 'public' || t.study.collaborators.map(&:user).include?(@user)
+    can :read, Tag, Tag.includes({ :tag_deployments => {:study => :collaborators }}) do |t|
+      t.tag_deployments.select{|td| td.study.permissions == 'public'}.any? || t.tag_deployments.select{|td| td.study.collaborators.map(&:user).include?(@user)}.any?
     end
-    can :manage, Tag, Tag.includes({ :study => :collaborators }) do |t|
-      t.study.user_id == @user.id || t.study.collaborators.select({ :role => 'manage' }).map(&:user).include?(@user)
+    can :manage, Tag, Tag.includes({ :tag_deployments => {:study => :collaborators }}) do |t|
+      t.tag_deployments.select{|td| td.study.user_id == @user.id}.any? || t.tag_deployments.select{|td| td.study.collaborators.select{|c| c.role = 'manage'}.map(&:user).include?(@user)}.any?
     end
 
     can :read, Study
@@ -45,6 +41,7 @@ class Ability
 
   def investigator
     researcher
+    can :create, Study
     can :create, Submission
     can :read,   Submission, :user_id => @user.id
   end
