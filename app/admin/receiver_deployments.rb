@@ -1,14 +1,9 @@
-ActiveAdmin.register Deployment do
+ActiveAdmin.register ReceiverDeployment do
 
   filter :study
   filter :otn_array
   filter :start
-  filter :proposed_ending
   filter :station
-  filter :frequency
-  filter :model
-  filter :instrument_serial
-  filter :vps
   filter :seasonal
   filter :proposed
   filter :funded
@@ -25,7 +20,6 @@ ActiveAdmin.register Deployment do
     column :longitude
     column :start
     column :ending
-    column :model
 
     default_actions
   end
@@ -41,15 +35,10 @@ ActiveAdmin.register Deployment do
       row :location
       row :start
       row :ending
-      row :model
-      row :frequency
       row :riser_length
       row :bottom_depth      
       row :instrument_depth
-      row :instrument_serial
-      row :rcv_modem_address
       row :deployed_by
-      row :vps
       row :seasonal
       row :funded
       row :proposed

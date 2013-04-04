@@ -42,7 +42,7 @@ class Study < ActiveRecord::Base
   scope :active, where("title IS NOT NULL AND name IS NOT NULL AND start IS NOT NULL and ending IS NOT NULL")
   scope :approved, where({ :approved => true })
 
-  has_many    :deployments, :dependent => :destroy
+  has_many    :receiver_deployments, :dependent => :destroy
   has_many    :tag_deployments, :dependent => :destroy
   has_many    :tags, :through => :tag_deployments, :dependent => :destroy
 

@@ -629,7 +629,7 @@ function initMap() {
 
       OpenLayers.Request.issue({
          method   : 'GET'
-        ,url      : "<%= ActionController::Base.relative_url_root %>/deployments.geo"
+        ,url      : "<%= ActionController::Base.relative_url_root %>/receiver_deployments.geo"
         ,callback : function(r) {
           var json        = new OpenLayers.Format.JSON().read(r.responseText);
           var frequencies = {};

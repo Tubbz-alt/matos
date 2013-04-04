@@ -16,8 +16,8 @@ class Ability
     cannot :destroy, User
 
     # Deployment
-    can :read, Deployment, Deployment.readable(@user)
-    can :manage, Deployment, Deployment.managable(@user)
+    can :read, ReceiverDeployment, ReceiverDeployment.readable(@user)
+    can :manage, ReceiverDeployment, ReceiverDeployment.managable(@user)
 
     # Tag
     can :read, Tag, Tag.includes({ :tag_deployments => {:study => :collaborators }}) do |t|
@@ -41,6 +41,7 @@ class Ability
 
   def investigator
     researcher
+    can :read,   Receiver
     can :create, Study
     can :create, Submission
     can :read,   Submission, :user_id => @user.id

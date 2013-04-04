@@ -65,14 +65,15 @@ class SearchController < ApplicationController
     })
   end
 
-  def deployments
-    deps = Deployment.includes(:study, :otn_array).search_all(params[:text])
-    render :json => deps.as_json({
-                      :only => [:id, :start, :ending, :seasonal, :model],
+  def receivers
+    recs = ReceiverDeployment.includes(:receiver).includes(:study).search_all(params[:text])
+    render :json => recs.as_json({
+                      :only => [:id, :start, :ending, :seasonal],
                       :methods => [:code],
                       :include => {
                         :study => { :only => [:id, :name] },
-                        :otn_array => { :only => :name }
+                        :otn_array => { :only => :name },
+                        :receiver => { :only => [:model, :serial] }
                       }
                     })
   end

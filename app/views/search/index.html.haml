@@ -23,7 +23,7 @@
     %div{:id => 'studies'}
   -#
     .search_table{:class => "two_wide_last"}
-      %h3 Deployments
+      %h3 Receivers
       %h5{:id => 'deployment_count'}
       %div{:id => 'deployments'}
 .clear
@@ -88,7 +88,7 @@
 
       $.ajax({
         type: "GET",
-        url: "#{search_deployments_path({:format => :js})}",
+        url: "#{search_receivers_path({:format => :js})}",
         data: "text="+phrase,
         dataType: 'json',
         success: function(data){

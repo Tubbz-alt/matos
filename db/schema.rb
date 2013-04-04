@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130403155948) do
+ActiveRecord::Schema.define(:version => 20130404154754) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -43,38 +43,14 @@ ActiveRecord::Schema.define(:version => 20130403155948) do
     t.integer "hit_id"
   end
 
-  create_table "deployments", :force => true do |t|
-    t.datetime "start"
-    t.integer  "study_id"
-    t.spatial  "location",          :limit => {:srid=>4326, :type=>"point", :geographic=>true}
-    t.integer  "otn_array_id"
-    t.integer  "station"
-    t.string   "model"
-    t.boolean  "seasonal"
-    t.integer  "frequency"
-    t.integer  "riser_length"
-    t.integer  "bottom_depth"
-    t.integer  "instrument_depth"
-    t.string   "instrument_serial"
-    t.integer  "rcv_modem_address"
-    t.string   "deployed_by"
-    t.boolean  "vps"
-    t.integer  "consecutive"
-    t.boolean  "proposed"
-    t.boolean  "funded"
-    t.datetime "proposed_ending"
-  end
-
-  add_index "deployments", ["location"], :name => "index_deployments_on_location", :spatial => true
-
   create_table "hits", :force => true do |t|
-    t.integer  "deployment_id"
-    t.string   "deployment_code"
+    t.integer  "receiver_deployment_id"
+    t.string   "receiver_code"
     t.integer  "tag_deployment_id"
     t.string   "tag_code"
     t.datetime "time"
-    t.decimal  "depth",                                                                                                     :precision => 8, :scale => 4
-    t.spatial  "location",          :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
+    t.decimal  "depth",                                                                                                          :precision => 8, :scale => 4
+    t.spatial  "location",               :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
     t.datetime "created_at"
   end
 
@@ -86,6 +62,40 @@ ActiveRecord::Schema.define(:version => 20130403155948) do
   end
 
   add_index "otn_arrays", ["code"], :name => "index_otn_arrays_on_code"
+
+  create_table "receiver_deployments", :force => true do |t|
+    t.integer  "receiver_id"
+    t.spatial  "location",          :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
+    t.datetime "start"
+    t.integer  "study_id"
+    t.integer  "otn_array_id"
+    t.string   "name"
+    t.integer  "station"
+    t.boolean  "seasonal"
+    t.decimal  "riser_length",                                                                                              :precision => 8, :scale => 2
+    t.decimal  "bottom_depth",                                                                                              :precision => 8, :scale => 2
+    t.decimal  "instrument_depth",                                                                                          :precision => 8, :scale => 2
+    t.boolean  "funded"
+    t.boolean  "proposed"
+    t.datetime "proposed_ending"
+    t.integer  "consecutive"
+    t.string   "deployed_by"
+    t.datetime "recovery_date"
+    t.spatial  "recovery_location", :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
+    t.boolean  "data_downloaded"
+    t.boolean  "ar_confirm"
+  end
+
+  add_index "receiver_deployments", ["receiver_id"], :name => "index_receiver_deployments_on_receiver_id"
+  add_index "receiver_deployments", ["study_id"], :name => "index_receiver_deployments_on_study_id"
+
+  create_table "receivers", :force => true do |t|
+    t.string  "model"
+    t.integer "frequency"
+    t.string  "serial"
+    t.integer "rcv_modem_address"
+    t.boolean "vps"
+  end
 
   create_table "reports", :force => true do |t|
     t.string   "input_tag",                                                                                                                         :null => false
@@ -117,17 +127,6 @@ ActiveRecord::Schema.define(:version => 20130403155948) do
   add_index "reports", ["location"], :name => "index_reports_on_location", :spatial => true
   add_index "reports", ["tag_deployment_id"], :name => "index_reports_on_tag_deployment_id"
   add_index "reports", ["tag_deployment_id"], :name => "index_reports_on_tag_id"
-
-  create_table "retrievals", :force => true do |t|
-    t.integer  "deployment_id"
-    t.boolean  "data_downloaded"
-    t.boolean  "ar_confirm"
-    t.datetime "recovered"
-    t.spatial  "location",        :limit => {:srid=>4326, :type=>"point", :geographic=>true}
-  end
-
-  add_index "retrievals", ["deployment_id"], :name => "index_retrievals_on_deployment_id"
-  add_index "retrievals", ["location"], :name => "index_retrievals_on_location", :spatial => true
 
   create_table "studies", :force => true do |t|
     t.string   "name"

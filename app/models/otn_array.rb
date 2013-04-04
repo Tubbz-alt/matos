@@ -1,31 +1,8 @@
 class OtnArray < ActiveRecord::Base
 
-  has_many :deployments
+  has_many :receiver_deployments
 
   validates_presence_of :code
-
-  def self.load_data(file)
-    require 'csv'
-    otns = []
-    errors = []
-    count = 0
-    CSV.foreach(file, {:headers => true}) do |row|
-      count += 1
-      o = OtnArray.find_or_initialize_by_code(row['GLATOS_ARRAY'])
-      o.attributes =
-        {
-          :description => row["LOCATION_DESCRIPTION"],
-          :waterbody => row["WATER_BODY"],
-          :region => row["GLATOS_REGION"]
-        }
-      if o.valid?
-        otns << o
-      else
-        errors << "#{o.errors.full_messages.join(" and ")} - Data: #{row}"
-      end
-    end
-    return otns, errors, count
-  end
 
   def to_label
     title

@@ -27,7 +27,7 @@ class StudiesController < ApplicationController
   end
 
   def show
-    @study = Study.includes(:user, :deployments, {:tag_deployments => :tag}).find(params[:id])
+    @study = Study.includes(:user, {:receiver_deployments => :receiver}, {:tag_deployments => :tag}).find(params[:id])
     respond_to do |format|
       format.html
     end
