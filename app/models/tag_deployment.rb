@@ -25,7 +25,7 @@ class TagDeployment < ActiveRecord::Base
   belongs_to :study
 
   has_one    :report
-  has_many   :hits
+  has_many   :hits, :dependent => :destroy
   has_many   :deployments, :through => :hits
 
   validates :tag_id, :release_date, :study_id, :presence => true
@@ -108,7 +108,7 @@ class TagDeployment < ActiveRecord::Base
 
   private
     def set_active_deployment
-      self.tag.active_deployment = TagDeployment.includes(:tag).where(:tag_id => self.tag.id).order("release_date DESC").limit(1).first
+      self.tag.active_deployment = TagDeployment.includes(:tag).where(:tag_id => self.tag.id).order("release_date DESC").limit(1).first rescue nil
       self.tag.save!
     end
 end

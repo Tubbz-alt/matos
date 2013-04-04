@@ -29,7 +29,6 @@ ActiveAdmin.register Tag do
       f.input :serial
       f.input :type
       f.input :description
-      f.input :endoflife
     end
     f.actions
   end
@@ -43,7 +42,6 @@ ActiveAdmin.register Tag do
       row :serial
       row :type
       row :description
-      row :endoflife
     end
     active_admin_comments
   end

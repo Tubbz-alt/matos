@@ -1,8 +1,8 @@
 = semantic_form_for @submission, :html => { :multipart => true }, :url => submissions_path do |f|
   = f.input :study, :collection => Study.approved.select {|s| can? :manage, s}, :hint => "If your study does not appear here it may still need to be approved."
   = f.input :datatype, :collection => Submission::DATATYPES.map(&:humanize), :include_blank => false, :label => "Type"
-  = f.input :cleardata, :as => :select, :include_blank => false, :hint => "Warning!  Setting this to \"Yes\" will erase all data of selected \"Type\" before adding the new data!"
-  = f.input :datafile, :as => :file, :label => "Data"
+  = f.input :cleardata, :as => :select, :include_blank => false, :hint => "Warning!  Setting this to \"Yes\" will erase all data of selected \"Type\" before adding the new data!  Setting to \"No\" will attempt to update duplicate records and add new records."
+  = f.input :datafile, :as => :file, :label => "Data", :hint => "CSV file exported directly from the #{t('project.name')} Data Submittal Package or VEMCO VUE."
 
   = f.actions do
     = f.action :submit, :as => :button, :label => "Upload"

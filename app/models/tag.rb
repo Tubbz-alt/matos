@@ -73,8 +73,8 @@ class Tag < ActiveRecord::Base
           {
             :study => Study.find_by_code(row["GLATOS_PROJECT"]),
             :tagger => row["TAGGER"],
-            :common_name => Fish::TYPES.select{|s| /#{Regexp.escape(row["COMMON_NAME_E"].humanize)}/i.match(s)}.first,
-            :scientific_name => Fish::SCITYPES.select{|s| /#{Regexp.escape(row["SCIENTIFIC_NAME"].humanize)}/i.match(s)}.first,
+            :common_name => row["COMMON_NAME"],
+            :scientific_name => row["SCIENTIFIC_NAME"],
             :capture_location => row["CAPTURE_LOCATION"],
             :capture_geo => "POINT(#{row['CAPTURE_LONGITUDE']} #{row['CAPTURE_LATITUDE']})",
             :capture_depth => Tag.decimal_or_nil(row["CAPTURE_DEPTH"]),
@@ -108,7 +108,9 @@ class Tag < ActiveRecord::Base
             :length => Tag.decimal_or_nil(row["LENGTH"]),
             :length_type => row["LENGTH_TYPE"],
             :implant_type => row["TAG_IMPLANT_TYPE"],
-            :reward => row["GLATOS_REWARD"]
+            :reward => row["GLATOS_REWARD"],
+            :lifespan => ("#{row["EST_TAG_LIFE"].split(" ")[0]} days" rescue nil),
+            :expiration_date => (deployed_time.advance(:days => row["EST_TAG_LIFE"].split(" ")[0].to_i) rescue nil)
           }
         if td.valid?
           tag_deployments << td
@@ -144,8 +146,6 @@ class Tag < ActiveRecord::Base
             :serial => row["TAG_SERIAL_NUMBER"],
             :description => row["COMMENTS"],
             :type => row["TAG_TYPE"],
-            :lifespan => ("#{row["EST_TAG_LIFE"].split(" ")[0]} days" rescue nil),
-            :endoflife => (deployed_time.advance(:days => row["EST_TAG_LIFE"].split(" ")[0].to_i) rescue nil)
           }
         if t.valid?
           tags << t

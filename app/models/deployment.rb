@@ -18,7 +18,7 @@ class Deployment < ActiveRecord::Base
   belongs_to :study
   belongs_to :otn_array
   has_one :retrieval, :dependent => :destroy
-  has_many :hits
+  has_many :hits, :dependent => :destroy
   has_many :tag_deployments, :through => :hits
 
   validates_presence_of :study_id, :otn_array_id, :station, :location
