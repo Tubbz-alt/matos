@@ -23,7 +23,10 @@ class ReceiverDeployment < ActiveRecord::Base
   has_many :hits
   has_many :tag_deployments, :through => :hits
 
-  validates_presence_of :study_id, :otn_array_id, :station, :location, :receiver_id
+  validates_presence_of :study_id, :otn_array_id, :location, :receiver_id
+
+  validates_presence_of :station, :if => "name.nil? || name.blank?"
+  validates_presence_of :name,    :if => "station.nil? || station.blank?"
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326, :has_z_coordinate => true, :has_m_coordinate => true))
 
@@ -37,7 +40,12 @@ class ReceiverDeployment < ActiveRecord::Base
   end
 
   def code
-    "#{otn_array.code}-#{station}"
+    r = []
+    r << otn_array.code if otn_array
+    r << station if station
+    r << consecutive if consecutive
+    r << name if name
+    return r.join("-")
   end
 
   def geo
@@ -46,11 +54,12 @@ class ReceiverDeployment < ActiveRecord::Base
 
   def geojson
     if self.location
-      removals = ["location","id","station","otn_array_id"]
+      removals = ["location","id","station","consecutive","otn_array_id","receiver_id"]
       s = self.attributes.delete_if {|key, value| removals.include?(key) }
-      s[:code] = code
-      s[:recovered] = ending
-      s[:otn_array] = {:code => otn_array.code, :description => otn_array.description, :waterbody => otn_array.waterbody, :region => otn_array.region}
+      s[:code]      = code
+      s[:ending]    = ending
+      s[:otn_array] = { :code => otn_array.code, :description => otn_array.description, :waterbody => otn_array.waterbody, :region => otn_array.region }
+      s[:receiver]  = { :model => receiver.model, :serial => receiver.serial, :frequency => receiver.frequency, :vps => receiver.vps, :rcv_modem_address => receiver.rcv_modem_address }
       feat = RGeo::GeoJSON::Feature.new(self.location, self.id, s)
       return RGeo::GeoJSON.encode(feat)
     end
@@ -71,11 +80,11 @@ class ReceiverDeployment < ActiveRecord::Base
   end
 
   def display_name
-    "#{code}-#{consecutive}"
+    "#{code}"
   end
 
   def to_label
-    "#{code}-#{consecutive}"
+    "#{code}"
   end
 
 end
