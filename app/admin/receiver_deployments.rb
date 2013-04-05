@@ -3,6 +3,7 @@ ActiveAdmin.register ReceiverDeployment do
   filter :study
   filter :otn_array
   filter :start
+  filter :name
   filter :station
   filter :seasonal
   filter :proposed
