@@ -44,14 +44,20 @@ class Tag < ActiveRecord::Base
     end
   end
 
-  def self.decimal_or_nil(input)
-    BigDecimal.new(input) rescue nil
+  def model=(model)
+    write_attribute(:model,(model.downcase rescue nil))
   end
-  def self.time_or_nil(input)
-    Time.parse(input) rescue nil
+
+  def type=(type)
+    write_attribute(:type,(type.downcase rescue nil))
   end
-  def self.boolean_or_nil(input)
-    input.downcase == "yes" rescue nil
+  
+  def manufacturer=(manufacturer)
+    write_attribute(:manufacturer,(manufacturer.downcase rescue nil))
+  end
+
+  def serial=(serial)
+    write_attribute(:serial,(serial.downcase rescue nil))
   end
 
   def to_label

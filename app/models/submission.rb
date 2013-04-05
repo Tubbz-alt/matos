@@ -3,21 +3,19 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :study
 
-  before_destroy :destroy_extracted
-
   validates_presence_of :user, :study, :datatype
 
   has_attached_file :datafile
   validates_attachment_presence :datafile
 
-  DATATYPES = %w[recievers tags receptions]
-
-  def DT_RowId
-    self.id
-  end
+  DATATYPES = %w[receivers tags receptions]
 
   def status=(status)
     write_attribute(:status,status.downcase)
+  end
+
+  def datatype=(datatype)
+    write_attribute(:datatype,datatype.downcase)
   end
 
   def process

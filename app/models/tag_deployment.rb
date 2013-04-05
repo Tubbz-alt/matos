@@ -94,6 +94,18 @@ class TagDeployment < ActiveRecord::Base
     report.nil? ? nil : report.found
   end
 
+  def common_name=(common_name)
+    write_attribute(:common_name,(common_name.downcase rescue nil))
+  end
+
+  def scientific_name=(scientific_name)
+    write_attribute(:scientific_name,(scientific_name.downcase rescue nil))
+  end
+
+  def implant_type=(implant_type)
+    write_attribute(:implant_type,(implant_type.downcase rescue nil))
+  end
+
   def display_name
     z = tag.to_label
     z += " - #{starting.strftime('%Y-%m-%d')}"

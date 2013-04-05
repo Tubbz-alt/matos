@@ -12,6 +12,14 @@ class Receiver < ActiveRecord::Base
 
   validates_presence_of :model, :serial
 
+  def model=(model)
+    write_attribute(:model,model.downcase)
+  end
+
+  def serial=(serial)
+    write_attribute(:serial,serial.downcase)
+  end
+
   def rcv_modem_address
     "%03d" % read_attribute(:rcv_modem_address) rescue nil
   end
