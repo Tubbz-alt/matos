@@ -114,52 +114,6 @@ class Study < ActiveRecord::Base
     str.split(',',2)[-1].strip.chomp("\"").reverse.chomp("\"").reverse
   end
 
-  def self.load_data(file)
-
-    errors = []
-    File.open(file) do |f|
-      begin
-        lines = f.readlines
-        ENV['WEB_ADMIN_PASSWORD'] ||= "default"
-        # Update or create a new PI user
-        user_email = clean_string(lines[2]).downcase
-        user = User.find_or_initialize_by_email(user_email)
-        user.attributes =
-          {
-            :name => clean_string(lines[1])
-          }
-
-        # Set a password for a new user
-        if user.new_record?
-          user.attributes =
-            {
-              :password => ENV['WEB_ADMIN_PASSWORD'],
-              :password_confirmation => ENV['WEB_ADMIN_PASSWORD'],
-              :role => "investigator"
-            }
-        end
-        unless user.valid?
-          errors << "#{user.errors.full_messages.join(" and ")}"
-        end
-
-        code = clean_string(lines[0])
-        study = Study.find_or_initialize_by_code(code)
-        study.attributes =
-          {
-            :user => user
-          }
-        unless study.valid?
-          errors << "#{study.errors.full_messages.join(" and ")}"
-        end
-      rescue Exception => e
-        errors << "Error loading project: #{e}"
-      end
-
-      return user, study, errors
-
-    end
-  end
-
   def display_name
     code
   end
