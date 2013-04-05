@@ -34,7 +34,7 @@ ActiveAdmin.register Study do
       f.input :description
       f.input :start
       f.input :ending
-      f.input :species, :as => :select, :collection => Study.all.map(&:species).select(&:present?).uniq.append("Many").append("N/A")
+      f.input :species
       f.input :user, :label => "Owner"
       f.input :approved, :as => :select, :label => "Approved?"
       f.input :permissions, :as => :select, :collection => Study::PERMS.map{|r|["#{r.humanize} - #{Study::PERMS_MAP[r.to_sym]}",r]}
