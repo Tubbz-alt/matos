@@ -34,7 +34,7 @@ Matos::Application.routes.draw do
 
 end
 #== Route Map
-# Generated on 04 Apr 2013 15:21
+# Generated on 04 Apr 2013 16:15
 #
 # batch_action_admin_receiver_deployments POST   /admin/receiver_deployments/batch_action(.:format) admin/receiver_deployments#batch_action
 #              admin_receiver_deployments GET    /admin/receiver_deployments(.:format)              admin/receiver_deployments#index

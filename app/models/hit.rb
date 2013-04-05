@@ -9,7 +9,7 @@ class Hit < ActiveRecord::Base
 end
 
 # ## Schema Information
-# Schema version: 20130404154754
+# Schema version: 20130404200512
 #
 # Table name: hits
 #
@@ -17,12 +17,13 @@ end
 # --------------------------- | ------------------ | -------------------------
 # **id                     ** | `integer         ` | `not null, primary key`
 # **receiver_deployment_id ** | `integer         ` | ``
-# **receiver_code          ** | `string(255)     ` | ``
 # **tag_deployment_id      ** | `integer         ` | ``
 # **tag_code               ** | `string(255)     ` | ``
 # **time                   ** | `datetime        ` | ``
 # **depth                  ** | `decimal(8, 4)   ` | ``
 # **location               ** | `spatial({:srid=>` | ``
 # **created_at             ** | `datetime        ` | ``
+# **receiver_model         ** | `string(255)     ` | ``
+# **receiver_serial        ** | `string(255)     ` | ``
 #
 

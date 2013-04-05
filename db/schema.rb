@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130404154754) do
+ActiveRecord::Schema.define(:version => 20130404200512) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -45,13 +45,14 @@ ActiveRecord::Schema.define(:version => 20130404154754) do
 
   create_table "hits", :force => true do |t|
     t.integer  "receiver_deployment_id"
-    t.string   "receiver_code"
     t.integer  "tag_deployment_id"
     t.string   "tag_code"
     t.datetime "time"
     t.decimal  "depth",                                                                                                          :precision => 8, :scale => 4
     t.spatial  "location",               :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
     t.datetime "created_at"
+    t.string   "receiver_model"
+    t.string   "receiver_serial"
   end
 
   create_table "otn_arrays", :force => true do |t|
