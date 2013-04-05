@@ -20,6 +20,16 @@ class Submission < ActiveRecord::Base
     write_attribute(:status,status.downcase)
   end
 
+  def process
+    if datatype == 'receivers'
+      Parse.receivers(self.study.id, self.datafile.path, self.cleardata)
+    elsif datatype == 'tags'
+      Parse.tags(self.study.id, self.datafile.path, self.cleardata)
+    elsif datatype == 'receptions'
+      Parse.hits(self.study.id, self.datafile.path, self.cleardata)
+    end
+  end
+
 end
 
 # ## Schema Information

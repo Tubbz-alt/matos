@@ -5,15 +5,17 @@ class Parse
     def self.hits(study_id, file, clear=false)
 
         if clear
-            Hit.includes({:deployment => :study}).where({:study_id => study_id}).destroy_all
+            Hit.includes(:receiver_deployment).where("receiver_deployments.study_id = %s" % study_id).destroy_all
         end
 
         first_line = File.open(file, &:readline)
-        if first_line =~ /Date and Time (UTC)/ 
-            return Parse.vemco_vue_hits(study_id, file)
-        elsif first_line =~ /event_date/
-            Parser.cbibs_realtime_hits(study_id, file)
-        end
+        #ActiveRecord::Base.transaction do
+            if first_line =~ /Date and Time\ \(UTC\)/ 
+                return Parse.vemco_vue_hits(study_id, file)
+            elsif first_line =~ /event_date/
+                Parse.cbibs_realtime_hits(study_id, file)
+            end
+        #end
     end
 
 
@@ -42,8 +44,7 @@ class Parse
             unless model.nil? || serial.nil?
                 receiver = Receiver.find_by_model_and_serial(model, serial)
                 if receiver.nil?
-                    receiver = Receiver.new({ :model => model, :serial => serial })
-                    receiver.save
+                    receiver = Receiver.create({ :model => model, :serial => serial })
                 end
                 receiver_deployment = ReceiverDeployment.find_or_initialize_by_receiver_id_and_name_and_location(receiver.id, row["Station Name"], location)
                 if receiver_deployment.otn_array.nil?
@@ -85,8 +86,10 @@ class Parse
         end
 
         first_line = File.open(file, &:readline)
-        if first_line =~ /TAG_CODESPACE_AND_TAG_ID/
-            return Parser.act_tags(study, file)
+        ActiveRecord::Base.transaction do
+            if first_line =~ /TAG_CODESPACE_AND_TAG_ID/
+                return Parse.act_tags(study_id, file)
+            end
         end
 
     end
@@ -101,8 +104,8 @@ class Parse
             t = Tag.find_or_initialize_by_code_and_code_space(row["TAG_ID"], code_space)
             t.attributes =
             {
-                :model => (row["TAG_MODEL"].downcase rescue nil),
-                :type => (row["TAG_TYPE"].downcase rescue nil),
+                :model => (row["TAG_MODEL"] rescue nil),
+                :type => (row["TAG_TYPE"] rescue nil),
             }
             if t.save
                 release_date = DateTime.strptime(row["UTC_RELEASE_DATE_TIME"] + " UTC", "%m/%d/%Y %Z") rescue nil
@@ -121,11 +124,11 @@ class Parse
                 td.attributes = 
                 {
                     :study_id => study_id,
-                    :common_name => (row["COMMON_NAME"].downcase rescue nil),
-                    :scientific_name => (row["SCIENTIFIC_NAME"].downcase rescue nil),
+                    :common_name => row["COMMON_NAME"],
+                    :scientific_name => row["SCIENTIFIC_NAME"],
                     :description => row["COMMENTS"],
                     :release_location => row["RELEASE_LOCATION"],
-                    :implant_type => (row["TAG_IMPLANT_TYPE"].downcase rescue nil),
+                    :implant_type => row["TAG_IMPLANT_TYPE"],
                     :lifespan => (lifespan + " days" rescue nil),
                     :expiration_date => expiration_date
                 }
@@ -136,7 +139,9 @@ class Parse
     end
 
 
-    def self.receivers(study, file)
+    def self.receivers(study_id, file)
+        ActiveRecord::Base.transaction do
+        end
     end
 
 
