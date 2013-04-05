@@ -10,26 +10,61 @@ class Parse
 
         first_line = File.open(file, &:readline)
         if first_line =~ /Date and Time (UTC)/ 
-            return Parse.vemco_vue_hits(study, file)
+            return Parse.vemco_vue_hits(study_id, file)
         elsif first_line =~ /event_date/
-            Parser.cbibs_realtime_hits(study, file)
+            Parser.cbibs_realtime_hits(study_id, file)
         end
     end
 
 
     def self.vemco_vue_hits(study_id, file)
         CSV.foreach(file, {:headers => true}) do |row|
+
+            lat = row["Latitude"].gsub("+","")
+            lon = row["Longitude"]
+
+            location = "POINT(%s %s)" % [lon, lat]
+
+            hit_datetime = DateTime.parse(row["Date and Time (UTC)"] + " UTC")
+
             split_codes = row["Transmitter"].split("-")
             code_space = split_codes.first(2).join("-")
             code = split_codes.last
             tag = Tag.find_by_code_and_code_space(code, code_space)
+            tag_deployment = TagDeployment.includes(:tag).where(:tag_id => tag.id).where("release_date <= '#{hit_datetime}'").order("release_date DESC").first rescue nil
 
             id_split = row["Receiver"].split("-")
             model = id_split.first.downcase
-            serial = id_split.last
+            serial = id_split.last.downcase
+
+            receiver = nil
+            receiver_deployment = nil
             unless model.nil? || serial.nil?
-                Deployment.find_or_initialize_by_model_and_serial(model, serial)
+                receiver = Receiver.find_by_model_and_serial(model, serial)
+                if receiver.nil?
+                    receiver = Receiver.new({ :model => model, :serial => serial })
+                    receiver.save
+                end
+                receiver_deployment = ReceiverDeployment.find_or_initialize_by_receiver_id_and_name_and_location(receiver.id, row["Station Name"], location)
+                if receiver_deployment.otn_array.nil?
+                    # Create a dummy OTN array that defaults to the Study.
+                    study = Study.find(study_id)
+                    receiver_deployment.otn_array = OtnArray.find_by_code(study.code) rescue nil
+                end
+                receiver_deployment.study_id = study_id
+                receiver_deployment.save
             end
+
+            Hit.create({
+                :tag_deployment => tag_deployment,
+                :tag_code => split_codes.join("-"),
+                :receiver_deployment => receiver_deployment,
+                :receiver_serial => serial,
+                :receiver_model => model,
+                :location => location,
+                :time => hit_datetime
+            })
+
         end
     end
 
@@ -63,7 +98,7 @@ class Parse
                 puts "Could not resolve code_space from: #{row}"
                 next
             end
-            t = Tag.find_or_initialize_by_code_and_code_space(code_space, row["TAG_ID"])
+            t = Tag.find_or_initialize_by_code_and_code_space(row["TAG_ID"], code_space)
             t.attributes =
             {
                 :model => (row["TAG_MODEL"].downcase rescue nil),

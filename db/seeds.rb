@@ -2,14 +2,18 @@
 require 'csv'
 require 'open-uri'
 
-User.destroy_all
-Report.destroy_all
-Study.destroy_all
-Receiver.destroy_all
-Collaborator.destroy_all
-Hit.destroy_all
-OtnArray.destroy_all
-Tag.destroy_all
+User.delete_all
+Report.delete_all
+Study.delete_all
+Receiver.delete_all
+ReceiverDeployment.delete_all
+Collaborator.delete_all
+Hit.delete_all
+OtnArray.delete_all
+Tag.delete_all
+TagDeployment.delete_all
+Condition.delete_all
+Submission.delete_all
 
 puts 'SETTING UP DEFAULT USER LOGIN'
 ENV['WEB_ADMIN_PASSWORD'] ||= "default"
