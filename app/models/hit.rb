@@ -4,7 +4,7 @@ class Hit < ActiveRecord::Base
   belongs_to :tag_deployment
   has_many :conditions, :dependent => :destroy
 
-  set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326, :has_z_coordinate => true, :has_m_coordinate => true))
+  set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
 
 end
 

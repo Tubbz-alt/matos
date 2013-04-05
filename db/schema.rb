@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130404200512) do
+ActiveRecord::Schema.define(:version => 20130405165702) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -48,11 +48,11 @@ ActiveRecord::Schema.define(:version => 20130404200512) do
     t.integer  "tag_deployment_id"
     t.string   "tag_code"
     t.datetime "time"
-    t.decimal  "depth",                                                                                                          :precision => 8, :scale => 4
-    t.spatial  "location",               :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
+    t.decimal  "depth",                                                                              :precision => 8, :scale => 4
     t.datetime "created_at"
     t.string   "receiver_model"
     t.string   "receiver_serial"
+    t.spatial  "location",               :limit => {:srid=>4326, :type=>"point", :geographic=>true}
   end
 
   create_table "otn_arrays", :force => true do |t|
@@ -66,7 +66,6 @@ ActiveRecord::Schema.define(:version => 20130404200512) do
 
   create_table "receiver_deployments", :force => true do |t|
     t.integer  "receiver_id"
-    t.spatial  "location",          :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
     t.datetime "start"
     t.integer  "study_id"
     t.integer  "otn_array_id"
@@ -85,6 +84,7 @@ ActiveRecord::Schema.define(:version => 20130404200512) do
     t.spatial  "recovery_location", :limit => {:srid=>4326, :type=>"point", :has_z=>true, :has_m=>true, :geographic=>true}
     t.boolean  "data_downloaded"
     t.boolean  "ar_confirm"
+    t.spatial  "location",          :limit => {:srid=>4326, :type=>"point", :geographic=>true}
   end
 
   add_index "receiver_deployments", ["receiver_id"], :name => "index_receiver_deployments_on_receiver_id"

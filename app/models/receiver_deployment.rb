@@ -28,7 +28,7 @@ class ReceiverDeployment < ActiveRecord::Base
   validates_presence_of :station, :if => "name.nil? || name.blank?"
   validates_presence_of :name,    :if => "station.nil? || station.blank?"
 
-  set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326, :has_z_coordinate => true, :has_m_coordinate => true))
+  set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
 
   scope :active_study, joins(:study).where('studies.title IS NOT NULL AND studies.name IS NOT NULL AND studies.start IS NOT NULL and studies.ending IS NOT NULL')
 
