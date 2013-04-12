@@ -19,8 +19,8 @@ class SubmissionsController < ApplicationController
     @submission.user = current_user
     @submission.status = "New"
     if @submission.save
-      @submission.process
-      redirect_to submission_path(@submission), :notice => "Thank you, your submission was successfully uploaded."
+      @submission.delay.process
+      redirect_to submission_path(@submission), :notice => "Thank you, your submission was successfully submitted.  Information will be available shortly."
     else
       render :action => :new
     end

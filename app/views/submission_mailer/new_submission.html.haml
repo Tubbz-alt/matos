@@ -1,6 +1,9 @@
 %p
-  #{t('project.name')} has received your data submission.  Thank you!
+  #{t('project.name')} has received your data submission.  
   %br
-  = "You can access the submission here: #{submission_url(@submission)}"
+  Data submissions are automatically processed and available witin a few minute of submission.
+  %br
+  You can access the submission here: #{submission_url(@submission)}" to check its status.  The status field will update from "New" to "Processed" when the data has been added to the #{t('project.name')} system.  Additional information on the page will help to debug any problems #{t('project.name')} had with your data submission.
 
-%p= link_to 'Login now', new_user_session_url
+  Thank you,
+  The #{t('project.name')} Team

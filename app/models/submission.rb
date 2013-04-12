@@ -26,6 +26,8 @@ class Submission < ActiveRecord::Base
     elsif datatype == 'receptions'
       Parse.hits(self.study.id, self.datafile.path, self.cleardata)
     end
+    self.status = "Processed"
+    self.save
   end
 
 end
