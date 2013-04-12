@@ -48,6 +48,9 @@ gem 'rgeo-geojson'
 gem 'rgeo-activerecord'
 gem 'activerecord-postgis-adapter'
 
+gem 'delayed_job_active_record'
+gem 'daemons'
+
 gem 'kaminari'
 gem 'devise'
 gem 'cancan'

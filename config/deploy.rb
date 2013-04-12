@@ -39,6 +39,8 @@ namespace :deploy do
   end
   task :restart, :roles => :web do
     run "cd #{latest_release}; RAILS_ENV=#{rails_env} bundle exec thin restart -e #{rails_env} -s 2 -d --socket /tmp/thin.#{rails_env}.sock"
+    run "cd #{latest_release}; RAILS_ENV=#{rails_env} bundle exec script/delayed_job stop"
+    run "cd #{latest_release}; RAILS_ENV=#{rails_env} bundle exec script/delayed_job start"
   end
   desc "Run rake db:seed"
   task :seed, :roles => :db, :only => { :primary => true } do
