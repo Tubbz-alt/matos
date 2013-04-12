@@ -11,6 +11,10 @@ class Study < ActiveRecord::Base
                     :user =>  [ :name,
                                 :organization,
                                 :email
+                              ],
+                    :users =>  [ :name,
+                                :organization,
+                                :email
                               ]
                   }
 

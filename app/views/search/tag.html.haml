@@ -35,18 +35,13 @@ Looking for the
 
 :javascript
 
-  function makeStudyLink(oObj) {
-    var text = "<a href='" + getStudyLink(oObj) + "' target='_blank'>Link</a>";
+  function makeTagLink(oObj) {
+    var text = "<a href='" + getTagLink(oObj) + "' target='_blank'>Link</a>";
     return text;
   }
 
-  function getStudyLink(oObj) {
-    var text = "#{root_url}" + "projects/" + oObj.aData.active_deployment_json.study.id;
-    return text;
-  }
-
-  function getFullName(oObj) {
-    var text = oObj.aData.active_deployment_json.study.user.name + " (" + oObj.aData.active_deployment_json.study.user.email + ")";
+  function getTagLink(oObj) {
+    var text = "/tags/" + oObj.aData.id;
     return text;
   }
 
@@ -61,7 +56,7 @@ Looking for the
 
       $.ajax({
         type: "GET",
-        url: "#{multi_tag_search_path({:format => :js})}",
+        url: "#{search_tags_path({:format => :js})}",
         data: "text="+phrase,
         dataType: 'json',
         success: function(data){
@@ -86,18 +81,14 @@ Looking for the
         "sSearch": "Filter Results:"
       },
       "aoColumns": [
-        { "sTitle": "Project", "sName": "project", "mDataProp": "active_deployment_json.study.name" },
         { "sTitle": "Code Space", "sName": "code_space", "mDataProp": "code_space" },
         { "sTitle": "Code", "sName": "code", "mDataProp": "code" },
-        { "sTitle": "External Codes", "sName": "external_codes", "mDataProp": "active_deployment_json.external_codes" },
-        { "sTitle": "Species", "sName": "common_name", "mDataProp": "active_deployment_json.common_name" },
-        { "sTitle": "Release Location", "sName": "release_location", "mDataProp": "active_deployment_json.release_location" },
-        { "sTitle": "Investigator", "sName": "pi", "mDataProp": "active_deployment_json.study.user.name",
-          "fnCellRender": function (oObj){ return getFullName(oObj); },
-          "fnRender": function (oObj){ return getFullName(oObj); },},
-        { "sTitle": "Project Page", "sName": "site", "mDataProp": null, "bSortable": false,
-          "fnCellRender": function (oObj){ return getStudyLink(oObj); },
-          "fnRender": function (oObj){ return makeStudyLink(oObj); },
+        { "sTitle": "Model", "sName": "model", "mDataProp": "model" },
+        { "sTitle": "Serial", "sName": "serial", "mDataProp": "serial" },
+        { "sTitle": "Manufacturer", "sName": "manufacturer", "mDataProp": "manufacturer" },
+        { "sTitle": "Tag Page", "sName": "site", "mDataProp": null, "bSortable": false,
+          "fnCellRender": function (oObj){ return getTagLink(oObj); },
+          "fnRender": function (oObj){ return makeTagLink(oObj); },
         }
       ]
     });

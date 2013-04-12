@@ -1,0 +1,73 @@
+%h2 #{@tag_deployment.tag.to_label}
+%h2 #{@tag_deployment.date_range}
+
+
+#tag_deployment_info
+
+    %table{:class => "dotted"}
+        %tbody
+            %tr
+                %td{:class => "label"}
+                    Tag
+                %td
+                    = link_to "Link", tag_path(@tag_deployment.tag)
+            %tr
+                %td{:class => "label"}
+                    Model
+                %td
+                    = @tag_deployment.tag.model
+            %tr
+                %td{:class => "label"}
+                    Serial
+                %td
+                    = @tag_deployment.tag.serial
+            %tr
+                %td{:class => "label"}
+                    Manufacturer
+                %td
+                    = @tag_deployment.tag.manufacturer
+
+    %br
+    %br
+
+    %table{:class => "dotted"}
+        %tbody
+            %tr
+                %td{:class => "label"}
+                    Total Hits
+                %td
+                    = @tag_deployment.hits.count
+            %tr
+                %td{:class => "label"}
+                    Receivers with Hits
+                %td
+                    = @tag_deployment.receiver_deployments.uniq.count
+            %tr
+                %td{:class => "label"}
+                    Report
+                %td
+                    - if @tag_deployment.report
+                        = link_to "Link", report_path(@tag_deployment.report)
+
+    %br
+    %br
+
+    %table{:class => "dotted"}
+        %tbody
+            %tr
+                %td{:class => "label"}
+                    Study that deployed tag
+                %td
+                    = link_to @tag_deployment.study.code, study_path(@tag_deployment.study)
+            - @tag_deployment.display_attributes.each do |k,v|
+                %tr
+                    %td{:class => "label"}
+                        = k.humanize
+                    %td
+                        = v
+
+
+
+
+#tag_deployment_map
+    MAP of path

@@ -1,64 +1,60 @@
-#show_report
+- if @report.tag_deployment
 
-  - if @report.tag_deployment
-
-    %p Here is information about the tag you reported:
-
-    %table
-      %tbody
-        %tr
-          %td{:class => "label"}
-            #{t('project.name')} Project Name
-          %td
-            = link_to @report.tag_deployment.study.name, project_path(@report.tag_deployment.study.id)
-        %tr
-          %td{:class => "label"}
-            #{t('project.name')} Project Title
-          %td
-            = @report.tag_deployment.study.title
-        %tr
-          %td{:class => "label"}
-            Species Name
-          %td
-            = @report.tag_deployment.common_name
-        %tr
-          %td{:class => "label"}
-            Full Tag Code
-          %td
-            = @report.tag_deployment.tag.code_space
-        %tr
-          %td{:class => "label"}
-            Tag Code
-          %td
-            = @report.tag_deployment.tag.code
-        %tr
-          %td{:class => "label"}
-            External Tags
-          %td
-            = @report.tag_deployment.external_codes.compact.join(", ") rescue "None"
-        %tr
-          %td{:class => "label"}
-            Release Location
-          %td
-            = @report.tag_deployment.release_location
-        %tr
-          %td{:class => "label"}
-            Release Date
-          %td
-            = @report.tag_deployment.release_date.strftime("%Y-%m-%d")
-        %tr
-          %td{:class => "label"}
-            Release Length (meters)
-          %td
-            = @report.tag_deployment.length
-        %tr
-          %td{:class => "label"}
-            Release Weight (kg)
-          %td
-            = @report.tag_deployment.weight
-        %tr
-          %td{:class => "label"}
-            Project Investigator
-          %td
-            = "#{@report.tag_deployment.study.user.name} (#{@report.tag_deployment.study.user.email})"
-    .clear
+  %table{:class => "dotted"}
+    %tbody
+      %tr
+        %td{:class => "label"}
+          #{t('project.name')} Project Name
+        %td
+          = link_to @report.tag_deployment.study.name, project_path(@report.tag_deployment.study.id)
+      %tr
+        %td{:class => "label"}
+          #{t('project.name')} Project Title
+        %td
+          = @report.tag_deployment.study.title
+      %tr
+        %td{:class => "label"}
+          Species Name
+        %td
+          = @report.tag_deployment.common_name
+      %tr
+        %td{:class => "label"}
+          Full Tag Code
+        %td
+          = @report.tag_deployment.tag.code_space
+      %tr
+        %td{:class => "label"}
+          Tag Code
+        %td
+          = @report.tag_deployment.tag.code
+      %tr
+        %td{:class => "label"}
+          External Tags
+        %td
+          = @report.tag_deployment.external_codes.compact.join(", ") rescue "None"
+      %tr
+        %td{:class => "label"}
+          Release Location
+        %td
+          = @report.tag_deployment.release_location
+      %tr
+        %td{:class => "label"}
+          Release Date
+        %td
+          = @report.tag_deployment.release_date.strftime("%Y-%m-%d")
+      %tr
+        %td{:class => "label"}
+          Release Length (meters)
+        %td
+          = @report.tag_deployment.length
+      %tr
+        %td{:class => "label"}
+          Release Weight (kg)
+        %td
+          = @report.tag_deployment.weight
+      %tr
+        %td{:class => "label"}
+          Project Investigator
+        %td
+          = "#{@report.tag_deployment.study.user.name} (#{@report.tag_deployment.study.user.email})"
+  .clear

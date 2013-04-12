@@ -16,6 +16,10 @@ Matos::Application.routes.draw do
 
   resources :receiver_deployments, :only => [:index]
 
+  resources :tags, :only => [:show]
+
+  resources :tag_deployments, :only => [:show]
+
   resources :submissions, :only => [:new, :create, :show, :index, :destroy]
 
   # The projects controller is identical to the studies
@@ -28,7 +32,6 @@ Matos::Application.routes.draw do
   match 'search/studies' => 'search#studies', :as => :search_studies, :via => :get
   match 'search/receivers' => 'search#receivers', :as => :search_receivers, :via => :get
   match 'search/tag' => 'search#tag', :as => :tag_search, :via => :get
-  match 'search/match_tags' => 'search#match_tags', :as => :multi_tag_search, :via => :get
 
   match 'static/:action' => 'static#:action', :as => :static, :via => :get
 

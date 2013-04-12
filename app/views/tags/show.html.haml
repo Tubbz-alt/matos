@@ -1,0 +1,33 @@
+%h2 #{@tag.to_label}
+
+%table{:class => "dotted"}
+    %tbody
+        %tr
+            %td{:class => "label"}
+                Model
+            %td
+                = @tag.model
+        %tr
+            %td{:class => "label"}
+                Serial
+            %td
+                = @tag.serial
+        %tr
+            %td{:class => "label"}
+                Manufacturer
+            %td
+                = @tag.manufacturer
+        %tr
+            %td{:class => "label"}
+                Deployments
+            %td
+                %ul
+                - @tag_deployments.each do |td|
+                    %li
+                        = link_to "#{td.date_range}", tag_deployment_path(td)
+        %tr
+            %td{:class => "label"}
+                Unmatched Hits (no tag deployment information has been uploaded)
+            %td
+                = @tag.unmatched_hits.count
+                

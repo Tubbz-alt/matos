@@ -16,7 +16,7 @@ class TagDeployment < ActiveRecord::Base
                   }
 
   pg_search_scope :exact_match,
-                  :against => [:external_codes],
+                  :against => [:external_codes, :sensor_codes],
                   :using => {
                     :tsearch => {:any_word => true}
                   }
@@ -32,6 +32,9 @@ class TagDeployment < ActiveRecord::Base
 
   after_create  :set_active_deployment
   after_destroy :set_active_deployment
+
+  scope :readable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id}") }
+  scope :managable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR ( collaborators.role = 'manage' AND users.id = #{u.id} )") }
 
   set_rgeo_factory_for_column(:capture_geo, RGeo::Geographic.spherical_factory(:srid => 4326))
   set_rgeo_factory_for_column(:surgery_geo, RGeo::Geographic.spherical_factory(:srid => 4326))
@@ -111,6 +114,19 @@ class TagDeployment < ActiveRecord::Base
     z += " - #{starting.strftime('%Y-%m-%d')}"
     z += "/#{ending.strftime('%Y-%m-%d')}" unless ending.nil?
     z
+  end
+
+  def date_range
+    z = ""
+    z += "#{starting.strftime('%Y-%m-%d')}"
+    z += "/#{ending.strftime('%Y-%m-%d')}" unless ending.nil?
+    z += "No date information available" if z.blank?
+    z
+  end
+
+  def display_attributes
+    remove_attrs = [:study_id, :id, :tag_id]
+    self.attributes.delete_if { |k,v| remove_attrs.include?(k.to_sym) }
   end
 
   private

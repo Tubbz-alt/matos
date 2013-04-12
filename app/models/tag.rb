@@ -26,6 +26,8 @@ class Tag < ActiveRecord::Base
   scope :find_match, lambda { |code| where("((code_space || '-' || code) ILIKE ?) OR (code ILIKE ?) OR (code_space ILIKE ?)", "%#{code}%","%#{code}%","%#{code}%").limit(1) }
   scope :find_all_matches, lambda { |code| where("((code_space || '-' || code) ILIKE ?) OR (code ILIKE ?) OR (code_space ILIKE ?)", "%#{code}%","%#{code}%","%#{code}%") }
 
+  scope :readable, lambda {|u| includes({ :tag_deployments => {:study => {:collaborators => :user}}}).where("active_deployment_id is NULL OR (users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id})") }
+
   def active_deployment_json
     begin
       return active_deployment.as_json({
@@ -42,6 +44,10 @@ class Tag < ActiveRecord::Base
     rescue
       return TagDeployment.new.as_json({:only => [:release_date, :release_location, :external_codes, :length, :weight, :age, :sex, :common_name]})
     end
+  end
+
+  def unmatched_hits
+    Hit.where("tag_code = '#{self.to_label}' AND tag_deployment_id IS NULL")
   end
 
   def model=(model)

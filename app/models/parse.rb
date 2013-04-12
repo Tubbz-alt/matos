@@ -40,7 +40,8 @@ class Parse
                 split_codes = row["Transmitter"].split("-")
                 code_space = split_codes.first(2).join("-")
                 code = split_codes.last
-                tag = Tag.find_by_code_and_code_space(code, code_space)
+                # Create the tag as a holder so other people can match it
+                tag = Tag.find_or_create_by_code_and_code_space(code, code_space)
                 tag_deployment = TagDeployment.includes(:tag).where(:tag_id => tag.id).where("release_date <= '#{hit_datetime}'").order("release_date DESC").first rescue nil
 
                 id_split = row["Receiver"].split("-")

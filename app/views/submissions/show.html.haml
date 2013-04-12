@@ -1,51 +1,49 @@
-#show_report
+- if @submission
 
-  - if @submission
+  %p Here is information about the data submission
 
-    %p Here is information about the data submission
+  %table{:class => "dotted"}
+    %tbody
+      %tr
+        %td{:class => "label"}
+          Name
+        %td
+          = @submission.user.name
+      %tr
+        %td{:class => "label"}
+          Email
+        %td
+          = @submission.user.email
+      %tr
+        %td{:class => "label"}
+          Study
+        %td
+          = link_to @submission.study.name, study_path(@submission.study)
+      %tr
+        %td{:class => "label"}
+          Datetype
+        %td
+          = @submission.datatype
+      %tr
+        %td{:class => "label"}
+          Clear Data?
+        %td
+          = @submission.cleardata.to_s.humanize
+      %tr
+        %td{:class => "label"}
+          Datefile
+        %td
+          = link_to "Download", @submission.datafile.url
+      %tr
+        %td{:class => "label"}
+          Status
+        %td
+          = @submission.status.humanize
+      %tr
+        %td{:class => "label"}
+          Uploaded
+        %td
+          = @submission.created_at.in_time_zone
+  .clear
 
-    %table
-      %tbody
-        %tr
-          %td{:class => "label"}
-            Name
-          %td
-            = @submission.user.name
-        %tr
-          %td{:class => "label"}
-            Email
-          %td
-            = @submission.user.email
-        %tr
-          %td{:class => "label"}
-            Study
-          %td
-            = link_to @submission.study.name, study_path(@submission.study)
-        %tr
-          %td{:class => "label"}
-            Datetype
-          %td
-            = @submission.datatype
-        %tr
-          %td{:class => "label"}
-            Clear Data?
-          %td
-            = @submission.cleardata.to_s.humanize
-        %tr
-          %td{:class => "label"}
-            Datefile
-          %td
-            = link_to "Download", @submission.datafile.url
-        %tr
-          %td{:class => "label"}
-            Status
-          %td
-            = @submission.status.humanize
-        %tr
-          %td{:class => "label"}
-            Uploaded
-          %td
-            = @submission.created_at.in_time_zone
-    .clear
-
-  %div{:style => "height: 400px;"}
+%div{:style => "height: 400px;"}
