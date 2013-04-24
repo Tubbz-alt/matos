@@ -89,6 +89,23 @@ class TagDeployment < ActiveRecord::Base
     end
   end
 
+  def geojson   
+    features = []
+
+    self.hits.each do |h|
+      s = {}
+      s[:time] = h.time
+      s[:depth] = h.depth
+      s[:receiver_deployment] = h.receiver_deployment.geo_attributes
+
+      features << RGeo::GeoJSON::Feature.new(h.location, h.id, s)
+    end
+
+    fc = RGeo::GeoJSON::FeatureCollection.new(features)
+    return RGeo::GeoJSON.encode(fc) 
+
+  end
+
   def starting
     release_date
   end

@@ -1,7 +1,6 @@
 %h2 #{@tag_deployment.tag.to_label}
 %h2 #{@tag_deployment.date_range}
 
-
 #tag_deployment_info
 
     %table{:class => "dotted"}
@@ -70,4 +69,139 @@
 
 
 #tag_deployment_map
-    MAP of path
+
+#tag_deployment_list
+    %table{:class => "listing"}
+        %thead
+            %tr
+                %th Hit
+                %th Time
+                %th Lat
+                %th Lon
+                %th Receiver
+        %tbody
+
+
+
+:javascript
+
+    var path;
+    var geo;
+    var map;
+    var sm;
+    var selectControl;
+
+    $(document).ready(function() {
+
+        var proj900913 = new OpenLayers.Projection("EPSG:900913");
+        var proj4326   = new OpenLayers.Projection("EPSG:4326");
+
+        path = new OpenLayers.Layer.PointTrack("Path", {
+                    styleMap        : sm
+                    ,projection     : proj4326
+                    ,rendererOptions: { zIndexing: true }
+                    ,styleFrom      : OpenLayers.Layer.PointTrack.TARGET_NODE
+                    ,dataFrom       : OpenLayers.Layer.PointTrack.TARGET_NODE
+                });
+
+        sm =  new OpenLayers.StyleMap({
+                'default' : new OpenLayers.Style(OpenLayers.Util.applyDefaults({
+                     pointRadius     : 3
+                    ,fillColor       : '#e8bb99' 
+                    ,fillOpacity     : 0.7
+                    ,strokeWidth     : 1
+                    ,strokeColor     : '#b56529'
+                    ,strokeOpacity   : 1
+                }))
+                ,'select' : new OpenLayers.Style(OpenLayers.Util.applyDefaults({
+                     pointRadius     : 5
+                    ,fillColor       : '#99e9ae'
+                    ,fillOpacity     : 0.7
+                    ,strokeWidth     : 1
+                    ,strokeColor     : '#1d8538'
+                    ,strokeOpacity   : 1
+                    ,graphicZIndex   : 1
+                }))
+                ,'temporary' : new OpenLayers.Style(OpenLayers.Util.applyDefaults({
+                     pointRadius     : 3
+                    ,fillColor       : '#99BBE8'
+                    ,fillOpacity     : 0.7
+                    ,strokeWidth     : 1
+                    ,strokeColor     : '#1558BB'
+                    ,strokeOpacity   : 1
+                }))
+        });
+
+        geo = new OpenLayers.Layer.Vector("Hits", {
+                    strategies      : [new OpenLayers.Strategy.Fixed()]
+                    ,styleMap       : sm
+                    ,projection     : proj4326
+                    ,rendererOptions: { zIndexing: true }
+                    ,protocol       : new OpenLayers.Protocol.HTTP({
+                        url: "#{tag_deployment_path(@tag_deployment.id, :format => :geo)}"
+                        ,format: new OpenLayers.Format.GeoJSON()
+                    })
+                });
+
+        geo.events.register('loadend', geo, function(evt) {
+            map.zoomToExtent(geo.getDataExtent());
+            // Populate the list table
+            for(var i = 0 ; i < geo.features.length ; i++) {
+                pt = geo.features[i].geometry.clone().transform(proj900913, proj4326);
+                $("#tag_deployment_list").find("tbody").append(
+                    "<tr> \
+                        <td>" + (i + 1) + "</td> \
+                        <td>" + geo.features[i].attributes.time + "</td> \
+                        <td>" + pt.y + "</td> \
+                        <td>" + pt.x + "</td> \
+                        <td>" + geo.features[i].attributes.receiver_deployment.code + "</td> \
+                    </tr>"
+                );
+            }
+
+            // Activate hovers
+            $(".listing tr").not(':first').hover(
+                function(x) {
+                    // Select dot
+                    selectControl.unselectAll()
+                    selectControl.select(geo.features[this.rowIndex - 1]);
+
+                    // Make line
+                    path.removeAllFeatures();
+                    path.addNodes(geo.features.slice(0, this.rowIndex));
+
+                    // Highlight the rows
+                    $(this).children("td").addClass("active");
+                    $(this).prevAll("tr").children("td").addClass("active");
+                    $(this).nextAll("tr").children("td").removeClass("active");
+                }
+            );
+        });
+
+        map = new OpenLayers.Map("tag_deployment_map", {
+            projection          : proj900913
+            ,displayProjection  : proj4326
+            ,units              : "m"
+            ,layers             : [
+                new OpenLayers.Layer.Google('Google Satellite',{
+                    type          : google.maps.MapTypeId.SATELLITE
+                    ,projection    : proj900913
+                })
+                ,new OpenLayers.Layer.Google('Google Map',{
+                    type          : google.maps.MapTypeId.MAP
+                    ,projection    : proj900913
+                })
+                ,geo
+                ,path
+            ]
+        });
+
+        map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+        selectControl = new OpenLayers.Control.SelectFeature(geo);
+        map.addControl(selectControl);
+        selectControl.activate();
+    });
+
+= javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=false'
+= javascript_include_tag '/javascripts/OpenLayers.js'

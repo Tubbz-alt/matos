@@ -24,6 +24,12 @@ class Receiver < ActiveRecord::Base
     "%03d" % read_attribute(:rcv_modem_address) rescue nil
   end
 
+  def geo_attributes
+    removals = %w(id)
+    s = self.attributes.delete_if {|k,v| removals.include?(k) }
+    return s
+  end
+
 end
 
 # ## Schema Information

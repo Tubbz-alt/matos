@@ -52,14 +52,18 @@ class ReceiverDeployment < ActiveRecord::Base
     return RGeo::GeoJSON.encode(self.location)
   end
 
+  def geo_attributes
+    s = {}
+    s[:code]      = code
+    s[:ending]    = ending
+    s[:otn_array] = { :code => otn_array.code, :description => otn_array.description, :waterbody => otn_array.waterbody, :region => otn_array.region }
+    s[:receiver]  = { :model => receiver.model, :serial => receiver.serial, :frequency => receiver.frequency, :vps => receiver.vps, :rcv_modem_address => receiver.rcv_modem_address }
+    return s
+  end
+
   def geojson
     if self.location
-      removals = ["location","id","station","consecutive","otn_array_id","receiver_id"]
-      s = self.attributes.delete_if {|key, value| removals.include?(key) }
-      s[:code]      = code
-      s[:ending]    = ending
-      s[:otn_array] = { :code => otn_array.code, :description => otn_array.description, :waterbody => otn_array.waterbody, :region => otn_array.region }
-      s[:receiver]  = { :model => receiver.model, :serial => receiver.serial, :frequency => receiver.frequency, :vps => receiver.vps, :rcv_modem_address => receiver.rcv_modem_address }
+      s = self.geo_attributes
       feat = RGeo::GeoJSON::Feature.new(self.location, self.id, s)
       return RGeo::GeoJSON.encode(feat)
     end
