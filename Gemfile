@@ -60,6 +60,9 @@ gem 'haml-rails'
 gem 'formtastic'
 gem 'pg_search'
 
+# For fast asset compiliation on production, this caches assets
+gem 'turbo-sprockets-rails3'
+
 gem "paperclip", "~> 3.0"
 
 gem 'activeadmin'
