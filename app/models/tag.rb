@@ -26,7 +26,13 @@ class Tag < ActiveRecord::Base
   scope :find_match, lambda { |code| where("((code_space || '-' || code) ILIKE ?) OR (code ILIKE ?) OR (code_space ILIKE ?)", "%#{code}%","%#{code}%","%#{code}%").limit(1) }
   scope :find_all_matches, lambda { |code| where("((code_space || '-' || code) ILIKE ?) OR (code ILIKE ?) OR (code_space ILIKE ?)", "%#{code}%","%#{code}%","%#{code}%") }
 
-  scope :readable, lambda {|u| includes({ :tag_deployments => {:study => {:collaborators => :user}}}).where("active_deployment_id is NULL OR (users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id})") }
+  scope :readable, lambda { |u| 
+    if u.nil?
+      includes({ :tag_deployments => :study }).where("active_deployment_id is NULL OR studies.permissions = 'public'")
+    else
+      includes({ :tag_deployments => {:study => {:collaborators => :user}}}).where("active_deployment_id is NULL OR studies.permissions = 'public' OR (users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id})")
+    end
+  }
 
   def active_deployment_json
     begin
