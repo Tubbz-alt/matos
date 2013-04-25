@@ -65,23 +65,22 @@
                     %td
                         = v
 
+#right
 
+    #tag_deployment_map
 
+    #tag_deployment_list
+        %table{:class => "listing"}
+            %thead
+                %tr
+                    %th Hit
+                    %th Time
+                    %th Lat
+                    %th Lon
+                    %th Receiver
+            %tbody
 
-#tag_deployment_map
-
-#tag_deployment_list
-    %table{:class => "listing"}
-        %thead
-            %tr
-                %th Hit
-                %th Time
-                %th Lat
-                %th Lon
-                %th Receiver
-        %tbody
-
-
+    .clear
 
 :javascript
 
@@ -90,6 +89,14 @@
     var map;
     var sm;
     var selectControl;
+    var starting;
+    var ending;
+
+    function isIE () {
+      var myNav = navigator.userAgent.toLowerCase();
+      return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+    }
+    var is_ie = isIE();
 
     $(document).ready(function() {
 
@@ -100,8 +107,6 @@
                     styleMap        : sm
                     ,projection     : proj4326
                     ,rendererOptions: { zIndexing: true }
-                    ,styleFrom      : OpenLayers.Layer.PointTrack.TARGET_NODE
-                    ,dataFrom       : OpenLayers.Layer.PointTrack.TARGET_NODE
                 });
 
         sm =  new OpenLayers.StyleMap({
@@ -159,23 +164,40 @@
                 );
             }
 
-            // Activate hovers
-            $(".listing tr").not(':first').hover(
-                function(x) {
-                    // Select dot
-                    selectControl.unselectAll()
-                    selectControl.select(geo.features[this.rowIndex - 1]);
+            if (!is_ie) {
+              $("#right").disableSelection();
+            }
 
-                    // Make line
-                    path.removeAllFeatures();
-                    path.addNodes(geo.features.slice(0, this.rowIndex));
+            $(".listing tr").not(':first')
+                .mousedown(function(x) {
+                    starting = this.rowIndex - 1;
+                    $(".listing tr").not(':first').children("td").removeClass("active");
 
-                    // Highlight the rows
-                    $(this).children("td").addClass("active");
-                    $(this).prevAll("tr").children("td").addClass("active");
-                    $(this).nextAll("tr").children("td").removeClass("active");
-                }
-            );
+                    $(".listing tr").not(':first').bind('mouseover',
+                        function(e) {
+                            ending = this.rowIndex - 1;
+
+                            // Select rows
+                            min = Math.min(starting,ending);
+                            max = Math.max(starting,ending);
+                            selectControl.unselectAll();
+
+                            trs = $(".listing tr").not(':first');
+                            $(trs).children("td").removeClass("active");
+                            for (var i = min ; i <= max ; i++) {
+                                $(trs[i]).children("td").addClass("active");
+                                selectControl.select(geo.features[i]);
+                            }
+                            path.removeAllFeatures();
+                            path.addNodes(geo.features.slice(min,max+1));
+                        }
+                    );
+                    $(this).trigger('mouseover');
+                })
+                .mouseup(function() {
+                    $(".listing tr").not(':first').unbind('mouseover');
+                });
+
         });
 
         map = new OpenLayers.Map("tag_deployment_map", {
@@ -197,8 +219,8 @@
         });
 
         map.addControl(new OpenLayers.Control.LayerSwitcher());
-
         selectControl = new OpenLayers.Control.SelectFeature(geo);
+        
         map.addControl(selectControl);
         selectControl.activate();
     });
