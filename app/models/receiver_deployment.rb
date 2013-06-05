@@ -78,7 +78,7 @@ class ReceiverDeployment < ActiveRecord::Base
   end
 
   def ending
-    return proposed_ending if proposed and !proposed_ending.ni?
+    return proposed_ending if proposed and !proposed_ending.nil?
     return recovery_date unless recovery_date.nil?
     return nil
   end

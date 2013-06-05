@@ -62,19 +62,28 @@ class Parse
                             next
                         end
                     end
-                    receiver_deployment = ReceiverDeployment.find_or_initialize_by_receiver_id_and_name_and_location(receiver.id, row["Station Name"], location)
-                    if receiver_deployment.otn_array.nil?
+
+                    rcds = ReceiverDeployment.where(:receiver_id => receiver.id, :name => row["Station Name"], :location => location)
+                    if !rcds.empty?
+                        # Find the correct deployment in the correct time range
+                        rcds.select { |d| d.start < hit_datetime && d.ending > hit_datetime }
+                        receiver_deployment = rcds.last
+                    end
+
+                    if receiver_deployment.nil?  # No receiver deployment found
+                        receiver_deployment = ReceiverDeployment.find_or_initialize_by_receiver_id_and_name_and_location(receiver.id, row["Station Name"], location)
                         # Use the Study's default OTN_ARRAY
                         receiver_deployment.otn_array = OtnArray.find_by_code(study.code) rescue nil
+                        receiver_deployment.study_id = study_id
+                        begin
+                            receiver_deployment.save!
+                            receiver_deployments += 1
+                        rescue Exception => e
+                            errors << "#{e.message} : #{row}"
+                            next
+                        end
                     end
-                    receiver_deployment.study_id = study_id
-                    begin
-                        receiver_deployment.save!
-                        receiver_deployments += 1
-                    rescue Exception => e
-                        errors << "#{e.message} : #{row}"
-                        next
-                    end
+                                        
                 end
 
                 h = Hit.new({
@@ -193,10 +202,83 @@ class Parse
     end
 
 
-    def self.receivers(study_id, file)
-        ActiveRecord::Base.transaction do
+    def self.receivers(study_id, file, clear=false)
+
+        if clear
+            rcds = ReceiverDeployment.includes(:receiver).where("study_id = %s" % study_id)
+            rcs = rcds.map(&:receiver)
+            rcds.destroy_all
+            rcs.each { |r| r.destroy if r.receiver_deployments.empty? }
         end
+
+        errors = []
+        receivers = 0
+        receiver_deployments = 0
+
+        ActiveRecord::Base.transaction do
+
+            study = Study.find(study_id)
+
+            CSV.foreach(file, {:headers => true}) do |row|
+                begin
+                    lat = row["Latitude"].gsub("+","")
+                    lon = row["Longitude"]
+                    depth = row["Depth (m)"]
+
+                    location = "POINT(%s %s)" % [lon, lat]
+
+                    deployed_datetime = DateTime.parse(row["Deployed (UTC)"] + " UTC") rescue nil
+                    recovered_datetime = DateTime.parse(row["Recovered (UTC)"] + " UTC") rescue nil
+                    
+                    model = row["Model"].downcase
+                    serial = row["Serial"].downcase
+                    freq = row["Frequency"].to_i rescue nil
+
+                    unless model.nil? || serial.nil?
+                        receiver = Receiver.find_by_model_and_serial(model, serial)
+                        if receiver.nil?
+                            receiver = Receiver.new({ :model => model, :serial => serial })
+                            begin
+                                receiver.frequency = freq
+                                receiver.save!
+                                receivers += 1
+                            rescue Exception => e
+                                errors << "#{e.message} : #{row}"
+                                next
+                            end
+                        end
+                        receiver_deployment = ReceiverDeployment.find_or_initialize_by_receiver_id_and_name_and_location_and_start(receiver.id, row["Station Name"], location, deployed_datetime)
+                        if receiver_deployment.otn_array.nil?
+                            array = row["Array"]
+                            otn = OtnArray.find_by_code(array)
+                            if otn.nil?
+                                # Use the Study's default OTN_ARRAY
+                                otn = OtnArray.find_by_code(study.code) rescue nil
+                            end
+                            receiver_deployment.otn_array = otn
+                        end
+                        receiver_deployment.study_id = study_id
+                        receiver_deployment.recovery_date = recovered_datetime
+                        receiver_deployment.instrument_depth = depth
+                        receiver_deployment.funded = row["Funded"].to_bool rescue false
+                        # proposed
+                        receiver_deployment.proposed = row["Proposed"].to_bool rescue false
+                        proposed_ending = DateTime.parse(row["Proposed Ending (UTC)"] + " UTC") rescue nil
+                        receiver_deployment.proposed_ending = proposed_ending
+                        begin
+                            receiver_deployment.save!
+                            receiver_deployments += 1
+                        rescue Exception => e
+                            errors << "#{e.message} : #{row}"
+                            next
+                        end
+                    end
+
+                rescue Exception => e
+                    errors << "#{e.message} : #{row}"
+                end
+            end
+        end
+        return { "receivers" => receivers, "receiver_deployments" => receiver_deployments, "errors" => errors }
     end
-
-
 end
