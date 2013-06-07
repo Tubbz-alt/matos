@@ -36,8 +36,7 @@ ActiveAdmin.register User do
         f.input :password_confirmation
       end
       f.input :organization
-      f.input :role, :as => :select, :collection => User::REGISTERABLE_ROLES.map{|r|["#{r.humanize} - #{User::ROLE_MAP[r.to_sym]}",r]}
-      f.input :requested_role
+      f.input :role, :as => :select, :collection => (User::ROLES - %w[guest]).map{|r|["#{r.humanize} - #{User::ROLE_MAP[r.to_sym]}",r]}
       f.input :approved
       f.input :newsletter
       f.input :address

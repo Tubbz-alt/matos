@@ -17,10 +17,10 @@ class User < ActiveRecord::Base
     :admin => "Administrator of the #{I18n.t('project.name')} website"
   }
 
-  validates_presence_of :name
+  validates_presence_of :name, :email
   validates_uniqueness_of :name, :email, :case_sensitive => false
-  validates :email, :format => { :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i, :message => "invalid" }
-  validates :role, :inclusion => { :in => ROLES, :message => "%{value} is not a valid role" }
+  validates :email, :format => { :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i, :message => "invalid email address" }
+  validates :role, :if => "approved == true", :inclusion => { :in => ROLES, :message => "%{value} is not a valid role" }
 
   has_many :studies
 
