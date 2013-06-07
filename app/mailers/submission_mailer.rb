@@ -1,5 +1,7 @@
 class SubmissionMailer < ActionMailer::Base
 
+  default :from => "matos@asascience.com"
+
   def new_submission(submission)
     @submission = submission
     recips = @submission.user.email

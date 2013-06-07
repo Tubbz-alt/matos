@@ -1,5 +1,7 @@
 class ReportMailer < ActionMailer::Base
 
+  default :from => "matos@asascience.com"
+
   def report_invoice(report)
     @report = report
     recips = @report.email
