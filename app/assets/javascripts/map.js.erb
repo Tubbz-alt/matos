@@ -106,8 +106,8 @@ function init() {
     ,autoExpandColumn : 'name'
     ,columns          : [
        matosStudiesSelModel
-      ,{id : 'name' ,dataIndex : 'name' ,renderer : renderProjectName}
-      ,{id : 'count',dataIndex : 'count',renderer : renderCount,align : 'right',width : 70}
+      ,{ id : 'name' ,dataIndex : 'name' , renderer : renderProjectName }
+      ,{ id : 'count', dataIndex : 'count', renderer : renderCount, align : 'right', width : 70 }
     ]
     ,hideHeaders      : true
     ,loadMask         : true
@@ -509,7 +509,7 @@ function initMap() {
         if (mouseoverObs && mouseoverObs.isVisible()) {
           mouseoverObs.hide();
         }
-        var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',e.feature.attributes.study_id));
+        var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',e.feature.attributes.study.id));
         mouseoverObs = new Ext.ToolTip({
            html         : '<font style="font-weight:bold">' + e.feature.attributes.code + '</font>&nbsp;-&nbsp;' + rec.get('name')
           ,anchor       : 'bottom'
@@ -534,18 +534,18 @@ function initMap() {
         if (popupObs && popupObs.isVisible()) {
           popupObs.hide();
         }
-        var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',e.feature.attributes.study_id));
+        var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',e.feature.attributes.study.id));
         var status = 'ongoing';
         if (e.feature.attributes.proposed == true) {
           status = 'proposed';
         }
-        else if (e.feature.attributes.recovered && isoStringToDate(e.feature.attributes.recovered) < dNow) {
+        else if (e.feature.attributes.ending && isoStringToDate(e.feature.attributes.ending) < dNow) {
           status = 'finished';
         }
         var tr  = [
            "<tr><td colspan=2 style='text-align:center'><b>" + rec.get('title') + "</b></td></tr>"
           ,"<tr><td colspan=2 style='text-align:center'><img height=4 src='<%= asset_path 'blank.png' %>'></td></tr>"
-          ,"<tr><td colspan=2 style='text-align:center'>" + (e.feature.attributes.start ? dateToString(isoStringToDate(e.feature.attributes.start)) : '') + " - " + (e.feature.attributes.recovered ? dateToString(isoStringToDate(e.feature.attributes.recovered)) : 'currently active') + "</td></tr>"
+          ,"<tr><td colspan=2 style='text-align:center'>" + (e.feature.attributes.start ? dateToString(isoStringToDate(e.feature.attributes.start)) : 'unknown start date') + " - " + (e.feature.attributes.ending ? dateToString(isoStringToDate(e.feature.attributes.ending)) : 'currently active') + "</td></tr>"
           ,"<tr><td colspan=2 style='text-align:center'><table width='100%'>"
             ,"<tr><td class='obsInnerPopup'>status</td><td class='obsInnerPopupVal'>" + status + "</td></tr>"
             ,(status == 'proposed' ? "<tr><td class='obsInnerPopup'>funded</td><td class='obsInnerPopupVal'>" + (e.feature.attributes.funded ? 'yes' : 'no') + "</td></tr>" : '')
@@ -556,10 +556,10 @@ function initMap() {
             ,(e.feature.attributes.otn_array.waterbody ? "<tr><td class='obsInnerPopup'>water body</td><td class='obsInnerPopupVal'>" + e.feature.attributes.otn_array.waterbody + "</td></tr>" : '')
           ,"</table></td></tr>"
           ,"<tr><td colspan=2 style='text-align:center'><img height=4 src='<%= asset_path 'blank.png' %>'></td></tr>"
-          ,"<tr><td colspan=2 style='text-align:center'><font color=gray>Visit the <a target=_blank href='<%= ActionController::Base.relative_url_root %>/projects/" + e.feature.attributes.study_id + "'>project home page</a> for more information.</font></td></tr>"
+          ,"<tr><td colspan=2 style='text-align:center'><font color=gray>Visit the <a target=_blank href='<%= ActionController::Base.relative_url_root %>/projects/" + e.feature.attributes.study.id + "'>project home page</a> for more information.</font></td></tr>"
         ];
         popupObs = new Ext.ToolTip({
-           title     : e.feature.attributes.code + '&nbsp;-&nbsp;Site&nbsp;' + rec.get('name')
+           title     : e.feature.attributes.code + '&nbsp;-&nbsp;' + rec.get('name')
           ,items     : {bodyCssClass : 'obsPopup',html : '<table>' + tr.join('') + '</table>'}
           ,anchor    : 'bottom'
           ,width     : 345
@@ -649,10 +649,10 @@ function initMap() {
                 }
               }
 
-              if (f.attributes.recovered) {
-                years[isoStringToDate(f.attributes.recovered).getUTCFullYear()] = 1;
-                if (isoStringToDate(f.attributes.recovered).getTime() > matosDeployments.ending.getTime()) {
-                  matosDeployments.ending = isoStringToDate(f.attributes.recovered);
+              if (f.attributes.ending) {
+                years[isoStringToDate(f.attributes.ending).getUTCFullYear()] = 1;
+                if (isoStringToDate(f.attributes.ending).getTime() > matosDeployments.ending.getTime()) {
+                  matosDeployments.ending = isoStringToDate(f.attributes.ending);
                 }
               }
 
@@ -815,37 +815,40 @@ function syncmatos() {
     }
     var ok = false;
     if (statusFilter['ongoing']) {
-      ok = ok || !proposed && start <= dNow && dNow <= recovered;
+      ok = ok || !proposed && start <= dNow && dNow <= ending;
     }
     if (statusFilter['proposed']) {
       ok = ok || proposed;
     }
     if (statusFilter['finished']) {
-      ok = ok || !proposed && recovered < dNow;
+      ok = ok || !proposed && ending < dNow;
     }
     return ok;
   }
 
   var f = [];
   for (var i = 0; i < matosDeployments.features.length; i++) {
-    var start = isoStringToDate(matosDeployments.features[i].attributes.start).getTime();
-    var recovered = dNow.getTime();
+    var start = dNow.getTime();
+    if (matosDeployments.features[i].attributes.start) {
+      start = isoStringToDate(matosDeployments.features[i].attributes.start).getTime();
+    }
+    var ending = dNow.getTime();
     var proposed = matosDeployments.features[i].attributes.proposed;
-    if (matosDeployments.features[i].attributes.recovered) {
-      recovered = isoStringToDate(matosDeployments.features[i].attributes.recovered).getTime();
+    if (matosDeployments.features[i].attributes.ending) {
+      ending = isoStringToDate(matosDeployments.features[i].attributes.ending).getTime();
     }
     if (
-      studyFilter[matosDeployments.features[i].attributes.study_id]
+      studyFilter[matosDeployments.features[i].attributes.study.id]
       && (
         (seasonalFilter['Year-round'] ? !matosDeployments.features[i].attributes.seasonal : false)
         || (seasonalFilter['Seasonal only'] ? matosDeployments.features[i].attributes.seasonal : false)
       )
-      && (matosDeployments.features[i].attributes.frequency ? frequencyFilter[matosDeployments.features[i].attributes.frequency] : frequencyFilter['Unknown'])
-      && (matosDeployments.features[i].attributes.model ? modelFilter[matosDeployments.features[i].attributes.model] : modelFilter['Unknown'])
+      && (matosDeployments.features[i].attributes.frequency ? frequencyFilter[matosDeployments.features[i].attributes.receiver.frequency] : frequencyFilter['Unknown'])
+      && (matosDeployments.features[i].attributes.model ? modelFilter[matosDeployments.features[i].attributes.receiver.model] : modelFilter['Unknown'])
       && (timeFilter.length == 2 ? (
         (timeFilter[0] <= start && start <= timeFilter[1])
-        || (timeFilter[0] <= recovered && recovered <= timeFilter[1])
-        || (start <= timeFilter[0] && timeFilter[1] <= recovered)
+        || (timeFilter[0] <= ending && ending <= timeFilter[1])
+        || (start <= timeFilter[0] && timeFilter[1] <= ending)
       ) : true)
       && statusOK()
     ) {
@@ -888,7 +891,7 @@ function syncStudiesCounts() {
   });
   for (var i = 0; i < deploymentsLayer.features.length; i++) {
     if (!deploymentsLayer.features[i].style) {
-      var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',deploymentsLayer.features[i].attributes.study_id));
+      var rec = matosStudiesStore.getAt(matosStudiesStore.find('id',deploymentsLayer.features[i].attributes.study.id));
       rec.set('count',rec.get('count') + 1);
       rec.commit();
     }

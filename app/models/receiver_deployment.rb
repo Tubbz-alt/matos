@@ -55,9 +55,13 @@ class ReceiverDeployment < ActiveRecord::Base
   def geo_attributes
     s = {}
     s[:code]      = code
+    s[:start]     = start
     s[:ending]    = ending
+    s[:seasonal]  = seasonal
+    s[:proposed]  = proposed
     s[:otn_array] = { :code => otn_array.code, :description => otn_array.description, :waterbody => otn_array.waterbody, :region => otn_array.region }
     s[:receiver]  = { :model => receiver.model, :serial => receiver.serial, :frequency => receiver.frequency, :vps => receiver.vps, :rcv_modem_address => receiver.rcv_modem_address }
+    s[:study]  = { :id => study.id, :name => study.name, :description => study.description }
     return s
   end
 

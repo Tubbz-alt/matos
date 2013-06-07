@@ -2,6 +2,7 @@ class StudiesController < ApplicationController
 
   def index
     @studies = Study.active.order(:id)
+    @studies = @studies.select{ |s| can? :read, s }
     respond_to do |format|
       format.json {
         render :json => @studies.as_json
