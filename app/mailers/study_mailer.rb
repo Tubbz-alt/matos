@@ -1,7 +1,5 @@
 class StudyMailer < ActionMailer::Base
 
-  default :from => 'matos@asascience.com'
-
   def new_study(study)
     @study = study
     recips = User.where("role = 'admin'").map(&:email)

@@ -1,7 +1,5 @@
 class UserMailer < ActionMailer::Base
 
-  default :from => 'matos@asascience.com'
-
   def new_account(user)
     @user = user
     recips = User.where("role = 'admin'").map(&:email)

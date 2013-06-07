@@ -56,9 +56,7 @@ Matos::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
-  config.action_mailer.default :from => "matos-stage@asascience.com"
-  config.action_mailer.sendmail_settings = { :arguments => '-i -t -f matos-stage@asascience.com' }
-
+  
   # Enable threaded mode
   # config.threadsafe!
 
