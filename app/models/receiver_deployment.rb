@@ -32,9 +32,20 @@ class ReceiverDeployment < ActiveRecord::Base
 
   scope :active_study, joins(:study).where('studies.title IS NOT NULL AND studies.name IS NOT NULL AND studies.start IS NOT NULL and studies.ending IS NOT NULL')
 
-  scope :readable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id}") }
-  scope :managable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR ( collaborators.role = 'manage' AND users.id = #{u.id} )") }
-
+  scope :readable, lambda {|u| 
+    if u.is_admin?
+      includes({ :study => {:collaborators => :user}})
+    else
+      includes({ :study => {:collaborators => :user}}).where("studies.user_id = #{u.id} OR users.id = #{u.id}")
+    end
+  }
+  scope :managable, lambda {|u|
+    if u.is_admin?
+      includes({ :study => {:collaborators => :user}})
+    else
+      includes({ :study => {:collaborators => :user}}).where("studies.user_id = #{u.id} OR ( collaborators.role = 'manage' AND users.id = #{u.id} )")
+    end
+  }
   def station
     "%03d" % read_attribute(:station) rescue nil
   end

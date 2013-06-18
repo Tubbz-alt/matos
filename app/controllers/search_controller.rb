@@ -11,13 +11,7 @@ class SearchController < ApplicationController
     studies = Study.includes(:user).includes(:users).search_all(params[:text])
 
     render :json => studies.as_json({
-                      :only => [:id, :start, :ending, :seasonal],
-                      :methods => [:code],
-                      :include => {
-                        :study => { :only => [:id, :name] },
-                        :otn_array => { :only => :name },
-                        :receiver => { :only => [:model, :serial] }
-                      }
+                      :only => [:id, :name, :title, :species, :start, :ending, :seasonal]
                     })
   end
 

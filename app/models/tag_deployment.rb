@@ -33,8 +33,20 @@ class TagDeployment < ActiveRecord::Base
   after_create  :set_active_deployment
   after_destroy :set_active_deployment
 
-  scope :readable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id}") }
-  scope :managable, lambda {|u| includes({ :study => {:collaborators => :user}}).where("users.role = 'admin' OR studies.user_id = #{u.id} OR ( collaborators.role = 'manage' AND users.id = #{u.id} )") }
+  scope :readable, lambda {|u| 
+    if u.is_admin?
+      includes({ :study => {:collaborators => :user}})
+    else
+      includes({ :study => {:collaborators => :user}}).where("studies.user_id = #{u.id} OR users.id = #{u.id}")
+    end
+  }
+  scope :managable, lambda {|u| 
+    if u.is_admin?
+      includes({ :study => {:collaborators => :user}})
+    else
+      includes({ :study => {:collaborators => :user}}).where("studies.user_id = #{u.id} OR ( collaborators.role = 'manage' AND users.id = #{u.id} )")
+    end
+  }
 
   set_rgeo_factory_for_column(:capture_geo, RGeo::Geographic.spherical_factory(:srid => 4326))
   set_rgeo_factory_for_column(:surgery_geo, RGeo::Geographic.spherical_factory(:srid => 4326))

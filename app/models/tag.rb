@@ -29,8 +29,10 @@ class Tag < ActiveRecord::Base
   scope :readable, lambda { |u| 
     if u.nil?
       includes({ :tag_deployments => :study }).where("active_deployment_id is NULL OR studies.permissions = 'public'")
+    elsif u.is_admin?
+      includes({ :tag_deployments => :study })
     else
-      includes({ :tag_deployments => {:study => {:collaborators => :user}}}).where("active_deployment_id is NULL OR studies.permissions = 'public' OR (users.role = 'admin' OR studies.user_id = #{u.id} OR users.id = #{u.id})")
+      includes({ :tag_deployments => {:study => {:collaborators => :user}}}).where("active_deployment_id is NULL OR studies.permissions = 'public' OR (studies.user_id = #{u.id} OR users.id = #{u.id})")
     end
   }
 
