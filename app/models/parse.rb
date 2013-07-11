@@ -35,7 +35,12 @@ class Parse
 
                 location = "POINT(%s %s)" % [lon, lat]
 
-                hit_datetime = DateTime.parse(row["Date and Time (UTC)"] + " UTC")
+                if row.header?("Date and Time (UTC)")
+                    hit_datetime = DateTime.parse(row["Date and Time (UTC)"] + " UTC")
+                else
+                    # Some weird encoding issue where the row header isnt being picked up?
+                    hit_datetime = DateTime.parse(row[0] + " UTC")
+                end
 
                 split_codes = row["Transmitter"].split("-")
                 code_space = split_codes.first(2).join("-")
@@ -66,7 +71,8 @@ class Parse
                     rcds = ReceiverDeployment.where(:receiver_id => receiver.id, :name => row["Station Name"], :location => location)
                     if !rcds.empty?
                         # Find the correct deployment in the correct time range
-                        rcds.select { |d| d.start < hit_datetime && d.ending > hit_datetime }
+                        # d.start and d.ending are optional! just use the last one if neither exist.
+                        rcds.select { |d| (d.start < hit_datetime rescue true) && (d.ending > hit_datetime rescue true) }
                         receiver_deployment = rcds.last
                     end
 
@@ -232,7 +238,7 @@ class Parse
                     
                     model = row["Model"].downcase
                     serial = row["Serial"].downcase
-                    freq = row["Frequency"].to_i rescue nil
+                    freq = row["Frequency (kHz)"].to_i rescue nil
 
                     unless model.nil? || serial.nil?
                         receiver = Receiver.find_by_model_and_serial(model, serial)
